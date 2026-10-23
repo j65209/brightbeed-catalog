@@ -342,17 +342,20 @@
   /* ---------- 관리자 막대 ---------- */
   function setPref(k, on) {
     if (k === 'anno') document.body.classList.toggle('anno-on', on);
-    if (k === 'edit') { document.body.classList.toggle('edit', on); setEditable(document, on); }
+    if (k === 'edit') {
+      document.body.classList.toggle('edit', on); setEditable(document, on);
+      var eb = document.querySelector('[data-pref="edit"]');
+      if (eb) eb.textContent = on ? '✎ 편집 중' : '👁 미리보기 (편집 켜기)';
+    }
     var b = document.querySelector('[data-pref="' + k + '"]'); if (b) b.setAttribute('aria-pressed', on);
-    if (k !== 'edit') store.set('bb-pref-' + k, on ? '1' : '0');
+    store.set('bb-pref-' + k, on ? '1' : '0');
   }
   function mountAdminBar() {
     if (document.body.classList.contains('adm') || document.getElementById('adminbar')) return;
-    var page = location.pathname.split('/').pop() || 'index.html';
     document.body.insertAdjacentHTML('beforeend',
       '<div class="devbar" id="adminbar"><button class="dev-toggle" title="접기/펴기"><b>ADMIN</b></button>' +
-      '<a href="admin.html">관리자 페이지</a><span class="sep"></span>' +
-      '<button data-pref="edit" aria-pressed="false">✎ 편집 모드</button>' +
+      '<button data-pref="edit" aria-pressed="false">✎ 편집 중</button>' +
+      '<a href="admin.html">관리자 페이지</a>' +
       '<button data-pref="anno" aria-pressed="false">구역 이름</button><span class="sep"></span>' +
       '<button data-logout>나가기</button></div>');
     var bar = document.getElementById('adminbar');
@@ -360,7 +363,13 @@
     bar.querySelectorAll('[data-pref]').forEach(function (b) { b.onclick = function () { setPref(b.dataset.pref, b.getAttribute('aria-pressed') !== 'true'); }; });
     bar.querySelector('[data-logout]').onclick = async function () { await BB.logout(); location.reload(); };
     setPref('anno', store.get('bb-pref-anno') === '1');
-    if (page !== 'admin.html' && BB.qs('edit') === '1') setPref('edit', true);
+    // 관리자는 기본으로 편집 모드. '미리보기'로 끄면 그 상태를 기억한다
+    var editOn = store.get('bb-pref-edit') !== '0' || BB.qs('edit') === '1';
+    setPref('edit', editOn);
+    if (editOn) {
+      var seen = false; try { seen = sessionStorage.getItem('bb-edit-hint') === '1'; sessionStorage.setItem('bb-edit-hint', '1'); } catch (e) {}
+      if (!seen) toast('편집 모드예요 · 글자나 사진을 누르면 바로 고쳐서 저장돼요');
+    }
   }
 
   /* ---------- 셀러 입장 (아직 템플릿: 아무 값이나 통과) ---------- */

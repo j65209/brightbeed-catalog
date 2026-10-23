@@ -83,9 +83,17 @@
     renderLists(scope, rec); fillFields(scope, rec); UI.hydrate(scope);
   }
 
+  function markVisibility(node, rec) {            // 관리자에게만: 숨긴 항목 표시 + 보이기/숨기기 버튼
+    if (!BB.admin || !node.classList.contains('card')) return;
+    node.classList.toggle('is-hidden', rec.visible === false);
+    var b = document.createElement('button');
+    b.className = 'card-vis'; b.type = 'button'; b.textContent = rec.visible === false ? '보이기' : '숨기기';
+    node.appendChild(b);
+  }
   function productCard(p, tplId) {
     var node = UI.cloneTpl(tplId || 'tpl-product');
     bindRec(node, 'cat_products', p);
+    markVisibility(node, p);
     if (node.tagName === 'A') node.href = productHref(p);
     var w = node.querySelector('.wish'); if (w) { w.dataset.pid = p.id; w.dataset.pname = p.name || ''; }
     var bn = node.querySelector('[data-brand-name]'); if (bn) bn.textContent = (state.brandMap && state.brandMap[p.brand_id] && state.brandMap[p.brand_id].name) || '';
@@ -95,6 +103,7 @@
   function brandCard(b) {
     var node = UI.cloneTpl('tpl-brand');
     bindRec(node, 'cat_brands', b);
+    markVisibility(node, b);
     node.href = brandHref(b);
     var cnt = node.querySelector('[data-count]'); if (cnt) cnt.textContent = '상품 ' + (state.products || []).filter(function (p) { return p.brand_id === b.id; }).length;
     return node;
@@ -183,6 +192,7 @@
       document.title = (b.name || '브랜드') + ' · 브라이트비드 공구';
     };
     rerender();
+    adminPanel(main, 'cat_brands', b);
   }
 
   /* ---------- 상품 상세 ---------- */
@@ -209,6 +219,7 @@
       document.title = (p.name || '상품') + ' · 브라이트비드 공구';
     };
     rerender();
+    adminPanel(main, 'cat_products', p);
     document.getElementById('pThumbs').addEventListener('click', function (e) {      // 썸네일 누르면 큰 사진 바꾸기
       if (document.body.classList.contains('edit')) return;
       var t = e.target.closest('[data-idx]'); if (!t) return;
@@ -218,6 +229,46 @@
     if (applyThis) applyThis.addEventListener('click', function () {
       var w2 = document.getElementById('mainWish'); if (w2 && w2.getAttribute('aria-pressed') !== 'true') w2.click();
       var opener = document.querySelector('#stickyApply [data-open]'); if (opener) opener.click();
+    });
+  }
+
+  /* ---------- 관리자 관리 막대 (브랜드·상품 상세 위쪽) ---------- */
+  function adminPanel(main, table, rec) {
+    if (!BB.admin || main.querySelector('.admin-panel')) return;
+    var isP = table === 'cat_products', el = document.createElement('div');
+    el.className = 'admin-panel'; el.setAttribute('data-noedit', '');
+    var brandOpts = (state.brands || []).map(function (b) {
+      return '<option value="' + b.id + '"' + (b.id === rec.brand_id ? ' selected' : '') + '>' + (b.name || '(이름 없음)').replace(/</g, '&lt;') + '</option>';
+    }).join('');
+    el.innerHTML = '<b>관리자</b>' +
+      '<label>사이트에 보이기 <button type="button" class="switch" data-db data-ap="visible" aria-checked="' + (rec.visible !== false) + '"></button></label>' +
+      (isP ? '<label>브랜드 <select class="input" data-ap="brand_id"><option value="">없음</option>' + brandOpts + '</select></label>' +
+             '<label>재고 <input class="input" type="number" min="0" data-ap="stock" value="' + (rec.stock == null ? '' : rec.stock) + '"></label>' : '') +
+      '<label>순서 <input class="input" type="number" data-ap="sort" value="' + (rec.sort == null ? '' : rec.sort) + '"></label>' +
+      '<span class="grow"></span>' +
+      '<a class="btn sm" href="admin.html#' + (isP ? 'products' : 'brands') + '">관리자 페이지</a>' +
+      '<button type="button" class="btn btn-del sm" data-ap-del>' + UI.svg('trash') + '삭제</button>';
+    main.prepend(el);
+    el.addEventListener('change', async function (e) {
+      var f = e.target.dataset.ap; if (!f) return;
+      var v = e.target.value === '' ? null : (e.target.type === 'number' ? Number(e.target.value) : e.target.value), patch = {}; patch[f] = v;
+      try { await updateRec(table, rec.id, patch); UI.toast('저장했어요'); } catch (err) { console.warn(err); UI.toast('저장하지 못했어요'); }
+    });
+    el.addEventListener('click', async function (e) {
+      var sw = e.target.closest('[data-ap="visible"]');
+      if (sw) {
+        var on = sw.getAttribute('aria-checked') !== 'true';
+        try { await updateRec(table, rec.id, { visible: on }); sw.setAttribute('aria-checked', on); UI.toast(on ? '사이트에 보이게 했어요' : '손님에게 숨겼어요'); }
+        catch (err) { UI.toast('바꾸지 못했어요'); }
+        return;
+      }
+      if (e.target.closest('[data-ap-del]')) {
+        if (!(await UI.askConfirm(isP ? '이 상품을 삭제할까요?' : '이 브랜드를 삭제할까요? 브랜드의 상품은 남아 있어요.'))) return;
+        var d = await sb.from(table).delete().eq('id', rec.id);
+        if (d.error) { UI.toast('삭제하지 못했어요'); return; }
+        var back = isP && rec.brand_id && state.brandMap[rec.brand_id] ? brandHref(state.brandMap[rec.brand_id]) : 'index.html';
+        location.href = back;
+      }
     });
   }
 
@@ -263,6 +314,14 @@
   };
 
   document.addEventListener('click', async function (e) {
+    var vis = e.target.closest('.card-vis');
+    if (vis) {
+      e.preventDefault(); e.stopPropagation();
+      var vc = vis.closest('[data-rec]'), vrec = recs[vc.dataset.table][vc.dataset.rec], von = vrec.visible === false;
+      try { await updateRec(vc.dataset.table, vc.dataset.rec, { visible: von }); rerender(); UI.toast(von ? '사이트에 보이게 했어요' : '손님에게 숨겼어요'); }
+      catch (err) { console.warn(err); UI.toast('바꾸지 못했어요'); }
+      return;
+    }
     var spc = e.target.closest('.sp-copy');
     if (spc) {
       var row = spc.closest('.sp-row'), txt = [row.querySelector('[data-f="name"]'), row.querySelector('.sp-text')].map(function (x) { return x ? x.innerText.trim() : ''; }).filter(Boolean).join('\n');
