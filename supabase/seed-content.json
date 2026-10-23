@@ -168,6 +168,7 @@
   "personal.f.channel": "채널 주소",
   "personal.f.phone": "연락처",
   "personal.f.biz": "사업자 구분",
+  "personal.f.checkout": "결제창",
   "personal.agree": "개인정보 수집·이용에 동의합니다 (이름·연락처·채널 / 셀러 등록 상담 목적 / 상담 종료 후 1년 보관)",
   "personal.submit": "등록 신청 보내기"
 }

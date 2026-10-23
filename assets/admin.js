@@ -166,7 +166,7 @@
       var stl = ST[s.status];
       return '<tr data-id="' + s.id + '" data-search="' + esc((s.name || '') + ' ' + (s.contact_name || '') + ' ' + (s.phone || '')) + '"><td><input type="checkbox" aria-label="선택"></td>' +
         '<td><div class="stack"><b>' + esc(s.name || '(이름 없음)') + '</b>' + (s.channel_url ? '<a class="muted small-link" href="' + esc(/^https?:/.test(s.channel_url) ? s.channel_url : 'https://' + s.channel_url) + '" target="_blank" rel="noopener">' + esc(s.channel_url) + '</a>' : '') + '</div></td>' +
-        '<td><span class="badge accent">' + esc(TYPE[s.seller_type] || '–') + '</span>' + (s.business_type ? '<br><small class="muted">' + esc(s.business_type) + '</small>' : '') + '</td>' +
+        '<td><span class="badge accent">' + esc(TYPE[s.seller_type] || '–') + '</span>' + [s.business_type, s.checkout_type].filter(Boolean).map(function (x) { return '<br><small class="muted">' + esc(x) + '</small>'; }).join('') + '</td>' +
         '<td><div class="stack"><span>' + esc(s.contact_name || '') + '</span><small class="muted">' + esc(s.phone || '') + (s.email ? ' · ' + esc(s.email) : '') + '</small></div></td>' +
         '<td class="memo-cell" title="' + esc(s.memo || '') + '">' + esc(s.memo || '') + '</td>' +
         '<td><span class="badge ' + stl[1] + '">' + stl[0] + '</span></td>' +

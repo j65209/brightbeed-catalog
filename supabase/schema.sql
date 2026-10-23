@@ -111,6 +111,7 @@ create table public.cat_sellers (
   memo text,
   status text not null default 'pending' check (status in ('pending','approved','rejected')),
   business_type text,                    -- 개인 셀러: 사업자 / 법인 / 사업자 없음
+  checkout_type text,                    -- 개인 셀러: 브라이트비드 결제창 / 셀러 개인 결제창
   created_at timestamptz not null default now()
 );
 
