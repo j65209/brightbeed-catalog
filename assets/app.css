@@ -151,6 +151,8 @@ header.top .wrap { display: flex; align-items: center; gap: 12px; height: 64px; 
 
 /* ---------- 공통 섹션 ---------- */
 section.block { padding: 56px 0 8px; }
+section.block#seller { padding-top: 112px; }   /* 전체 상품과 셀러 섹션 사이를 넓게 */
+@media (max-width: 720px) { section.block#seller { padding-top: 80px; } }
 .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
 .sec-title { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; }
 .sec-title::before { content: ""; width: 6px; height: 22px; border-radius: 3px; background: var(--neon); }
@@ -654,6 +656,27 @@ body:not(.is-admin) .card-vis { display: none !important; }
 .kakao-fab.unset { opacity: .92; }
 body.sticky-on .kakao-fab { bottom: calc(96px + env(safe-area-inset-bottom)); }
 @media (max-width: 720px) { .kakao-fab { right: 18px; bottom: calc(20px + env(safe-area-inset-bottom)); height: 54px; padding: 0 6px; } .kakao-txt { display: none; } }
+
+/* 셀러 등록 (메인 카드 + 업체·개인 등록 페이지) */
+.join-card { display: flex; flex-direction: column; gap: 12px; }
+.join-opt { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); transition: border-color .15s, box-shadow .15s, transform .15s; }
+.join-opt:hover { border-color: transparent; box-shadow: 0 0 0 2px var(--neon), var(--sh); transform: translateY(-2px); }
+.join-opt .grow { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.join-opt b { font-size: 16px; font-weight: 900; }
+.join-opt small { color: var(--ink-2); font-size: 13px; }
+.join-ico { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; background: var(--neon); color: var(--on-neon); flex: none; }
+.join-opt:nth-of-type(2) .join-ico { background: var(--accent); color: #fff; }
+.join-opt:nth-of-type(3) .join-ico { background: var(--pink); color: #fff; }
+.join-sub { font-size: 18px; font-weight: 900; margin: -4px 0 8px; }
+.join-flow { margin: 18px 0 22px; }
+.join-flow li { padding-bottom: 0; }
+.join-ico i[data-i] { width: 22px; height: 22px; }
+.join-go { font-size: 26px; color: var(--ink-3); }
+.join-page { max-width: 640px; padding: 48px 0 24px; }
+.join-page h1 { font-size: 32px; font-weight: 900; margin-bottom: 12px; }
+.join-lead { color: var(--ink-2); }
+.join-switch { margin: 12px 0 22px; font-size: 14px; color: var(--ink-2); }
+.join-switch a { color: var(--accent); font-weight: 900; }
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 960px) {
