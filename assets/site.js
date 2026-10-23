@@ -142,9 +142,31 @@
       fillGrid(document.getElementById('brandGrid'), state.brands, brandCard);
       fillGrid(document.getElementById('productGrid'), state.products, function (p) { return productCard(p); });
       renderCats();
+      renderBest().catch(function (e) { console.warn('[best]', e); });
     };
     rerender();
     if (BB.admin) adminSummary();
+  }
+  /* ---------- 히어로 BEST 1·2·3 (최근 30일 공구 신청 많은 순, DB 함수 cat_best_products) ---------- */
+  async function renderBest() {
+    var box = document.getElementById('bestBox'); if (!box) return;
+    var r = await sb.rpc('cat_best_products', { n: 3 });
+    if (r.error || !(r.data || []).length) return;               // 상품이 없으면 빈칸 카드 그대로
+    var byId = {}; (state.products || []).forEach(function (p) { byId[p.id] = p; });
+    box.innerHTML = '';
+    r.data.forEach(function (row, i) {
+      var p = byId[row.product_id]; if (!p) return;
+      var a = document.createElement('a');
+      a.className = 'best-card'; a.href = productHref(p);
+      a.innerHTML = '<div class="img"></div><span class="best-rank">BEST ' + (i + 1) + '</span>' +
+        '<div class="best-info"><small></small><b></b><span></span></div>';
+      UI.setImg(a.querySelector('.img'), (p.images || [])[0]);
+      var b = state.brandMap && state.brandMap[p.brand_id];
+      a.querySelector('small').textContent = b ? (b.name || '') : '';
+      a.querySelector('b').textContent = p.name || '';
+      a.querySelector('.best-info span').textContent = BB.won(p.price) + (row.requests ? ' · 신청 ' + row.requests + '건' : '');
+      box.appendChild(a);
+    });
   }
   function renderCats() {
     var box = document.getElementById('catChips'); if (!box) return;

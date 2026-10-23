@@ -176,3 +176,23 @@ create policy cat_storage_admin_delete on storage.objects for delete to authenti
 -- 관리자 PIN 6702 (sha256('bb-catalog:' || PIN)). 바꾸려면 관리자 페이지 > 설정
 insert into public.cat_admin_config (id, pin_hash, admin_email)
 values (1, 'f132c2d9c8c1e3d777261363358a23559100313001762dcd0c9ce9d659a57947', 'catalog-admin@brightbeed.kr');
+
+-- BEST 공구 순위: 최근 30일 공구 신청에 많이 담긴 상품 순 (같으면 BEST 배지 → 순서).
+-- 신청서 내용은 관리자만 읽을 수 있어서, 손님 화면에는 상품 id 와 건수만 내주는 함수로 연다.
+create or replace function public.cat_best_products(n int default 3)
+returns table (product_id uuid, requests bigint)
+language sql stable security definer set search_path = public as $$
+  select p.id, coalesce(r.cnt, 0)
+  from public.cat_products p
+  left join (
+    select unnest(product_ids) as pid, count(*) as cnt
+    from public.cat_requests
+    where kind = 'apply' and created_at > now() - interval '30 days'
+    group by 1
+  ) r on r.pid = p.id
+  where p.visible
+  order by coalesce(r.cnt, 0) desc, (coalesce(p.badge, '') ilike 'best') desc, p.sort, p.created_at
+  limit greatest(1, least(n, 12));
+$$;
+revoke all on function public.cat_best_products(int) from public;
+grant execute on function public.cat_best_products(int) to anon, authenticated;
