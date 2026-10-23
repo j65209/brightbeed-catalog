@@ -196,3 +196,14 @@ language sql stable security definer set search_path = public as $$
 $$;
 revoke all on function public.cat_best_products(int) from public;
 grant execute on function public.cat_best_products(int) to anon, authenticated;
+
+-- 카테고리 (메인 상품 필터 칩 + 상품 카테고리 선택지). 상품에는 이름(text)으로 저장한다.
+create table public.cat_categories (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  sort int not null default 0,
+  created_at timestamptz not null default now()
+);
+alter table public.cat_categories enable row level security;
+create policy cat_categories_read on public.cat_categories for select to anon, authenticated using (true);
+create policy cat_categories_admin on public.cat_categories for all to authenticated using (public.cat_is_admin()) with check (public.cat_is_admin());

@@ -4,7 +4,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-  var D = { brands: [], products: [], prices: {}, sellers: [], requests: [], content: [] };
+  var D = { brands: [], products: [], prices: {}, sellers: [], requests: [], content: [], cats: [] };
   var sb;
   var TYPE = { influencer: '인플루언서', vendor: '벤더 업체', personal: '개인 셀러' };
   var ST = { pending: ['대기', 'warn'], approved: ['승인', 'ok'], rejected: ['거절', 'danger'] };
@@ -64,16 +64,17 @@
       sb.from('cat_product_prices').select('*'),
       sb.from('cat_sellers').select('*').order('created_at', { ascending: false }),
       sb.from('cat_requests').select('*').order('created_at', { ascending: false }),
-      sb.from('cat_content').select('*').order('key')
+      sb.from('cat_content').select('*').order('key'),
+      sb.from('cat_categories').select('*').order('sort').order('created_at')
     ]);
     var bad = r.find(function (x) { return x.error; });
     if (bad) { console.warn(bad.error); UI.toast('불러오지 못한 항목이 있어요'); }
     D.brands = r[0].data || []; D.products = r[1].data || []; D.prices = {};
     (r[2].data || []).forEach(function (p) { D.prices[p.product_id] = p; });
-    D.sellers = r[3].data || []; D.requests = r[4].data || []; D.content = r[5].data || [];
+    D.sellers = r[3].data || []; D.requests = r[4].data || []; D.content = r[5].data || []; D.cats = r[6].data || [];
     renderAll();
   }
-  function renderAll() { renderDash(); renderBrands(); renderProducts(); renderSellers(); renderKanban(); renderContent(); applySearch(); }
+  function renderAll() { renderDash(); renderBrands(); renderProducts(); renderSellers(); renderKanban(); renderContent(); renderCats(); applySearch(); }
   function brandName(id) { var b = D.brands.find(function (x) { return x.id === id; }); return b ? (b.name || '(이름 없음)') : '–'; }
   function productName(id) { var p = D.products.find(function (x) { return x.id === id; }); return p ? (p.name || '(이름 없음)') : null; }
   function dateStr(iso) { return new Date(iso).toLocaleDateString('ko-KR', { year: '2-digit', month: 'numeric', day: 'numeric' }); }
@@ -218,6 +219,47 @@
     if (!row || v === row.value) return;
     try { await BB.saveContent(key, v); row.value = v; UI.toast('저장했어요'); if (!v) loadAll(); } catch (err) { UI.toast('저장하지 못했어요'); }
   });
+
+  /* ---------- 카테고리 ---------- */
+  function renderCats() {
+    $('#catRows').innerHTML = D.cats.map(function (c) {
+      var n = D.products.filter(function (p) { return p.category === c.name; }).length;
+      return '<div class="repeat-row" data-cid="' + c.id + '"><input class="input" value="' + esc(c.name) + '" aria-label="카테고리 이름"><small class="muted" style="white-space:nowrap">상품 ' + n + '</small>' +
+        '<button class="btn btn-del sm" data-cat-del><i data-i="trash"></i>삭제</button></div>';
+    }).join('') || '<p class="muted empty">카테고리가 없어요</p>';
+    UI.hydrate($('#catRows'));
+    $('#catList').innerHTML = D.cats.map(function (c) { return '<option value="' + esc(c.name) + '"></option>'; }).join('');
+  }
+  $('#catRows').addEventListener('change', async function (e) {
+    var row = e.target.closest('[data-cid]'); if (!row) return;
+    var c = D.cats.find(function (x) { return x.id === row.dataset.cid; }), v = e.target.value.trim(), old = c.name;
+    if (!v || v === old) { e.target.value = old; return; }
+    var r = await sb.from('cat_categories').update({ name: v }).eq('id', c.id);
+    if (r.error) { e.target.value = old; UI.toast(/duplicate|unique/.test(r.error.message) ? '이미 있는 카테고리예요' : '바꾸지 못했어요'); return; }
+    await sb.from('cat_products').update({ category: v }).eq('category', old);
+    c.name = v; D.products.forEach(function (p) { if (p.category === old) p.category = v; });
+    renderProducts(); renderCats(); UI.toast('카테고리 이름을 바꿨어요');
+  });
+  $('#catRows').addEventListener('click', async function (e) {
+    if (!e.target.closest('[data-cat-del]')) return;
+    var c = D.cats.find(function (x) { return x.id === e.target.closest('[data-cid]').dataset.cid; });
+    if (!(await UI.askConfirm('"' + c.name + '" 카테고리를 지울까요? 상품에 적힌 카테고리 이름은 그대로 남아요.'))) return;
+    var d = await sb.from('cat_categories').delete().eq('id', c.id);
+    if (d.error) { UI.toast('지우지 못했어요'); return; }
+    D.cats = D.cats.filter(function (x) { return x.id !== c.id; }); renderCats(); UI.toast('지웠어요');
+  });
+  $('#catAdd').addEventListener('click', async function () {
+    var n = 1; while (D.cats.some(function (x) { return x.name === '새 카테고리' + (n > 1 ? ' ' + n : ''); })) n++;
+    var r = await sb.from('cat_categories').insert({ name: '새 카테고리' + (n > 1 ? ' ' + n : ''), sort: D.cats.length + 1 }).select().single();
+    if (r.error) { UI.toast('추가하지 못했어요'); return; }
+    D.cats.push(r.data); renderCats();
+    var inp = $('#catRows [data-cid="' + r.data.id + '"] input'); if (inp) { inp.focus(); inp.select(); }
+  });
+  async function ensureCategory(name) {                 // 상품에 새 카테고리 이름을 쓰면 목록에도 추가
+    if (!name || D.cats.some(function (c) { return c.name === name; })) return;
+    var r = await sb.from('cat_categories').insert({ name: name, sort: D.cats.length + 1 }).select().single();
+    if (!r.error) D.cats.push(r.data);
+  }
 
   /* ---------- 검색 ---------- */
   function applySearch() {
@@ -382,6 +424,7 @@
     var r = editingProduct ? await sb.from('cat_products').update(row).eq('id', editingProduct.id).select().single()
       : await sb.from('cat_products').insert(row).select().single();
     if (r.error) { console.warn(r.error); UI.toast(/duplicate|unique/.test(r.error.message) ? '이미 쓰는 주소예요. 다른 주소를 넣어 주세요' : '저장하지 못했어요'); return; }
+    await ensureCategory(row.category);
     var r2 = await sb.from('cat_product_prices').upsert(Object.assign({ product_id: r.data.id }, price));
     if (r2.error) { console.warn(r2.error); UI.toast('상품은 저장됐지만 공급가를 저장하지 못했어요'); }
     else UI.toast('저장했어요');

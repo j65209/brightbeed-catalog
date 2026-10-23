@@ -176,6 +176,13 @@
         <div class="view-head"><div><h1>설정</h1></div></div>
         <div class="adm-card">
           <div class="set-sec">
+            <div><h3>카테고리</h3><p class="muted" style="font-size:13px">메인 상품 목록의 필터 칩과 상품 카테고리 선택지로 쓰여요. 이름을 바꾸면 그 카테고리의 상품도 같이 바뀌어요</p></div>
+            <div>
+              <div id="catRows"></div>
+              <button class="btn btn-add sm" style="margin-top:10px" id="catAdd"><i data-i="plus"></i>카테고리 추가</button>
+            </div>
+          </div>
+          <div class="set-sec">
             <div><h3>관리자 PIN 변경</h3><p class="muted" style="font-size:13px">숫자 4~8자리. 15분 안에 8번 틀리면 잠시 잠겨요</p></div>
             <form id="pinForm">
               <div class="drawer-grid">
@@ -249,7 +256,7 @@
     </div>
     <div class="field"><label>마진·조건 메모 <i data-i="lock" style="width:12px;height:12px;color:var(--ink-3)"></i></label><input class="input" name="margin_note"></div>
     <div class="drawer-grid">
-      <div class="field"><label>카테고리</label><input class="input" name="category"></div>
+      <div class="field"><label>카테고리</label><input class="input" name="category" list="catList" placeholder="목록에서 고르거나 새로 입력"><datalist id="catList"></datalist></div>
       <div class="field"><label>배지</label><input class="input" name="badge" placeholder="예: BEST"></div>
     </div>
     <div class="drawer-grid">

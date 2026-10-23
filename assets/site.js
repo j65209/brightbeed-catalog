@@ -137,7 +137,7 @@
 
   /* ---------- 메인 ---------- */
   async function initIndex() {
-    await loadBrands(); state.products = await loadProducts();
+    await loadBrands(); state.products = await loadProducts(); await loadCats();
     rerender = function () {
       fillGrid(document.getElementById('brandGrid'), state.brands, brandCard);
       fillGrid(document.getElementById('productGrid'), state.products, function (p) { return productCard(p); });
@@ -168,18 +168,67 @@
       box.appendChild(a);
     });
   }
+  /* ---------- 카테고리 칩 (cat_categories). 관리자 편집 모드에서 이름 바꾸기·추가·삭제 ---------- */
+  async function loadCats() {
+    var r = await sb.from('cat_categories').select('*').order('sort').order('created_at');
+    state.cats = r.data || [];
+  }
   function renderCats() {
     var box = document.getElementById('catChips'); if (!box) return;
-    var cats = []; state.products.forEach(function (p) { if (p.category && cats.indexOf(p.category) < 0) cats.push(p.category); });
-    if (!cats.length) return;
-    box.innerHTML = '<button class="chip on" data-cat=""><span class="t" style="--w:2em"></span></button>';
-    box.firstChild.firstChild.textContent = '전체';
-    cats.forEach(function (c) { var b = document.createElement('button'); b.className = 'chip'; b.dataset.cat = c; b.innerHTML = '<span class="t"></span>'; b.firstChild.textContent = c; box.appendChild(b); });
-    box.onclick = function (e) {
-      var chip = e.target.closest('.chip'); if (!chip) return;
-      document.querySelectorAll('#productGrid > [data-rec]').forEach(function (n) { n.hidden = !!chip.dataset.cat && n.dataset.cat !== chip.dataset.cat; });
-    };
+    if (!state.cats.length && !BB.admin) return;                 // 카테고리가 없으면 예시 칩 그대로
+    var cur = box.dataset.cur || '';
+    box.innerHTML = '';
+    var all = document.createElement('button'); all.className = 'chip' + (cur ? '' : ' on'); all.dataset.cat = ''; all.textContent = '전체'; box.appendChild(all);
+    state.cats.forEach(function (c) {
+      var b = document.createElement('button'); b.className = 'chip' + (cur === c.name ? ' on' : ''); b.dataset.cat = c.name; b.dataset.cid = c.id;
+      b.innerHTML = '<span class="t" data-cat-name></span><span class="icon-btn del chip-x cat-del" role="button" aria-label="카테고리 삭제">' + UI.svg('x') + '</span>';
+      b.firstChild.textContent = c.name; box.appendChild(b);
+    });
+    if (BB.admin) box.insertAdjacentHTML('beforeend', '<button class="chip cat-add admin-only">' + UI.svg('plus') + '카테고리 추가</button>');
+    if (document.body.classList.contains('edit')) UI.setEditable(box, true);
+    applyCatFilter();
   }
+  function applyCatFilter() {
+    var cur = (document.getElementById('catChips') || {}).dataset ? document.getElementById('catChips').dataset.cur || '' : '';
+    document.querySelectorAll('#productGrid > [data-rec]').forEach(function (n) { n.hidden = !!cur && n.dataset.cat !== cur; });
+  }
+  async function saveCategory(el, v) {
+    var chip = el.closest('[data-cid]'), c = state.cats.find(function (x) { return x.id === chip.dataset.cid; }), old = c.name;
+    if (!v) { el.textContent = old; throw new Error('빈 이름'); }
+    var r = await sb.from('cat_categories').update({ name: v }).eq('id', c.id);
+    if (r.error) throw r.error;
+    await sb.from('cat_products').update({ category: v }).eq('category', old);   // 그 카테고리였던 상품도 같이 바꾼다
+    c.name = v; chip.dataset.cat = v;
+    (state.products || []).forEach(function (p) { if (p.category === old) p.category = v; });
+    document.querySelectorAll('#productGrid > [data-rec]').forEach(function (n) { if (n.dataset.cat === old) n.dataset.cat = v; });
+  }
+  document.addEventListener('click', async function (e) {
+    var box = document.getElementById('catChips'); if (!box || !box.contains(e.target)) return;
+    if (e.target.closest('.cat-del')) {
+      e.preventDefault(); e.stopPropagation();
+      var chip = e.target.closest('[data-cid]'), c = state.cats.find(function (x) { return x.id === chip.dataset.cid; });
+      if (!(await UI.askConfirm('"' + c.name + '" 카테고리를 지울까요? 상품에 적힌 카테고리 이름은 그대로 남아요.'))) return;
+      var d = await sb.from('cat_categories').delete().eq('id', c.id);
+      if (d.error) { UI.toast('지우지 못했어요'); return; }
+      state.cats = state.cats.filter(function (x) { return x.id !== c.id; });
+      if (box.dataset.cur === c.name) box.dataset.cur = '';
+      renderCats(); UI.toast('카테고리를 지웠어요'); return;
+    }
+    if (e.target.closest('.cat-add')) {
+      e.preventDefault();
+      var n = 1; while (state.cats.some(function (x) { return x.name === '새 카테고리' + (n > 1 ? ' ' + n : ''); })) n++;
+      var name = '새 카테고리' + (n > 1 ? ' ' + n : '');
+      var r = await sb.from('cat_categories').insert({ name: name, sort: state.cats.length + 1 }).select().single();
+      if (r.error) { UI.toast('추가하지 못했어요'); return; }
+      state.cats.push(r.data); renderCats();
+      var el = box.querySelector('[data-cid="' + r.data.id + '"] [data-cat-name]');
+      if (el && el.isContentEditable) { el.focus(); document.getSelection().selectAllChildren(el); }
+      UI.toast('카테고리를 추가했어요 · 이름을 바로 고쳐 주세요'); return;
+    }
+    if (document.body.classList.contains('edit') && e.target.closest('[contenteditable="true"]')) return;
+    var ch = e.target.closest('.chip[data-cat]');
+    if (ch) { box.dataset.cur = ch.dataset.cat; box.querySelectorAll('.chip').forEach(function (x) { x.classList.toggle('on', x === ch); }); applyCatFilter(); }
+  });
   async function adminSummary() {
     var q = function (t, f) { var x = sb.from(t).select('id', { count: 'exact', head: true }); return (f ? f(x) : x).then(function (r) { return r.count || 0; }); };
     var counts = await Promise.all([q('cat_brands'), q('cat_products'), q('cat_sellers', function (x) { return x.eq('status', 'pending'); }), q('cat_requests', function (x) { return x.eq('status', 'new'); })]);
@@ -224,7 +273,7 @@
       : await sb.from('cat_products').select('*').order('sort').order('created_at').limit(1);
     var p = (r.data || [])[0], main = document.getElementById('productMain');
     if (!p) { emptyNotice(main, 'cat_products'); return; }
-    await loadBrands();
+    await loadBrands(); await loadCats();
     var brand = state.brandMap[p.brand_id];
     state.products = brand ? (await loadProducts(function (q) { return q.eq('brand_id', brand.id).neq('id', p.id).limit(8); })) : [];
     var price = null;
@@ -262,9 +311,13 @@
     var brandOpts = (state.brands || []).map(function (b) {
       return '<option value="' + b.id + '"' + (b.id === rec.brand_id ? ' selected' : '') + '>' + (b.name || '(이름 없음)').replace(/</g, '&lt;') + '</option>';
     }).join('');
+    var catNames = (state.cats || []).map(function (c) { return c.name; });
+    if (rec.category && catNames.indexOf(rec.category) < 0) catNames.push(rec.category);
+    var catOpts = catNames.map(function (n) { var e = n.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); return '<option value="' + e + '"' + (n === rec.category ? ' selected' : '') + '>' + e + '</option>'; }).join('');
     el.innerHTML = '<b>관리자</b>' +
       '<label>사이트에 보이기 <button type="button" class="switch" data-db data-ap="visible" aria-checked="' + (rec.visible !== false) + '"></button></label>' +
       (isP ? '<label>브랜드 <select class="input" data-ap="brand_id"><option value="">없음</option>' + brandOpts + '</select></label>' +
+             '<label>카테고리 <select class="input" data-ap="category"><option value="">없음</option>' + catOpts + '</select></label>' +
              '<label>재고 <input class="input" type="number" min="0" data-ap="stock" value="' + (rec.stock == null ? '' : rec.stock) + '"></label>' : '') +
       '<label>순서 <input class="input" type="number" data-ap="sort" value="' + (rec.sort == null ? '' : rec.sort) + '"></label>' +
       '<span class="grow"></span>' +
@@ -274,7 +327,7 @@
     el.addEventListener('change', async function (e) {
       var f = e.target.dataset.ap; if (!f) return;
       var v = e.target.value === '' ? null : (e.target.type === 'number' ? Number(e.target.value) : e.target.value), patch = {}; patch[f] = v;
-      try { await updateRec(table, rec.id, patch); UI.toast('저장했어요'); } catch (err) { console.warn(err); UI.toast('저장하지 못했어요'); }
+      try { await updateRec(table, rec.id, patch); if (f === 'category' || f === 'brand_id') rerender(); UI.toast('저장했어요'); } catch (err) { console.warn(err); UI.toast('저장하지 못했어요'); }
     });
     el.addEventListener('click', async function (e) {
       var sw = e.target.closest('[data-ap="visible"]');
@@ -319,6 +372,7 @@
   }
   window.BBEdit = {
     saveField: async function (el, v) {
+      if (el.hasAttribute('data-cat-name')) return saveCategory(el, v);
       var scope = el.closest('[data-rec]'), table = scope.dataset.table, id = scope.dataset.rec, rec = recs[table][id];
       var val = parse(el, v), kv = setIn(rec, el.dataset.f, val), patch = {}; patch[kv[0]] = kv[1];
       await updateRec(table, id, patch);

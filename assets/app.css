@@ -314,9 +314,11 @@ dialog .d-foot { display: flex; gap: 8px; justify-content: flex-end; padding: 16
 dialog.wide { width: min(720px, 100% - 32px); }
 .picked { display: flex; gap: 6px; flex-wrap: wrap; padding: 12px; border-radius: 12px; background: var(--surface-2); margin-top: 12px; }
 
-.toast { position: fixed; left: 50%; top: 18px; z-index: 100; transform: translate(-50%, -160%); display: flex; align-items: center; gap: 12px;
-  padding: 10px 10px 10px 16px; border-radius: 12px; background: var(--ink); color: var(--surface); font-size: 13px; font-weight: 600; box-shadow: var(--sh-lg); transition: transform .25s; }
-.toast.on { transform: translate(-50%, 0); }
+/* 안 보일 때는 화면 위로 완전히 숨긴다 (그림자가 위쪽 가운데에 비치지 않게) */
+.toast { position: fixed; left: 50%; top: 18px; z-index: 100; transform: translate(-50%, -200%); display: flex; align-items: center; gap: 12px;
+  padding: 10px 10px 10px 16px; border-radius: 12px; background: var(--ink); color: var(--surface); font-size: 13px; font-weight: 600; box-shadow: var(--sh-lg);
+  visibility: hidden; opacity: 0; transition: transform .25s, opacity .2s, visibility 0s .25s; }
+.toast.on { transform: translate(-50%, 0); visibility: visible; opacity: 1; transition: transform .25s, opacity .2s; }
 .toast button { border: 0; background: rgba(255, 255, 255, .14); color: inherit; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-weight: 700; }
 :root[data-theme="dark"] .toast button, .toast button { background: color-mix(in srgb, var(--surface) 18%, transparent); }
 
@@ -552,7 +554,10 @@ body.edit .url-edit { display: grid; gap: 6px; margin-top: 14px; padding: 12px 1
 .url-edit label { display: flex; gap: 8px; align-items: center; font-weight: 700; }
 .url-edit .t { flex: 1; color: var(--ink); font-weight: 500; }
 .chip .chip-x { width: 20px; height: 20px; border: 0; margin-right: -8px; }
-.chip .chip-x i[data-i] { width: 11px; height: 11px; }
+.chip .chip-x i[data-i], .chip .chip-x svg { width: 11px; height: 11px; }
+.chip { white-space: nowrap; }
+.chip.cat-add { gap: 4px; color: var(--accent); background: var(--accent-soft); border-color: transparent; font-weight: 800; }
+.chip.cat-add svg { width: 14px; height: 14px; }
 .price-admin { border: 1.5px dashed var(--accent); }
 .price-admin small { color: var(--ink-3); font-weight: 700; }
 .price-admin .t { font-size: 18px; font-weight: 800; --w: 5em; }
@@ -602,6 +607,7 @@ select.input { padding-right: 10px; }
 /* ---------- 화사한 테마 포인트 ---------- */
 .hero h1 { font-weight: 900; letter-spacing: -.03em; }
 .hero h1 .t:not(:empty) { display: block; }
+.hero .cta-row { margin-top: 26px; }
 .hero .eyebrow .t:not(:empty) { color: var(--accent); font-weight: 800; letter-spacing: .08em; font-size: 13px; }
 .logo .t:not(:empty) { font-weight: 900; letter-spacing: -.02em; }
 .sec-title .t:not(:empty) { font-weight: 900; }

@@ -287,7 +287,7 @@
 
   /* ---------- 관리자 편집 모드 ---------- */
   function editableTargets(root) {
-    return (root || document).querySelectorAll('[data-k], [data-rec] [data-f]:not(.img), [data-rec][data-f]:not(.img)');
+    return (root || document).querySelectorAll('[data-k], [data-rec] [data-f]:not(.img), [data-rec][data-f]:not(.img), [data-cat-name]');
   }
   function setEditable(root, on) {
     editableTargets(root).forEach(function (el) {
