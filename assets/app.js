@@ -74,7 +74,7 @@
       '<a class="btn ghost sm hide-m" href="index.html#products">' + T('3em', 'c.nav.products') + '</a>' +
       '<a class="btn sm hide-m" href="index.html#seller"><i data-i="users"></i>' + T('3.5em', 'c.nav.seller') + '</a>' +
       '<a class="btn soft sm" href="seller.html"><i data-i="lock"></i>' + T('3.5em', 'c.nav.sellerLogin') + '</a>' +
-      '<a class="btn ghost sm" href="admin.html" aria-label="관리자"><i data-i="gear"></i></a>' +
+      '<a class="btn sm" href="admin.html">' + T('4.5em', 'c.nav.admin') + '</a>' +
       '</nav></div></header>',
     footer:
       '<footer class="site"><div class="wrap">' +

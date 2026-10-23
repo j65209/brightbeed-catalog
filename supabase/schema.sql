@@ -173,9 +173,9 @@ create policy cat_storage_admin_insert on storage.objects for insert to authenti
 create policy cat_storage_admin_update on storage.objects for update to authenticated using (bucket_id = 'catalog' and public.cat_is_admin());
 create policy cat_storage_admin_delete on storage.objects for delete to authenticated using (bucket_id = 'catalog' and public.cat_is_admin());
 
--- 관리자 PIN 6702 (sha256('bb-catalog:' || PIN)). 바꾸려면 관리자 페이지 > 설정
+-- 관리자 PIN 2580 (sha256('bb-catalog:' || PIN)). 바꾸려면 관리자 페이지 > 설정
 insert into public.cat_admin_config (id, pin_hash, admin_email)
-values (1, 'f132c2d9c8c1e3d777261363358a23559100313001762dcd0c9ce9d659a57947', 'catalog-admin@brightbeed.kr');
+values (1, '99297593db3ba42c487d983397b32000f1ba57f9c781bbd94f871d8b010d63aa', 'catalog-admin@brightbeed.kr');
 
 -- BEST 공구 순위: 최근 30일 공구 신청에 많이 담긴 상품 순 (같으면 BEST 배지 → 순서).
 -- 신청서 내용은 관리자만 읽을 수 있어서, 손님 화면에는 상품 id 와 건수만 내주는 함수로 연다.

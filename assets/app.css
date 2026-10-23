@@ -528,7 +528,7 @@ body.is-admin [data-admin-only] { display: block; }
 /* ---------- DB 연결 후 공통 ---------- */
 .t:not(:empty) { white-space: pre-line; overflow-wrap: anywhere; }
 .btn .t:not(:empty), .logo .t:not(:empty), .chip .t:not(:empty), .badge .t:not(:empty), .step .t:not(:empty) { white-space: nowrap; overflow-wrap: normal; }
-@media (max-width: 420px) { .logo .t:not(:empty) { font-size: 14px; } header.top .btn.sm { padding: 0 10px; } }
+@media (max-width: 480px) { header.top .logo .t { display: none; } header.top .btn.sm { padding: 0 10px; } }   /* 좁은 화면은 로고 아이콘만, 셀러·관리자 입장 버튼이 잘리지 않게 */
 .price-v:not(:empty) { font-weight: 800; }
 .strike:not(:empty) { color: var(--ink-3); text-decoration: line-through; font-weight: 500; font-size: .85em; }
 .price-big .price-v { font-size: 28px; }
