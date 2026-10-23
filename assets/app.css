@@ -589,7 +589,6 @@ select.input { padding-right: 10px; }
 /* ---------- 화사한 테마 포인트 ---------- */
 .hero h1 { font-weight: 900; letter-spacing: -.03em; }
 .hero h1 .t:not(:empty) { display: block; }
-.hero h1 .t:not(:empty):last-child { display: inline; box-shadow: inset 0 -.32em 0 rgba(57, 255, 20, .6); }
 .hero .eyebrow .t:not(:empty) { color: var(--accent); font-weight: 800; letter-spacing: .08em; font-size: 13px; }
 .logo .t:not(:empty) { font-weight: 900; letter-spacing: -.02em; }
 .sec-title .t:not(:empty) { font-weight: 900; }
