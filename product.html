@@ -8,25 +8,24 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="assets/app.css">
 </head>
-<body>
+<body data-page="product">
 <div data-part="header"></div>
 
 <nav class="subnav"><div class="wrap">
-  <a class="btn sm back" href="brand.html"><i data-i="back"></i><span class="t" style="--w:4em"></span></a>
-  <span class="t" style="--w:3em"></span><span style="color:var(--ink-3)">/</span><span class="t" style="--w:4em"></span><span style="color:var(--ink-3)">/</span><span class="t" style="--w:7em"></span>
+  <a class="btn sm back" href="index.html" id="backLink"><i data-i="back"></i><span class="t" style="--w:4em" data-k="product.1"></span></a>
 </div></nav>
 
-<main class="wrap">
+<main class="wrap" id="productMain">
   <section class="d-hero">
     <!-- 이미지 -->
     <div class="gallery">
       <span class="anno">상품 이미지</span>
       <div class="media" style="position:relative">
-        <div class="img main"></div>
-        <button class="wish wish-float" aria-pressed="false" aria-label="찜" style="top:14px;right:14px;width:44px;height:44px"><i data-i="heart"></i></button>
+        <div class="img main" id="mainImg" data-fi="images.0"></div>
+        <button class="wish wish-float" id="mainWish" aria-pressed="false" aria-label="찜" style="top:14px;right:14px;width:44px;height:44px"><i data-i="heart"></i></button>
       </div>
-      <div class="thumbs" id="pThumbs" data-repeat="4" data-tpl="tpl-thumb">
-        <button class="add-tile" data-add="#pThumbs" data-tpl="tpl-thumb"><span class="plus"><i data-i="plus"></i></span>추가</button>
+      <div class="thumbs" id="pThumbs" data-list="images" data-tpl="tpl-thumb">
+        <button class="add-tile" data-arr-add="images" data-image="1"><span class="plus"><i data-i="plus"></i></span>추가</button>
       </div>
     </div>
 
@@ -34,47 +33,60 @@
     <div>
       <span class="anno">상품 정보</span>
       <div style="display:flex;gap:6px;align-items:center">
-        <a class="badge accent" href="brand.html"><span class="t"></span></a><span class="badge solid"><span class="t"></span></span>
+        <a class="badge accent" id="brandLink"><span class="t" data-x="brand"></span></a><span class="badge solid"><span class="t" data-f="badge"></span></span><span class="badge"><span class="t" data-f="category"></span></span>
       </div>
-      <h1><span class="t" style="--w:100%"></span><span class="t" style="--w:55%;display:block;margin-top:.3em"></span></h1>
-      <p class="lines" style="color:var(--ink-2)"><span class="t" style="--w:90%"></span><span class="t" style="--w:60%"></span></p>
+      <h1><span class="t" data-f="name" style="--w:100%"></span></h1>
+      <p class="lines" style="color:var(--ink-2)"><span class="t" data-f="summary" style="--w:90%"></span></p>
 
-      <div class="price-big"><span class="num"></span><span class="t"></span></div>
+      <div class="price-big"><span class="t price-v" data-f="price" data-type="won"></span><span class="t strike" data-f="list_price" data-type="won"></span></div>
 
-      <div class="label-row"><span class="t"></span>
-        <button class="btn btn-add sm" data-add="#swatches" data-tpl="tpl-swatch"><i data-i="plus"></i>옵션 추가</button></div>
-      <div class="opt-row" id="swatches" data-repeat="5" data-tpl="tpl-swatch"></div>
+      <div class="label-row"><span class="t" data-k="product.3"></span>
+        <button class="btn btn-add sm" data-arr-add="options"><i data-i="plus"></i>옵션 추가</button></div>
+      <div class="chips" id="optRow" data-list="options" data-tpl="tpl-chip"></div>
 
-      <div class="label-row"><span class="t" style="--w:5em"></span>
-        <button class="btn btn-add sm" data-add="#tagRow" data-tpl="tpl-tag"><i data-i="plus"></i>태그 추가</button></div>
-      <div class="chips" id="tagRow" data-repeat="4" data-tpl="tpl-tag"></div>
+      <div class="label-row"><span class="t" style="--w:5em" data-k="product.4"></span>
+        <button class="btn btn-add sm" data-arr-add="tags"><i data-i="plus"></i>태그 추가</button></div>
+      <div class="chips" id="tagRow" data-list="tags" data-tpl="tpl-chip"></div>
 
       <dl class="facts" style="grid-template-columns:repeat(3,minmax(0,1fr))">
-        <div><dt><i data-i="truck" style="color:var(--ink-3)"></i></dt><dd><span class="t"></span></dd></div>
-        <div><dt><span class="t"></span></dt><dd><span class="t"></span></dd></div>
-        <div><dt><span class="t"></span></dt><dd><span class="t"></span></dd></div>
+        <div><dt><span class="t" data-f="facts.0.k"></span></dt><dd><span class="t" data-f="facts.0.v"></span></dd></div>
+        <div><dt><span class="t" data-f="facts.1.k"></span></dt><dd><span class="t" data-f="facts.1.v"></span></dd></div>
+        <div><dt><span class="t" data-f="facts.2.k"></span></dt><dd><span class="t" data-f="facts.2.v"></span></dd></div>
       </dl>
 
       <div class="cta-row" style="margin-top:20px">
-        <button class="btn primary lg" style="flex:1" data-open="#applyDlg"><span class="t" style="--w:6em"></span></button>
-        <button class="btn lg" data-copy><i data-i="share"></i></button>
+        <button class="btn primary lg" style="flex:1" id="applyThis"><span class="t" style="--w:6em" data-k="product.5"></span></button>
+        <button class="btn lg" data-copy aria-label="링크 복사"><i data-i="share"></i></button>
       </div>
       <div class="cta-row" style="margin-top:10px">
-        <a class="btn sm" href="#"><i data-i="store"></i><span class="t" style="--w:6em"></span><i data-i="external"></i></a>
-        <a class="btn sm" href="#"><i data-i="store"></i><span class="t" style="--w:7em"></span><i data-i="external"></i></a>
+        <a class="btn sm" data-fh="shop_url"><i data-i="store"></i><span class="t" style="--w:6em" data-k="product.6"></span><i data-i="external"></i></a>
+        <a class="btn sm" data-fh="store_url"><i data-i="store"></i><span class="t" style="--w:7em" data-k="product.7"></span><i data-i="external"></i></a>
+      </div>
+      <div class="url-edit">
+        <label>공식몰 주소 <span class="t" data-f="shop_url"></span></label>
+        <label>스마트스토어 주소 <span class="t" data-f="store_url"></span></label>
+        <label>주소(영문, 선택) <span class="t" data-f="slug"></span></label>
       </div>
 
-      <!-- 셀러 전용 잠금 -->
-      <div class="card locked" style="margin-top:20px;padding:20px">
+      <!-- 셀러 전용: 손님에게는 잠금, 관리자에게는 공급가 편집 -->
+      <div class="card locked visitor-only" style="margin-top:20px;padding:20px">
         <div class="blur">
-          <div class="row-2"><div><span class="t"></span><br><span class="num" style="--w:5em;margin-top:8px"></span></div><div><span class="t"></span><br><span class="num" style="--w:4em;margin-top:8px"></span></div></div>
-          <p class="lines"><span class="t" style="--w:80%"></span></p>
+          <div class="row-2"><div><span class="t" data-k="product.8"></span><br><span class="num" style="--w:5em;margin-top:8px"></span></div><div><span class="t" data-k="product.9"></span><br><span class="num" style="--w:4em;margin-top:8px"></span></div></div>
+          <p class="lines"><span class="t" style="--w:80%" data-k="product.10"></span></p>
         </div>
         <div class="lock-over">
           <span class="lock-ico"><i data-i="lock"></i></span>
-          <span class="t" style="--w:12em"></span>
-          <a class="btn soft sm" href="seller.html"><span class="t" style="--w:4em"></span></a>
+          <span class="t" style="--w:12em" data-k="product.11"></span>
+          <a class="btn soft sm" href="seller.html"><span class="t" style="--w:4em" data-k="product.12"></span></a>
         </div>
+      </div>
+      <div class="card admin-only price-admin" id="priceBox" style="margin-top:20px;padding:20px">
+        <div class="kit-head"><h4><i data-i="lock"></i> 셀러 전용 정보 <small>(관리자만 보임)</small></h4></div>
+        <div class="row-2">
+          <div><small>공급가</small><br><span class="t" data-f="supply_price" data-type="won"></span></div>
+          <div><small>최소 수량</small><br><span class="t" data-f="moq" data-type="int"></span></div>
+        </div>
+        <p style="margin-top:10px"><small>마진·조건 메모</small><br><span class="t" data-f="margin_note" style="--w:80%"></span></p>
       </div>
     </div>
   </section>
@@ -83,93 +95,89 @@
   <section class="block">
     <span class="anno">상세 탭</span>
     <div class="tabs">
-      <button class="on" data-tab="detail" data-group="p"><span class="t"></span></button>
-      <button data-tab="points" data-group="p"><span class="t" style="--w:5em"></span></button>
-      <button data-tab="copy" data-group="p"><span class="t"></span></button>
-      <button data-tab="notice" data-group="p"><span class="t" style="--w:5em"></span></button>
+      <button class="on" data-tab="detail" data-group="p"><span class="t" data-k="product.13"></span></button>
+      <button data-tab="points" data-group="p"><span class="t" style="--w:5em" data-k="product.14"></span></button>
+      <button data-tab="copy" data-group="p"><span class="t" data-k="product.15"></span></button>
+      <button data-tab="notice" data-group="p"><span class="t" style="--w:5em" data-k="product.16"></span></button>
     </div>
 
     <div data-panel="detail" data-group="p">
-      <div class="detail-imgs" id="detailImgs">
-        <div class="detail-item" data-item><button class="card-del" data-del><i data-i="trash"></i>삭제</button><div class="img" style="--ar:3/4"></div></div>
-        <div class="detail-item" data-item><button class="card-del" data-del><i data-i="trash"></i>삭제</button><div class="img" style="--ar:1"></div></div>
-        <div class="detail-item" data-item><button class="card-del" data-del><i data-i="trash"></i>삭제</button><div class="img" style="--ar:4/5"></div></div>
-      </div>
+      <div class="detail-imgs" id="detailImgs" data-list="detail_images" data-tpl="tpl-detail"></div>
       <div style="display:flex;justify-content:center;gap:8px;margin-top:16px">
-        <button class="btn btn-add" data-add="#detailImgs" data-tpl="tpl-detail"><i data-i="plus"></i>이미지 추가</button>
+        <button class="btn btn-add" data-arr-add="detail_images" data-image="1"><i data-i="plus"></i>이미지 추가</button>
       </div>
     </div>
 
     <div data-panel="points" data-group="p" hidden>
-      <div class="grid usp-grid" id="pointGrid" data-repeat="4" data-tpl="tpl-usp"></div>
-      <button class="btn btn-add" style="margin-top:12px" data-add="#pointGrid" data-tpl="tpl-usp"><i data-i="plus"></i>포인트 추가</button>
+      <div class="grid usp-grid" id="pointGrid" data-list="points" data-tpl="tpl-usp"></div>
+      <button class="btn btn-add" style="margin-top:12px" data-arr-add="points" data-new='{"title":"","body":""}'><i data-i="plus"></i>포인트 추가</button>
     </div>
 
     <div data-panel="copy" data-group="p" hidden>
       <div class="kit">
         <div class="card" style="padding:22px">
-          <div class="kit-head"><h4><span class="t"></span></h4><button class="btn sm" data-copy><i data-i="copy"></i><span class="t" style="--w:3em"></span></button></div>
-          <div class="copybox lines"><span class="t" style="--w:60%"></span><span class="t" style="--w:100%"></span><span class="t" style="--w:90%"></span><span class="t" style="--w:40%"></span></div>
+          <div class="kit-head"><h4><span class="t" data-k="product.17"></span></h4><button class="btn sm" data-copy="#pPitch"><i data-i="copy"></i><span class="t" style="--w:3em" data-k="product.18"></span></button></div>
+          <div class="copybox lines" id="pPitch"><span class="t" data-f="pitch" style="--w:100%"></span></div>
         </div>
         <div class="card" style="padding:22px">
-          <div class="kit-head"><h4><span class="t"></span></h4><button class="btn sm" data-copy><i data-i="copy"></i><span class="t" style="--w:3em"></span></button></div>
-          <div class="copybox lines"><span class="t" style="--w:100%"></span><span class="t" style="--w:85%"></span><span class="t" style="--w:50%"></span></div>
+          <div class="kit-head"><h4><span class="t" data-k="product.19"></span></h4><button class="btn sm" data-copy="#pPitchShort"><i data-i="copy"></i><span class="t" style="--w:3em" data-k="product.20"></span></button></div>
+          <div class="copybox lines" id="pPitchShort"><span class="t" data-f="pitch_short" style="--w:85%"></span></div>
         </div>
       </div>
     </div>
 
     <div data-panel="notice" data-group="p" hidden>
       <div class="table-wrap"><table class="tbl" style="min-width:0">
-        <tbody id="noticeRows" data-repeat="5" data-tpl="tpl-notice"></tbody>
+        <tbody id="noticeRows" data-list="notice" data-tpl="tpl-notice"></tbody>
       </table></div>
-      <button class="btn btn-add" style="margin-top:12px" data-add="#noticeRows" data-tpl="tpl-notice"><i data-i="plus"></i>행 추가</button>
+      <button class="btn btn-add" style="margin-top:12px" data-arr-add="notice" data-new='{"k":"","v":""}'><i data-i="plus"></i>행 추가</button>
     </div>
   </section>
 
   <!-- 같은 브랜드 다른 상품 -->
   <section class="block">
     <span class="anno">함께 보면 좋은 상품</span>
-    <div class="sec-head"><h2 class="sec-title"><span class="t" style="--w:9em"></span></h2></div>
-    <div class="grid product-grid" data-repeat="4" data-tpl="tpl-product"></div>
+    <div class="sec-head"><h2 class="sec-title"><span class="t" style="--w:9em" data-k="product.21"></span></h2></div>
+    <div class="grid product-grid" id="relatedGrid" data-repeat="4" data-tpl="tpl-product"></div>
   </section>
 </main>
 
 <div data-part="footer apply"></div>
 
 <template id="tpl-thumb">
-  <div class="thumb-item" data-item><div class="img"></div><button class="x" data-del aria-label="삭제"><i data-i="x"></i></button></div>
+  <div class="thumb-item"><div class="img" data-fi="."></div><button class="x" data-arr-del aria-label="삭제"><i data-i="x"></i></button></div>
 </template>
-<template id="tpl-swatch">
-  <span class="swatch" data-item><button class="x" data-del aria-label="삭제"><i data-i="x"></i></button></span>
-</template>
-<template id="tpl-tag">
-  <span class="chip" data-item><span class="t" style="--w:3.5em"></span><button class="icon-btn del" data-del aria-label="삭제" style="width:20px;height:20px;border:0;margin-right:-8px"><i data-i="x" style="width:11px;height:11px"></i></button></span>
+<template id="tpl-chip">
+  <span class="chip"><span class="t" data-f="." style="--w:3.5em"></span><button class="icon-btn del chip-x" data-arr-del aria-label="삭제"><i data-i="x"></i></button></span>
 </template>
 <template id="tpl-detail">
-  <div class="detail-item" data-item><button class="card-del" data-del><i data-i="trash"></i>삭제</button><div class="img" style="--ar:1"></div></div>
+  <div class="detail-item"><button class="card-del" data-arr-del><i data-i="trash"></i>삭제</button><div class="img" style="--ar:auto" data-fi="."></div></div>
 </template>
 <template id="tpl-usp">
-  <div class="card usp" data-item>
-    <button class="card-del" data-del style="left:auto;right:12px;top:14px"><i data-i="trash"></i>삭제</button>
+  <div class="card usp">
+    <button class="card-del" data-arr-del style="left:auto;right:12px;top:14px"><i data-i="trash"></i>삭제</button>
     <span class="n"></span>
-    <h4><span class="t" data-r="40-70"></span></h4>
-    <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" data-r="85-100"></span><span class="t" data-r="40-75"></span></p>
+    <h4><span class="t" data-f=".title" data-r="40-70"></span></h4>
+    <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" data-f=".body" data-r="85-100"></span></p>
   </div>
 </template>
 <template id="tpl-notice">
-  <tr data-item><th style="width:30%"><span class="t" data-r="40-80"></span></th><td><span class="t" data-r="40-90"></span></td>
-    <td class="r" style="width:60px"><button class="icon-btn del" data-del aria-label="삭제"><i data-i="trash"></i></button></td></tr>
+  <tr><th style="width:30%"><span class="t" data-f=".k" data-r="40-80"></span></th><td><span class="t" data-f=".v" data-r="40-90"></span></td>
+    <td class="r" style="width:60px"><button class="icon-btn del chip-x" data-arr-del aria-label="삭제"><i data-i="trash"></i></button></td></tr>
 </template>
 <template id="tpl-product">
-  <a class="card p-card" href="product.html" data-item>
-    <div class="media"><div class="img"></div><button class="wish" aria-pressed="false" aria-label="찜"><i data-i="heart"></i></button></div>
+  <a class="card p-card">
+    <div class="media"><div class="img" data-fi="images.0"></div><button class="wish" aria-pressed="false" aria-label="찜"><i data-i="heart"></i></button></div>
     <div class="info">
-      <span class="name"><span class="t" data-r="85-100"></span><span class="t" data-r="40-70"></span></span>
-      <span class="price"><span class="num"></span><span class="t"></span></span>
+      <span class="name"><span class="t" data-f="name" data-r="70-100"></span></span>
+      <span class="price"><span class="t price-v" data-f="price" data-type="won"></span><span class="t strike" data-f="list_price" data-type="won"></span></span>
     </div>
   </a>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="assets/db.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>

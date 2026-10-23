@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="assets/app.css">
 </head>
-<body>
+<body data-page="index">
 <div data-part="header"></div>
 
 <main class="wrap">
@@ -17,21 +17,21 @@
   <section class="hero">
     <div>
       <span class="anno">히어로</span>
-      <div class="eyebrow"><span class="t"></span></div>
-      <h1><span class="t" style="--w:80%"></span><span class="t" style="--w:62%"></span></h1>
-      <p class="lead lines"><span class="t" style="--w:100%"></span><span class="t" style="--w:72%"></span></p>
+      <div class="eyebrow"><span class="t" data-k="idx.1"></span></div>
+      <h1><span class="t" style="--w:80%" data-k="idx.2"></span><span class="t" style="--w:62%" data-k="idx.3"></span></h1>
+      <p class="lead lines"><span class="t" style="--w:100%" data-k="idx.4"></span><span class="t" style="--w:72%" data-k="idx.5"></span></p>
       <div class="steps">
-        <span class="step"><b>1</b><span class="t"></span></span>
-        <span class="step"><b>2</b><span class="t"></span></span>
-        <span class="step"><b>3</b><span class="t"></span></span>
+        <span class="step"><b>1</b><span class="t" data-k="idx.6"></span></span>
+        <span class="step"><b>2</b><span class="t" data-k="idx.7"></span></span>
+        <span class="step"><b>3</b><span class="t" data-k="idx.8"></span></span>
       </div>
       <div class="cta-row">
-        <a class="btn primary lg" href="#brands"><span class="t" style="--w:5em"></span></a>
-        <a class="btn lg" href="#seller"><i data-i="users"></i><span class="t" style="--w:4em"></span></a>
-        <a class="btn lg" href="#custom"><i data-i="chat"></i><span class="t" style="--w:4em"></span></a>
+        <a class="btn primary lg" href="#brands"><span class="t" style="--w:5em" data-k="idx.9"></span></a>
+        <a class="btn lg" href="#seller"><i data-i="users"></i><span class="t" style="--w:4em" data-k="idx.10"></span></a>
+        <a class="btn lg" href="#custom"><i data-i="chat"></i><span class="t" style="--w:4em" data-k="idx.11"></span></a>
       </div>
     </div>
-    <div class="hero-art"><div class="img"></div><div class="img"></div><div class="img"></div></div>
+    <div class="hero-art"><div class="img" data-ki="idx.img.66"></div><div class="img" data-ki="idx.img.67"></div><div class="img" data-ki="idx.img.68"></div></div>
   </section>
 
   <!-- 브랜드 -->
@@ -39,15 +39,15 @@
     <span class="anno">브랜드 섹션</span>
     <div class="sec-head">
       <div>
-        <h2 class="sec-title"><span class="t"></span></h2>
-        <p class="sec-sub"><span class="t"></span></p>
+        <h2 class="sec-title"><span class="t" data-k="idx.12"></span></h2>
+        <p class="sec-sub"><span class="t" data-k="idx.13"></span></p>
       </div>
       <div class="sec-tools">
-        <button class="btn btn-add sm" data-add="#brandGrid" data-tpl="tpl-brand"><i data-i="plus"></i>브랜드 추가</button>
+        <button class="btn btn-add sm" data-db-add="cat_brands"><i data-i="plus"></i>브랜드 추가</button>
       </div>
     </div>
     <div class="grid brand-grid" id="brandGrid" data-repeat="4" data-tpl="tpl-brand">
-      <button class="add-tile" data-add="#brandGrid" data-tpl="tpl-brand"><span class="plus"><i data-i="plus"></i></span>브랜드 추가</button>
+      <button class="add-tile" data-db-add="cat_brands"><span class="plus"><i data-i="plus"></i></span>브랜드 추가</button>
     </div>
   </section>
 
@@ -56,26 +56,23 @@
     <span class="anno">상품 섹션</span>
     <div class="sec-head">
       <div>
-        <h2 class="sec-title"><span class="t"></span></h2>
-        <p class="sec-sub"><span class="t"></span></p>
+        <h2 class="sec-title"><span class="t" data-k="idx.14"></span></h2>
+        <p class="sec-sub"><span class="t" data-k="idx.15"></span></p>
       </div>
       <div class="sec-tools">
-        <button class="btn btn-add sm" data-add="#productGrid" data-tpl="tpl-product"><i data-i="plus"></i>상품 추가</button>
+        <button class="btn btn-add sm" data-db-add="cat_products"><i data-i="plus"></i>상품 추가</button>
       </div>
     </div>
     <div class="filters">
-      <div class="chips" data-single>
-        <button class="chip on"><span class="t" style="--w:2em"></span></button>
-        <button class="chip"><span class="t"></span></button>
-        <button class="chip"><span class="t" style="--w:4em"></span></button>
-        <button class="chip"><span class="t"></span></button>
-        <button class="chip"><span class="t" style="--w:3.8em"></span></button>
-        <button class="chip"><span class="t" style="--w:2.6em"></span></button>
+      <div class="chips" id="catChips" data-single>
+        <button class="chip on"><span class="t" style="--w:2em" data-k="idx.16"></span></button>
+        <button class="chip"><span class="t" data-k="idx.17"></span></button>
+        <button class="chip"><span class="t" style="--w:4em" data-k="idx.18"></span></button>
+        <button class="chip"><span class="t" data-k="idx.19"></span></button>
       </div>
-      <span class="select"><span class="t"></span><i data-i="filter"></i></span>
     </div>
     <div class="grid product-grid" id="productGrid" data-repeat="8" data-tpl="tpl-product">
-      <button class="add-tile" data-add="#productGrid" data-tpl="tpl-product"><span class="plus"><i data-i="plus"></i></span>상품 추가</button>
+      <button class="add-tile" data-db-add="cat_products"><span class="plus"><i data-i="plus"></i></span>상품 추가</button>
     </div>
   </section>
 
@@ -84,36 +81,43 @@
     <span class="anno">셀러 섹션</span>
     <div class="seller-sec">
       <div>
-        <h2 class="sec-title"><span class="t" style="--w:9em"></span></h2>
-        <p class="sec-sub lines"><span class="t" style="--w:90%"></span><span class="t" style="--w:60%"></span></p>
-        <div class="benefits" id="benefitGrid" data-repeat="3" data-tpl="tpl-benefit"></div>
+        <h2 class="sec-title"><span class="t" style="--w:9em" data-k="idx.20"></span></h2>
+        <p class="sec-sub lines"><span class="t" style="--w:90%" data-k="idx.21"></span><span class="t" style="--w:60%" data-k="idx.22"></span></p>
+        <div class="benefits">
+          <div class="card benefit"><div class="ico"><i data-i="sparkle"></i></div><h4><span class="t" data-k="idx.23"></span></h4>
+            <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" style="--w:95%" data-k="idx.24"></span><span class="t" style="--w:60%" data-k="idx.25"></span></p></div>
+          <div class="card benefit"><div class="ico"><i data-i="tag"></i></div><h4><span class="t" data-k="idx.26"></span></h4>
+            <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" style="--w:90%" data-k="idx.27"></span><span class="t" style="--w:70%" data-k="idx.28"></span></p></div>
+          <div class="card benefit"><div class="ico"><i data-i="truck"></i></div><h4><span class="t" data-k="idx.29"></span></h4>
+            <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" style="--w:100%" data-k="idx.30"></span><span class="t" style="--w:55%" data-k="idx.31"></span></p></div>
+        </div>
         <ol class="flow">
-          <li><span class="t" style="--w:5em"></span><p class="lines"><span class="t" style="--w:80%"></span></p></li>
-          <li><span class="t" style="--w:6em"></span><p class="lines"><span class="t" style="--w:70%"></span></p></li>
-          <li><span class="t" style="--w:5em"></span><p class="lines"><span class="t" style="--w:75%"></span></p></li>
+          <li><span class="t" style="--w:5em" data-k="idx.32"></span><p class="lines"><span class="t" style="--w:80%" data-k="idx.33"></span></p></li>
+          <li><span class="t" style="--w:6em" data-k="idx.34"></span><p class="lines"><span class="t" style="--w:70%" data-k="idx.35"></span></p></li>
+          <li><span class="t" style="--w:5em" data-k="idx.36"></span><p class="lines"><span class="t" style="--w:75%" data-k="idx.37"></span></p></li>
         </ol>
         <div class="cta-row" style="margin-top:20px">
-          <a class="btn soft" href="seller.html"><i data-i="lock"></i><span class="t" style="--w:4em"></span></a>
-          <button class="btn btn-add" data-add="#benefitGrid" data-tpl="tpl-benefit"><i data-i="plus"></i>혜택 추가</button>
+          <a class="btn soft" href="seller.html"><i data-i="lock"></i><span class="t" style="--w:4em" data-k="idx.38"></span></a>
         </div>
       </div>
 
-      <form class="card form-card" onsubmit="return false">
-        <h3><span class="t"></span></h3>
-        <p class="lines" style="color:var(--ink-2)"><span class="t" style="--w:85%"></span></p>
+      <form class="card form-card" data-submit="seller">
+        <h3><span class="t" data-k="idx.39"></span></h3>
+        <p class="lines" style="color:var(--ink-2)"><span class="t" style="--w:85%" data-k="idx.40"></span></p>
         <div class="field">
-          <label><span class="t"></span><span class="req">*</span></label>
-          <div class="seg"><button type="button" class="on"><span class="t"></span></button><button type="button"><span class="t"></span></button><button type="button"><span class="t"></span></button></div>
+          <label><span class="t" data-k="idx.41"></span><span class="req">*</span></label>
+          <div class="seg"><button type="button" class="on" data-v="influencer"><span class="t" data-k="idx.42"></span></button><button type="button" data-v="vendor"><span class="t" data-k="idx.43"></span></button><button type="button" data-v="personal"><span class="t" data-k="idx.44"></span></button></div>
         </div>
-        <div class="field"><label><span class="t"></span><span class="req">*</span></label><input class="input"></div>
-        <div class="field"><label><span class="t" style="--w:7em"></span><span class="req">*</span></label><input class="input"></div>
+        <div class="field"><label><span class="t" data-k="idx.45"></span><span class="req">*</span></label><input class="input" name="name" required></div>
+        <div class="field"><label><span class="t" style="--w:7em" data-k="idx.46"></span><span class="req">*</span></label><input class="input" name="channel_url" required></div>
         <div class="row-2">
-          <div class="field"><label><span class="t" style="--w:4em"></span></label><input class="input"></div>
-          <div class="field"><label><span class="t" style="--w:4em"></span></label><input class="input"></div>
+          <div class="field"><label><span class="t" style="--w:4em" data-k="idx.47"></span><span class="req">*</span></label><input class="input" name="contact_name" required></div>
+          <div class="field"><label><span class="t" style="--w:4em" data-k="idx.48"></span><span class="req">*</span></label><input class="input" name="phone" type="tel" required></div>
         </div>
-        <div class="field"><label><span class="t" style="--w:6em"></span></label><textarea class="input"></textarea></div>
-        <label class="check"><input type="checkbox"><span class="t"></span></label>
-        <button class="btn primary lg block" style="margin-top:18px" data-toast="셀러 신청이 접수됐어요 (템플릿)"><span class="t" style="--w:6em"></span></button>
+        <div class="field"><label><span class="t" style="--w:4em" data-k="idx.49"></span></label><input class="input" name="email" type="email"></div>
+        <div class="field"><label><span class="t" style="--w:6em" data-k="idx.50"></span></label><textarea class="input" name="memo"></textarea></div>
+        <label class="check"><input type="checkbox" required><span class="t" data-k="idx.51"></span></label>
+        <button type="submit" class="btn primary lg block" style="margin-top:18px"><span class="t" style="--w:6em" data-k="idx.52"></span></button>
       </form>
     </div>
   </section>
@@ -123,10 +127,10 @@
     <span class="anno">커스텀 · 대량 문의 섹션</span>
     <div class="card" style="padding:28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center">
       <div>
-        <h2 class="sec-title"><span class="t" style="--w:8em"></span></h2>
-        <p class="sec-sub lines"><span class="t" style="--w:80%"></span></p>
+        <h2 class="sec-title"><span class="t" style="--w:8em" data-k="idx.53"></span></h2>
+        <p class="sec-sub lines"><span class="t" style="--w:80%" data-k="idx.54"></span></p>
       </div>
-      <button class="btn primary lg" data-open="#customDlg"><i data-i="chat"></i><span class="t" style="--w:5em"></span></button>
+      <button class="btn primary lg" data-open="#customDlg"><i data-i="chat"></i><span class="t" style="--w:5em" data-k="idx.55"></span></button>
     </div>
   </section>
 
@@ -136,32 +140,31 @@
       <span class="anno">관리자 섹션 · 관리자만 보임</span>
       <div class="sec-head">
         <div>
-          <h2 class="sec-title"><span class="t"></span></h2>
-          <p class="sec-sub"><span class="t"></span></p>
+          <h2 class="sec-title"><span class="t" data-k="idx.56"></span></h2>
+          <p class="sec-sub"><span class="t" data-k="idx.57"></span></p>
         </div>
-        <a class="btn primary" href="admin.html"><i data-i="gear"></i><span class="t" style="--w:6em"></span><i data-i="external"></i></a>
+        <a class="btn primary" href="admin.html"><i data-i="gear"></i>관리자 페이지<i data-i="external"></i></a>
       </div>
       <div class="kpis">
-        <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
-        <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
-        <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
-        <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+        <div class="kpi"><div class="label">브랜드</div><span class="val"><span class="num" data-kpi></span></span></div>
+        <div class="kpi"><div class="label">상품</div><span class="val"><span class="num" data-kpi></span></span></div>
+        <div class="kpi"><div class="label">승인 대기 셀러</div><span class="val"><span class="num" data-kpi></span></span></div>
+        <div class="kpi"><div class="label">새 공구 신청·문의</div><span class="val"><span class="num" data-kpi></span></span></div>
       </div>
       <div class="admin-grid">
         <div class="admin-box">
-          <div class="admin-box-head"><h4><span class="t"></span></h4>
-            <button class="btn btn-add sm" data-add="#adminRecent" data-tpl="tpl-admin-row" data-pos="top"><i data-i="plus"></i>추가</button></div>
-          <div id="adminRecent" data-repeat="4" data-tpl="tpl-admin-row"></div>
+          <div class="admin-box-head"><h4>최근 신청</h4><a class="btn sm" href="admin.html#apps">전체 보기</a></div>
+          <div id="adminRecent"></div>
         </div>
         <div class="admin-box">
-          <div class="admin-box-head"><h4><span class="t" style="--w:5em"></span></h4></div>
+          <div class="admin-box-head"><h4>바로가기</h4></div>
           <div class="quick">
-            <button class="btn btn-add" data-add="#brandGrid" data-tpl="tpl-brand"><i data-i="plus"></i>브랜드 추가</button>
-            <button class="btn btn-add" data-add="#productGrid" data-tpl="tpl-product"><i data-i="plus"></i>상품 추가</button>
-            <a class="btn" href="admin.html"><i data-i="users"></i><span class="t" style="--w:4em"></span></a>
-            <a class="btn" href="admin.html"><i data-i="inbox"></i><span class="t" style="--w:4em"></span></a>
-            <a class="btn" href="admin.html"><i data-i="edit"></i><span class="t" style="--w:4em"></span></a>
-            <a class="btn" href="admin.html"><i data-i="gear"></i><span class="t" style="--w:4em"></span></a>
+            <button class="btn btn-add" data-db-add="cat_brands"><i data-i="plus"></i>브랜드 추가</button>
+            <button class="btn btn-add" data-db-add="cat_products"><i data-i="plus"></i>상품 추가</button>
+            <a class="btn" href="admin.html#sellers"><i data-i="users"></i>셀러 관리</a>
+            <a class="btn" href="admin.html#apps"><i data-i="inbox"></i>공구 신청</a>
+            <a class="btn" href="admin.html#content"><i data-i="edit"></i>사이트 문구</a>
+            <a class="btn" href="admin.html#settings"><i data-i="gear"></i>설정</a>
           </div>
         </div>
       </div>
@@ -172,69 +175,62 @@
 <div data-part="footer apply"></div>
 
 <!-- 커스텀 문의 창 -->
-<dialog id="customDlg">
-  <div class="d-head"><h3><span class="t"></span></h3><button class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>
+<dialog id="customDlg"><form data-submit="request" data-kind="custom">
+  <div class="d-head"><h3><span class="t" data-k="idx.58"></span></h3><button type="button" class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>
   <div class="d-body">
-    <div class="field"><label><span class="t"></span><span class="req">*</span></label><input class="input"></div>
+    <div class="field"><label><span class="t" data-k="idx.59"></span><span class="req">*</span></label><input class="input" name="company" required></div>
     <div class="row-2">
-      <div class="field"><label><span class="t" style="--w:4em"></span><span class="req">*</span></label><input class="input"></div>
-      <div class="field"><label><span class="t" style="--w:4em"></span></label><input class="input"></div>
+      <div class="field"><label><span class="t" style="--w:4em" data-k="idx.60"></span><span class="req">*</span></label><input class="input" name="contact_name" required></div>
+      <div class="field"><label><span class="t" style="--w:4em" data-k="idx.61"></span><span class="req">*</span></label><input class="input" name="phone" type="tel" required></div>
     </div>
-    <div class="field"><label><span class="t" style="--w:6em"></span></label><textarea class="input"></textarea></div>
-    <label class="check"><input type="checkbox"><span class="t"></span></label>
+    <div class="field"><label><span class="t" style="--w:6em" data-k="idx.62"></span></label><textarea class="input" name="memo"></textarea></div>
+    <label class="check"><input type="checkbox" required><span class="t" data-k="idx.63"></span></label>
   </div>
-  <div class="d-foot"><button class="btn" data-close><span class="t" style="--w:3em"></span></button><button class="btn primary" data-close data-toast="문의가 접수됐어요 (템플릿)"><span class="t" style="--w:5em"></span></button></div>
-</dialog>
+  <div class="d-foot"><button type="button" class="btn" data-close><span class="t" style="--w:3em" data-k="idx.64"></span></button><button type="submit" class="btn primary"><span class="t" style="--w:5em" data-k="idx.65"></span></button></div>
+</form></dialog>
 
 <!-- 복제용 템플릿 -->
 <template id="tpl-brand">
-  <a class="card brand-card" href="brand.html" data-item>
-    <button class="card-del" data-del><i data-i="trash"></i>삭제</button>
-    <div class="img cover"></div>
+  <a class="card brand-card">
+    <button class="card-del" data-db-del><i data-i="trash"></i>삭제</button>
+    <div class="img cover" data-fi="cover_url"></div>
     <div class="body">
-      <div class="img round"></div>
-      <div style="display:flex;gap:6px"><span class="badge solid"><span class="t"></span></span><span class="badge"><span class="t"></span></span></div>
-      <h3><span class="t" data-r="45-70"></span></h3>
-      <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" data-r="80-100"></span><span class="t" data-r="40-70"></span></p>
-      <div class="meta"><span class="badge accent"><span class="t"></span></span><span class="badge"><span class="t"></span></span></div>
+      <div class="img round" data-fi="logo_url"></div>
+      <div style="display:flex;gap:6px"><span class="badge solid"><span class="t" data-f="badge"></span></span><span class="badge"><span class="t" data-f="category"></span></span></div>
+      <h3><span class="t" data-f="name" data-r="45-70"></span></h3>
+      <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" data-f="one_liner" data-r="80-100"></span></p>
+      <div class="meta"><span class="badge accent"><span class="t" data-f="tags.0"></span></span><span class="badge" data-count></span></div>
     </div>
   </a>
 </template>
 
 <template id="tpl-product">
-  <a class="card p-card" href="product.html" data-item>
+  <a class="card p-card">
     <div class="media">
-      <button class="card-del" data-del><i data-i="trash"></i>삭제</button>
-      <div class="img"></div>
+      <button class="card-del" data-db-del><i data-i="trash"></i>삭제</button>
+      <div class="img" data-fi="images.0"></div>
       <button class="wish" aria-pressed="false" aria-label="찜"><i data-i="heart"></i></button>
-      <div class="badges"><span class="badge solid"><span class="t"></span></span></div>
+      <div class="badges"><span class="badge solid"><span class="t" data-f="badge"></span></span></div>
     </div>
     <div class="info">
-      <span class="brand"><span class="t"></span></span>
-      <span class="name"><span class="t" data-r="85-100"></span><span class="t" data-r="40-70"></span></span>
-      <span class="price"><span class="num"></span><span class="t"></span></span>
+      <span class="brand"><span class="t" data-brand-name data-noedit></span></span>
+      <span class="name"><span class="t" data-f="name" data-r="70-100"></span></span>
+      <span class="price"><span class="t price-v" data-f="price" data-type="won"></span><span class="t strike" data-f="list_price" data-type="won"></span></span>
     </div>
   </a>
 </template>
 
-<template id="tpl-benefit">
-  <div class="card benefit" data-item>
-    <button class="card-del" data-del style="left:auto;right:10px"><i data-i="trash"></i>삭제</button>
-    <div class="ico"><i data-i="sparkle"></i></div>
-    <h4><span class="t"></span></h4>
-    <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" data-r="80-100"></span><span class="t" data-r="50-80"></span></p>
-  </div>
-</template>
-
 <template id="tpl-admin-row">
-  <div class="list-row" data-item>
+  <div class="list-row">
     <span class="avatar"></span>
-    <span class="grow"><span class="t" data-r="30-55"></span><span class="t" data-r="50-80" style="height:.55em"></span></span>
-    <span class="badge warn"><span class="t"></span></span>
-    <button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button>
+    <span class="grow"><span class="t" data-x="title" style="--w:50%"></span><span class="t" data-x="sub" style="--w:70%;height:.55em"></span></span>
+    <span class="badge warn"><span class="t" data-x="status"></span></span>
   </div>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="assets/db.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>

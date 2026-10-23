@@ -1,8 +1,10 @@
-/* 브라이트비드 공구 제안관 — 빈칸 템플릿 공통 스크립트
-   - [data-part]  : 헤더·푸터·공구신청창·도구막대를 끼워 넣는다
-   - [data-repeat]: <template> 을 N번 복제해서 카드·행을 채운다
-   - [data-add] / [data-del] / [data-bulk-del] : 추가·삭제 (삭제는 되돌리기 가능)
-   실제 데이터 연결 전 디자인 확인용이라 저장은 하지 않는다. */
+/* 브라이트비드 공구 제안관 — 공통 화면 스크립트
+   - [data-part]  : 헤더·푸터·공구신청창을 끼워 넣는다
+   - [data-k]     : 사이트 문구 빈칸. 값은 cat_content 에서 오고, 관리자 편집 모드에서 바로 고쳐 저장한다
+   - [data-ki]    : 사이트 이미지 빈칸 (같은 방식)
+   - [data-f] / [data-fi] : 브랜드·상품 레코드 필드 (site.js 가 채우고 저장한다)
+   - [data-repeat]: 데이터가 없을 때 보여 줄 빈칸 카드
+   - form[data-submit] : 셀러 신청·공구 신청·문의를 DB 에 넣는다 */
 (function () {
   'use strict';
 
@@ -46,66 +48,68 @@
   };
   function svg(name) { return '<svg viewBox="0 0 24 24" ' + P + '>' + (ICONS[name] || '') + '</svg>'; }
 
+  function setImg(el, url) {
+    if (url) el.innerHTML = '<img alt="" loading="lazy" src="' + String(url).replace(/"/g, '&quot;') + '">';
+    else el.innerHTML = svg('image');
+    el.classList.toggle('has-img', !!url);
+  }
   function hydrate(root) {
     root.querySelectorAll('i[data-i]:empty').forEach(function (el) { el.innerHTML = svg(el.dataset.i); });
     root.querySelectorAll('.img').forEach(function (el) { if (!el.children.length) el.innerHTML = svg('image'); });
-    root.querySelectorAll('[data-r]').forEach(function (el) {    // data-r="40-90" → 너비를 40~90% 사이로 흩뜨려 복제 티를 줄인다
+    root.querySelectorAll('[data-r]').forEach(function (el) {    // data-r="40-90" → 빈칸 너비를 40~90% 사이로 흩뜨린다
       var m = el.dataset.r.split('-'); var a = +m[0], b = +m[1];
       el.style.setProperty('--w', Math.round(a + Math.random() * (b - a)) + '%');
     });
-    if (document.body.classList.contains('edit')) root.querySelectorAll('.t').forEach(function (t) { t.contentEditable = 'true'; });
+    if (document.body.classList.contains('edit')) setEditable(root, true);
   }
 
   /* ---------- 공통 조각 ---------- */
-  var T = function (w) { return '<span class="t" style="--w:' + w + '"></span>'; };
+  var T = function (w, k) { return '<span class="t" style="--w:' + w + '"' + (k ? ' data-k="' + k + '"' : '') + '></span>'; };
   var PARTS = {
     header:
       '<header class="top"><div class="wrap">' +
-      '<a class="logo" href="index.html"><span class="img"></span>' + T('6.5em') + '</a>' +
+      '<a class="logo" href="index.html"><span class="img" data-ki="c.logo.img"></span>' + T('6.5em', 'c.logo') + '</a>' +
       '<nav class="top-nav">' +
-      '<a class="btn ghost sm hide-m" href="index.html#brands">' + T('3em') + '</a>' +
-      '<a class="btn ghost sm hide-m" href="index.html#products">' + T('3em') + '</a>' +
-      '<a class="btn sm hide-m" href="index.html#seller"><i data-i="users"></i>' + T('3.5em') + '</a>' +
-      '<a class="btn soft sm" href="seller.html"><i data-i="lock"></i>' + T('3.5em') + '</a>' +
-      '<a class="btn ghost sm" href="admin.html" aria-label="관리자"><i data-i="gear"></i>' + T('2.5em') + '</a>' +
+      '<a class="btn ghost sm hide-m" href="index.html#brands">' + T('3em', 'c.nav.brands') + '</a>' +
+      '<a class="btn ghost sm hide-m" href="index.html#products">' + T('3em', 'c.nav.products') + '</a>' +
+      '<a class="btn sm hide-m" href="index.html#seller"><i data-i="users"></i>' + T('3.5em', 'c.nav.seller') + '</a>' +
+      '<a class="btn soft sm" href="seller.html"><i data-i="lock"></i>' + T('3.5em', 'c.nav.sellerLogin') + '</a>' +
+      '<a class="btn ghost sm" href="admin.html" aria-label="관리자"><i data-i="gear"></i></a>' +
       '</nav></div></header>',
     footer:
       '<footer class="site"><div class="wrap">' +
-      '<div><a class="logo" href="index.html"><span class="img"></span>' + T('6.5em') + '</a>' +
-      '<p class="lines" style="margin-top:14px"><span class="t" style="--w:90%"></span><span class="t" style="--w:70%"></span><span class="t" style="--w:50%"></span></p></div>' +
-      [1, 2, 3].map(function () {
-        return '<div><h5>' + T('4em') + '</h5><p class="lines"><span class="t" data-r="40-70"></span><span class="t" data-r="40-70"></span><span class="t" data-r="40-70"></span></p></div>';
+      '<div><a class="logo" href="index.html"><span class="img" data-ki="c.logo.img"></span>' + T('6.5em', 'c.logo') + '</a>' +
+      '<p class="lines" style="margin-top:14px">' + T('90%', 'c.foot.l1') + T('70%', 'c.foot.l2') + T('50%', 'c.foot.l3') + '</p></div>' +
+      [1, 2, 3].map(function (n) {
+        return '<div><h5>' + T('4em', 'c.foot.h' + n) + '</h5><p class="lines">' +
+          T('60%', 'c.foot.c' + n + '.1') + T('50%', 'c.foot.c' + n + '.2') + T('65%', 'c.foot.c' + n + '.3') + '</p></div>';
       }).join('') +
       '</div></footer>',
     apply:
-      '<div class="sticky-apply" id="stickyApply"><span class="count" id="wishCount">0</span>' + T('7em') +
-      '<button class="btn primary sm" data-open="#applyDlg">' + T('4em') + '</button></div>' +
-      '<dialog id="applyDlg"><div class="d-head"><h3>' + T('8em') + '</h3>' +
-      '<button class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>' +
-      '<div class="d-body"><p class="lines" style="color:var(--ink-2)"><span class="t" style="--w:85%"></span></p>' +
+      '<div class="sticky-apply" id="stickyApply"><span class="count" id="wishCount">0</span>' + T('7em', 'c.sticky.text') +
+      '<button class="btn primary sm" data-open="#applyDlg">' + T('4em', 'c.sticky.btn') + '</button></div>' +
+      '<dialog id="applyDlg"><form id="applyForm" data-submit="request" data-kind="apply">' +
+      '<div class="d-head"><h3>' + T('8em', 'c.apply.title') + '</h3>' +
+      '<button type="button" class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>' +
+      '<div class="d-body"><p class="lines" style="color:var(--ink-2)">' + T('85%', 'c.apply.desc') + '</p>' +
       '<div class="picked" id="picked"></div>' +
-      '<div class="field"><label>' + T('5em') + '<span class="req">*</span></label><input class="input"></div>' +
-      '<div class="row-2"><div class="field"><label>' + T('4em') + '<span class="req">*</span></label><input class="input"></div>' +
-      '<div class="field"><label>' + T('4em') + '<span class="req">*</span></label><input class="input"></div></div>' +
-      '<div class="field"><label>' + T('3em') + '</label><textarea class="input"></textarea></div>' +
-      '<label class="check"><input type="checkbox">' + T('16em') + '</label></div>' +
-      '<div class="d-foot"><button class="btn" data-close>' + T('3em') + '</button>' +
-      '<button class="btn primary" data-close data-toast="신청이 접수됐어요 (템플릿)">' + T('5em') + '</button></div></dialog>',
-    devbar:
-      '<div class="devbar" id="devbar"><button class="dev-toggle" title="접기/펴기"><b>TEMPLATE</b></button>' +
-      '<a href="index.html">메인</a><a href="brand.html">브랜드</a><a href="product.html">상품</a>' +
-      '<a href="seller.html">셀러 전용</a><a href="admin.html">관리자</a><span class="sep"></span>' +
-      '<button data-dev="anno" aria-pressed="true">구역 이름</button>' +
-      '<button data-dev="edit" aria-pressed="false">빈칸 채워보기</button>' +
-      '<button data-dev="theme" aria-pressed="false">다크</button></div>' +
-      '<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button id="toastUndo" hidden>되돌리기</button></div>'
+      '<div class="field"><label>' + T('5em', 'c.apply.company') + '<span class="req">*</span></label><input class="input" name="company" required></div>' +
+      '<div class="row-2"><div class="field"><label>' + T('4em', 'c.apply.name') + '<span class="req">*</span></label><input class="input" name="contact_name" required></div>' +
+      '<div class="field"><label>' + T('4em', 'c.apply.phone') + '<span class="req">*</span></label><input class="input" name="phone" type="tel" required></div></div>' +
+      '<div class="field"><label>' + T('3em', 'c.apply.memo') + '</label><textarea class="input" name="memo"></textarea></div>' +
+      '<label class="check"><input type="checkbox" required>' + T('16em', 'c.apply.agree') + '</label></div>' +
+      '<div class="d-foot"><button type="button" class="btn" data-close>' + T('3em', 'c.apply.cancel') + '</button>' +
+      '<button type="submit" class="btn primary">' + T('5em', 'c.apply.submit') + '</button></div></form></dialog>'
   };
   document.querySelectorAll('[data-part]').forEach(function (el) {
     el.outerHTML = el.dataset.part.split(' ').map(function (k) { return PARTS[k] || ''; }).join('');
   });
-  document.body.insertAdjacentHTML('beforeend', PARTS.devbar);
+  document.body.insertAdjacentHTML('beforeend',
+    '<div class="toast" id="toast" role="status"><span id="toastMsg"></span><button id="toastUndo" hidden>되돌리기</button></div>' +
+    '<dialog id="confirmDlg" class="confirm"><div class="d-body" style="padding-top:22px"><p id="confirmMsg" style="font-weight:700"></p></div>' +
+    '<div class="d-foot"><button class="btn" value="no">취소</button><button class="btn btn-del" value="yes"><i data-i="trash"></i>삭제</button></div></dialog>');
 
-  /* ---------- 템플릿 반복 ---------- */
+  /* ---------- 빈칸 카드 반복 ---------- */
   function cloneTpl(id) { var tpl = document.getElementById(id); return tpl ? tpl.content.firstElementChild.cloneNode(true) : null; }
   function place(box, node, top) {
     var tile = box.querySelector(':scope > .add-tile');
@@ -114,21 +118,30 @@
     else box.appendChild(node);
   }
   document.querySelectorAll('[data-repeat]').forEach(function (box) {
-    for (var i = 0; i < +box.dataset.repeat; i++) { var n = cloneTpl(box.dataset.tpl); if (n) place(box, n); }
+    for (var i = 0; i < +box.dataset.repeat; i++) { var n = cloneTpl(box.dataset.tpl); if (n) { n.classList.add('skel-item'); place(box, n); } }
   });
   hydrate(document);
 
-  /* ---------- 토스트 ---------- */
+  /* ---------- 토스트·확인창 ---------- */
   var toastEl = document.getElementById('toast'), toastMsg = document.getElementById('toastMsg'), undoBtn = document.getElementById('toastUndo');
   var toastTimer, undoFn = null;
   function toast(msg, undo) {
     toastMsg.textContent = msg; undoFn = undo || null; undoBtn.hidden = !undo;
     toastEl.classList.add('on'); clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { toastEl.classList.remove('on'); undoFn = null; }, undo ? 5000 : 2200);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('on'); undoFn = null; }, undo ? 5000 : 2400);
   }
   undoBtn.addEventListener('click', function () { if (undoFn) undoFn(); undoFn = null; toastEl.classList.remove('on'); });
+  var confirmDlg = document.getElementById('confirmDlg');
+  function askConfirm(msg) {
+    return new Promise(function (resolve) {
+      document.getElementById('confirmMsg').textContent = msg;
+      confirmDlg.querySelectorAll('button').forEach(function (b) { b.onclick = function () { confirmDlg.close(); resolve(b.value === 'yes'); }; });
+      confirmDlg.onclose = function () { resolve(false); };
+      confirmDlg.showModal();
+    });
+  }
 
-  /* ---------- 추가·삭제 ---------- */
+  /* ---------- 화면 안에서만 지우는 추가·삭제 (아직 DB 없는 셀러 화면용) ---------- */
   function removeItems(items) {
     var saved = items.map(function (el) { return { el: el, parent: el.parentNode, next: el.nextSibling }; });
     items.forEach(function (el) { el.classList.add('removing'); });
@@ -140,59 +153,92 @@
   }
   function afterChange() { updateWish(); document.querySelectorAll('[data-check-all]').forEach(syncBulk); }
 
+  /* ---------- 찜 (상품 id 를 브라우저에 기억) ---------- */
+  var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  function wishList() { try { return JSON.parse(store.get('bb-wish') || '[]'); } catch (e) { return []; } }
+  function setWishList(a) { store.set('bb-wish', JSON.stringify(a)); }
+  function syncWishButtons(root) {
+    var ids = wishList().map(function (w) { return w.id; });
+    (root || document).querySelectorAll('.wish[data-pid]').forEach(function (b) { b.setAttribute('aria-pressed', ids.indexOf(b.dataset.pid) >= 0); });
+  }
+  var sticky = document.getElementById('stickyApply'), wishCount = document.getElementById('wishCount');
+  function updateWish() {
+    if (!sticky) return;
+    var n = wishList().length + document.querySelectorAll('.wish:not([data-pid])[aria-pressed="true"]').length;
+    wishCount.textContent = n; sticky.classList.toggle('on', n > 0);
+  }
+  function fillPicked() {
+    var box = document.getElementById('picked'), list = wishList();
+    box.innerHTML = '';
+    list.forEach(function (w) {
+      var chip = document.createElement('span'); chip.className = 'chip';
+      chip.innerHTML = '<span class="t" style="--w:4em"></span><button type="button" class="icon-btn del" aria-label="빼기" style="width:20px;height:20px;border:0;margin-right:-8px">' + svg('x') + '</button>';
+      chip.querySelector('.t').textContent = w.name || '';
+      chip.querySelector('button').onclick = function () { setWishList(wishList().filter(function (x) { return x.id !== w.id; })); chip.remove(); syncWishButtons(); updateWish(); };
+      box.appendChild(chip);
+    });
+    if (!list.length) box.innerHTML = '<span style="color:var(--ink-3);font-size:13px">♡ 를 눌러 상품을 골라 주세요 · 메모에 적어도 돼요</span>';
+  }
+
+  /* ---------- 클릭 처리 ---------- */
   document.addEventListener('click', function (e) {
     var body = document.body;
-    if (body.classList.contains('edit')) {                       // 편집 모드: 빈칸 클릭은 링크·버튼 동작 대신 글쓰기
-      if (e.target.closest('.t')) { e.preventDefault(); return; }
-      var im = e.target.closest('.img');
-      if (im) { e.preventDefault(); pickImage(im); return; }
+    if (body.classList.contains('edit')) {                       // 편집 모드: 빈칸 클릭은 링크·버튼 대신 글쓰기 / 사진 넣기
+      if (e.target.closest('[contenteditable="true"]')) { e.preventDefault(); return; }
+      var im = e.target.closest('.img[data-ki], .img[data-fi]');
+      if (im && !e.target.closest('[data-del],[data-db-del],[data-arr-del]')) { e.preventDefault(); e.stopPropagation(); pickImage(im); return; }
     }
 
     var add = e.target.closest('[data-add]');
     if (add) {
       e.preventDefault();
       var box = document.querySelector(add.dataset.add), node = cloneTpl(add.dataset.tpl);
-      if (box && node) {
-        place(box, node, add.dataset.pos === 'top'); hydrate(node); node.classList.add('adding');
-        node.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); toast('추가했어요'); afterChange();
-      }
+      if (box && node) { place(box, node, add.dataset.pos === 'top'); hydrate(node); node.classList.add('adding'); toast('추가했어요'); afterChange(); }
     }
     var del = e.target.closest('[data-del]');
     if (del) { e.preventDefault(); e.stopPropagation(); var it = del.closest('[data-item]'); if (it) removeItems([it]); return; }
 
-    var bulk = e.target.closest('[data-bulk-del]');
-    if (bulk) {
-      var rows = [].slice.call(document.querySelectorAll(bulk.dataset.bulkDel + ' tbody input[type=checkbox]:checked')).map(function (c) { return c.closest('[data-item]'); });
-      if (rows.length) removeItems(rows);
-      var all = document.querySelector('[data-check-all="' + bulk.dataset.bulkDel + '"]'); if (all) all.checked = false;
-      return;
-    }
-
     var w = e.target.closest('.wish');
-    if (w) { e.preventDefault(); e.stopPropagation(); w.setAttribute('aria-pressed', w.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); updateWish(); return; }
+    if (w) {
+      e.preventDefault(); e.stopPropagation();
+      var on = w.getAttribute('aria-pressed') !== 'true';
+      w.setAttribute('aria-pressed', on);
+      if (w.dataset.pid) {
+        var list = wishList().filter(function (x) { return x.id !== w.dataset.pid; });
+        if (on) list.push({ id: w.dataset.pid, name: w.dataset.pname || '' });
+        setWishList(list); syncWishButtons();
+      }
+      updateWish(); return;
+    }
 
     var op = e.target.closest('[data-open]');
     if (op) { e.preventDefault(); var d = document.querySelector(op.dataset.open); if (d) { if (d.id === 'applyDlg') fillPicked(); d.showModal(); } }
     var cl = e.target.closest('[data-close]');
     if (cl) { var dd = cl.closest('dialog'); if (dd) dd.close(); }
     var ts = e.target.closest('[data-toast]');
-    if (ts && !add) toast(ts.dataset.toast);
-    if (e.target.closest('[data-copy]')) toast('복사했어요 (템플릿)');
+    if (ts) toast(ts.dataset.toast);
+    var cp = e.target.closest('[data-copy]');
+    if (cp) {
+      e.preventDefault();
+      var src = cp.dataset.copy ? document.querySelector(cp.dataset.copy) : null;
+      var text = src ? src.innerText.trim() : location.href;
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () { toast(src ? '복사했어요' : '링크를 복사했어요'); }, function () { toast('복사하지 못했어요'); });
+    }
 
     var tab = e.target.closest('[data-tab]');
     if (tab) {
       var g = tab.dataset.group;
-      document.querySelectorAll('[data-tab][data-group="' + g + '"]').forEach(function (b) { b.classList.toggle('on', b === tab); });
+      document.querySelectorAll('[data-tab][data-group="' + g + '"]').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === tab.dataset.tab); });
       document.querySelectorAll('[data-panel][data-group="' + g + '"]').forEach(function (p) { p.hidden = p.dataset.panel !== tab.dataset.tab; });
-      if (g === 'view') window.scrollTo({ top: 0 });
+      if (g === 'view') { window.scrollTo({ top: 0 }); history.replaceState(null, '', '#' + tab.dataset.tab); }
     }
     var chip = e.target.closest('[data-single] > .chip, .seg > button, .opt-row > .swatch');
     if (chip && !e.target.closest('.x')) [].forEach.call(chip.parentNode.children, function (c) { c.classList.toggle('on', c === chip); });
     var sw = e.target.closest('.switch');
-    if (sw) sw.setAttribute('aria-checked', sw.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
+    if (sw && !sw.hasAttribute('data-db')) sw.setAttribute('aria-checked', sw.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
   });
 
-  /* ---------- 표: 전체 선택·일괄 삭제 ---------- */
+  /* ---------- 표: 전체 선택 ---------- */
   function syncBulk(all) {
     var sel = all.dataset.checkAll, boxes = document.querySelectorAll(sel + ' tbody input[type=checkbox]');
     var n = 0; boxes.forEach(function (b) { if (b.checked) n++; b.closest('tr').classList.toggle('sel', b.checked); });
@@ -207,53 +253,122 @@
     if (tb && tb.id) { var a = document.querySelector('[data-check-all="#' + tb.id + '"]'); if (a) syncBulk(a); }
   });
 
-  /* ---------- 찜 → 공구 신청 ---------- */
-  var sticky = document.getElementById('stickyApply'), wishCount = document.getElementById('wishCount');
-  function updateWish() {
-    if (!sticky) return;
-    var n = document.querySelectorAll('.wish[aria-pressed="true"]').length;
-    wishCount.textContent = n; sticky.classList.toggle('on', n > 0);
-  }
-  function fillPicked() {
-    var box = document.getElementById('picked'), n = document.querySelectorAll('.wish[aria-pressed="true"]').length;
-    box.innerHTML = '';
-    for (var i = 0; i < Math.max(n, 1); i++) box.insertAdjacentHTML('beforeend', '<span class="chip">' + T((3 + Math.random() * 3).toFixed(1) + 'em') + '</span>');
+  /* ---------- 신청서 보내기 ---------- */
+  document.addEventListener('submit', async function (e) {
+    var form = e.target.closest('form[data-submit]');
+    if (!form) return;
+    e.preventDefault();
+    if (!window.BB || !BB.sb) { toast('지금은 접수할 수 없어요. 잠시 후 다시 시도해 주세요'); return; }
+    var row = {};
+    form.querySelectorAll('[name]').forEach(function (f) { if (f.value.trim()) row[f.name] = f.value.trim(); });
+    var seg = form.querySelector('.seg > button.on');
+    var table = form.dataset.submit === 'seller' ? 'cat_sellers' : 'cat_requests';
+    if (table === 'cat_sellers') { if (seg) row.seller_type = seg.dataset.v; }
+    else {
+      row.kind = form.dataset.kind || 'apply';
+      if (row.kind === 'apply') row.product_ids = wishList().map(function (w) { return w.id; }).filter(function (id) { return /^[0-9a-f-]{36}$/.test(id); });
+    }
+    var btn = form.querySelector('[type=submit]'); if (btn) btn.disabled = true;
+    var r = await BB.sb.from(table).insert(row);
+    if (btn) btn.disabled = false;
+    if (r.error) { console.warn(r.error); toast('접수하지 못했어요. 잠시 후 다시 시도해 주세요'); return; }
+    form.reset();
+    if (row.kind === 'apply') { setWishList([]); syncWishButtons(); updateWish(); }
+    var dlg = form.closest('dialog'); if (dlg) dlg.close();
+    toast(table === 'cat_sellers' ? '셀러 신청이 접수됐어요. 검토 후 연락드릴게요' : '접수됐어요. 담당자가 연락드릴게요');
+  });
+
+  /* ---------- 사이트 문구 채우기 ---------- */
+  function applyContent(root) {
+    var c = (window.BB && BB.content) || {};
+    (root || document).querySelectorAll('[data-k]').forEach(function (el) { if (document.activeElement !== el) el.textContent = c[el.dataset.k] || ''; });
+    (root || document).querySelectorAll('[data-ki]').forEach(function (el) { setImg(el, c[el.dataset.ki] || ''); });
   }
 
-  /* ---------- 편집 모드 이미지 넣기 ---------- */
+  /* ---------- 관리자 편집 모드 ---------- */
+  function editableTargets(root) {
+    return (root || document).querySelectorAll('[data-k], [data-rec] [data-f]:not(.img), [data-rec][data-f]:not(.img)');
+  }
+  function setEditable(root, on) {
+    editableTargets(root).forEach(function (el) {
+      if (el.closest('[data-noedit]')) return;
+      if (on) { el.contentEditable = 'true'; el.spellcheck = false; } else el.removeAttribute('contenteditable');
+    });
+  }
+  document.addEventListener('focusin', function (e) {
+    var el = e.target.closest('[contenteditable="true"]'); if (el) el.dataset.orig = el.innerText;
+  });
+  document.addEventListener('keydown', function (e) {
+    var el = e.target.closest && e.target.closest('[contenteditable="true"]');
+    if (!el) return;
+    if (e.key === 'Enter' && !el.closest('.lines, [data-ml]') && !e.shiftKey) { e.preventDefault(); el.blur(); }
+    if (e.key === 'Escape') { el.innerText = el.dataset.orig || ''; el.blur(); }
+  });
+  document.addEventListener('paste', function (e) {
+    var el = e.target.closest && e.target.closest('[contenteditable="true"]');
+    if (!el) return;
+    e.preventDefault();
+    document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
+  });
+  document.addEventListener('focusout', async function (e) {
+    var el = e.target.closest && e.target.closest('[contenteditable="true"]');
+    if (!el) return;
+    var v = el.innerText.replace(/ /g, ' ').trim();
+    if (!v) el.textContent = '';                                  // 비우면 다시 회색 빈칸
+    if (v === (el.dataset.orig || '').trim()) return;
+    try {
+      if (el.dataset.k) {
+        await BB.saveContent(el.dataset.k, v);
+        document.querySelectorAll('[data-k="' + el.dataset.k + '"]').forEach(function (o) { if (o !== el) o.textContent = v; });
+      } else if (window.BBEdit) await window.BBEdit.saveField(el, v);
+      toast('저장했어요');
+    } catch (err) { console.warn(err); toast('저장하지 못했어요'); el.innerText = el.dataset.orig || ''; }
+  });
+
   var fileIn = document.createElement('input'); fileIn.type = 'file'; fileIn.accept = 'image/*'; fileIn.hidden = true; document.body.appendChild(fileIn);
   var imgTarget = null;
   function pickImage(el) { imgTarget = el; fileIn.value = ''; fileIn.click(); }
-  fileIn.addEventListener('change', function () {
-    var f = fileIn.files[0]; if (!f || !imgTarget) return;
-    var url = URL.createObjectURL(f); imgTarget.innerHTML = '<img alt="" src="' + url + '">';
+  fileIn.addEventListener('change', async function () {
+    var f = fileIn.files[0], el = imgTarget; if (!f || !el) return;
+    toast('사진 올리는 중…');
+    try {
+      var url = await BB.upload(f, el.dataset.ki ? 'site' : 'items');
+      if (el.dataset.ki) { await BB.saveContent(el.dataset.ki, url); document.querySelectorAll('[data-ki="' + el.dataset.ki + '"]').forEach(function (o) { setImg(o, url); }); }
+      else if (window.BBEdit) await window.BBEdit.saveImage(el, url);
+      toast('사진을 저장했어요');
+    } catch (err) { console.warn(err); toast('사진을 올리지 못했어요'); }
   });
 
-  /* ---------- 도구막대 ---------- */
-  var page = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('#devbar a').forEach(function (a) { if (a.getAttribute('href') === page) a.classList.add('cur'); });
-  var store = { get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
-  function setDev(k, on) {
-    var b = document.querySelector('[data-dev="' + k + '"]'); if (b) b.setAttribute('aria-pressed', on);
+  /* ---------- 관리자 막대 ---------- */
+  function setPref(k, on) {
     if (k === 'anno') document.body.classList.toggle('anno-on', on);
-    if (k === 'edit') {
-      document.body.classList.toggle('edit', on);
-      document.querySelectorAll('.t').forEach(function (t) { if (on) t.contentEditable = 'true'; else t.removeAttribute('contenteditable'); });
-    }
+    if (k === 'edit') { document.body.classList.toggle('edit', on); setEditable(document, on); }
     if (k === 'theme') document.documentElement.dataset.theme = on ? 'dark' : 'light';
-    store.set('bb-dev-' + k, on ? '1' : '0');
+    var b = document.querySelector('[data-pref="' + k + '"]'); if (b) b.setAttribute('aria-pressed', on);
+    if (k !== 'edit') store.set('bb-pref-' + k, on ? '1' : '0');
   }
-  setDev('anno', store.get('bb-dev-anno') !== '0');
-  var th = store.get('bb-dev-theme');
-  setDev('theme', th === null ? matchMedia('(prefers-color-scheme: dark)').matches : th === '1');
-  document.querySelectorAll('[data-dev]').forEach(function (b) {
-    b.addEventListener('click', function () { setDev(b.dataset.dev, b.getAttribute('aria-pressed') !== 'true'); });
-  });
-  var devbar = document.getElementById('devbar');
-  devbar.querySelector('.dev-toggle').addEventListener('click', function () { devbar.classList.toggle('min'); });
+  function mountAdminBar() {
+    if (document.body.classList.contains('adm') || document.getElementById('adminbar')) return;
+    var page = location.pathname.split('/').pop() || 'index.html';
+    document.body.insertAdjacentHTML('beforeend',
+      '<div class="devbar" id="adminbar"><button class="dev-toggle" title="접기/펴기"><b>ADMIN</b></button>' +
+      '<a href="admin.html">관리자 페이지</a><span class="sep"></span>' +
+      '<button data-pref="edit" aria-pressed="false">✎ 편집 모드</button>' +
+      '<button data-pref="anno" aria-pressed="false">구역 이름</button>' +
+      '<button data-pref="theme" aria-pressed="false">다크</button><span class="sep"></span>' +
+      '<button data-logout>나가기</button></div>');
+    var bar = document.getElementById('adminbar');
+    bar.querySelector('.dev-toggle').onclick = function () { bar.classList.toggle('min'); };
+    bar.querySelectorAll('[data-pref]').forEach(function (b) { b.onclick = function () { setPref(b.dataset.pref, b.getAttribute('aria-pressed') !== 'true'); }; });
+    bar.querySelector('[data-logout]').onclick = async function () { await BB.logout(); location.reload(); };
+    setPref('anno', store.get('bb-pref-anno') === '1');
+    if (page !== 'admin.html' && BB.qs('edit') === '1') setPref('edit', true);
+  }
+  var th = store.get('bb-pref-theme');
+  if (th !== null) document.documentElement.dataset.theme = th === '1' ? 'dark' : 'light';
 
-  /* ---------- 셀러 입장 (템플릿: 아무 값이나 통과) ---------- */
-  document.querySelectorAll('.pin input').forEach(function (inp, i, all) {
+  /* ---------- 셀러 입장 (아직 템플릿: 아무 값이나 통과) ---------- */
+  document.querySelectorAll('#loginForm .pin input').forEach(function (inp, i, all) {
     inp.addEventListener('input', function () { inp.value = inp.value.replace(/\D/g, '').slice(0, 1); if (inp.value && all[i + 1]) all[i + 1].focus(); });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !inp.value && all[i - 1]) all[i - 1].focus(); });
   });
@@ -264,50 +379,13 @@
   var logout = document.getElementById('logoutBtn');
   if (logout) logout.addEventListener('click', function () { document.getElementById('auth').hidden = false; document.getElementById('dash').hidden = true; });
 
-  /* ---------- 관리자 PIN ----------
-     정적 사이트라 화면만 가리는 잠금이다. 실제 데이터 보호는 Supabase 연결 때 서버 쪽에서 한다.
-     http 에서는 crypto.subtle 이 없어서 FNV 해시로 비교한다. */
-  var PIN_HASH = '1unpbfe', ADMIN_KEY = 'bb-admin';
-  function pinHash(p) { var h = 2166136261; for (var i = 0, s = 'bb-admin:' + p; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(36); }
-  function isAdmin() { return store.get(ADMIN_KEY) === PIN_HASH; }
-  if (isAdmin()) document.body.classList.add('is-admin');
+  window.UI = { svg: svg, hydrate: hydrate, setImg: setImg, toast: toast, askConfirm: askConfirm, cloneTpl: cloneTpl, place: place,
+    applyContent: applyContent, setEditable: setEditable, syncWishButtons: syncWishButtons, updateWish: updateWish, syncBulk: syncBulk, store: store };
 
-  if (document.body.hasAttribute('data-gate')) {
-    if (isAdmin()) document.body.classList.remove('locked');
-    else {
-      document.body.insertAdjacentHTML('beforeend',
-        '<div class="gate"><form class="card" id="gateForm"><span class="lock-ico"><i data-i="lock"></i></span>' +
-        '<h2>관리자 입장</h2><p>PIN 4자리를 입력하세요</p>' +
-        '<div class="pin pin4"><input inputmode="numeric" autocomplete="off"><input inputmode="numeric" autocomplete="off">' +
-        '<input inputmode="numeric" autocomplete="off"><input inputmode="numeric" autocomplete="off"></div>' +
-        '<p class="gate-err" id="gateErr" hidden>PIN이 맞지 않아요</p>' +
-        '<a class="btn ghost sm" href="index.html"><i data-i="back"></i>사이트로 돌아가기</a></form></div>');
-      var gate = document.querySelector('.gate'), boxes = gate.querySelectorAll('input');
-      hydrate(gate); boxes[0].focus();
-      boxes.forEach(function (inp, i) {
-        inp.addEventListener('input', function () {
-          var digits = inp.value.replace(/\D/g, '').split('');   // 붙여넣기·자동완성으로 여러 자리가 한 번에 들어오면 다음 칸으로 나눠 담는다
-          inp.value = digits.shift() || '';
-          for (var k = i + 1; k < boxes.length && digits.length; k++) boxes[k].value = digits.shift();
-          var next = [].find.call(boxes, function (b) { return !b.value; });
-          if (inp.value) (next || boxes[boxes.length - 1]).focus();
-          var pin = [].map.call(boxes, function (b) { return b.value; }).join('');
-          if (pin.length < 4) return;
-          if (pinHash(pin) === PIN_HASH) {
-            store.set(ADMIN_KEY, PIN_HASH); gate.remove();
-            document.body.classList.remove('locked'); document.body.classList.add('is-admin');
-          } else {
-            document.getElementById('gateErr').hidden = false; gate.querySelector('form').classList.add('shake');
-            setTimeout(function () { gate.querySelector('form').classList.remove('shake'); boxes.forEach(function (b) { b.value = ''; }); boxes[0].focus(); }, 450);
-          }
-        });
-        inp.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !inp.value && boxes[i - 1]) boxes[i - 1].focus(); });
-      });
-    }
-  }
-  document.querySelectorAll('[data-admin-logout]').forEach(function (b) {
-    b.addEventListener('click', function () { try { localStorage.removeItem(ADMIN_KEY); } catch (e) {} location.href = 'index.html'; });
+  syncWishButtons(); updateWish();
+  if (window.BB) BB.ready.then(function () {
+    applyContent(document);
+    if (BB.admin) mountAdminBar();
+    document.dispatchEvent(new CustomEvent('bb:ready'));
   });
-
-  updateWish();
 })();
