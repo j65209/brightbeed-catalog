@@ -34,7 +34,6 @@
       <div class="cta-row">
         <a class="btn primary lg" href="#brands"><span class="t" style="--w:5em" data-k="idx.9"></span></a>
         <a class="btn lg blue" href="#seller"><i data-i="users"></i><span class="t" style="--w:4em" data-k="idx.10"></span></a>
-        <a class="btn lg pink" href="#custom"><i data-i="chat"></i><span class="t" style="--w:4em" data-k="idx.11"></span></a>
       </div>
     </div>
     <div class="hero-best">
@@ -132,18 +131,6 @@
     </div>
   </section>
 
-  <!-- 커스텀·대량 문의 -->
-  <section class="block" id="custom">
-    <span class="anno">커스텀 · 대량 문의 섹션</span>
-    <div class="card" style="padding:28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center">
-      <div>
-        <h2 class="sec-title"><span class="t" style="--w:8em" data-k="idx.53"></span></h2>
-        <p class="sec-sub lines"><span class="t" style="--w:80%" data-k="idx.54"></span></p>
-      </div>
-      <button class="btn pink lg" data-open="#customDlg"><i data-i="chat"></i><span class="t" style="--w:5em" data-k="idx.55"></span></button>
-    </div>
-  </section>
-
   <!-- 관리자 -->
   <section class="block" id="admin" data-admin-only>
     <div class="admin-sec on-dark">
@@ -184,20 +171,6 @@
 
 <div data-part="footer apply"></div>
 
-<!-- 커스텀 문의 창 -->
-<dialog id="customDlg"><form data-submit="request" data-kind="custom">
-  <div class="d-head"><h3><span class="t" data-k="idx.58"></span></h3><button type="button" class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>
-  <div class="d-body">
-    <div class="field"><label><span class="t" data-k="idx.59"></span><span class="req">*</span></label><input class="input" name="company" required></div>
-    <div class="row-2">
-      <div class="field"><label><span class="t" style="--w:4em" data-k="idx.60"></span><span class="req">*</span></label><input class="input" name="contact_name" required></div>
-      <div class="field"><label><span class="t" style="--w:4em" data-k="idx.61"></span><span class="req">*</span></label><input class="input" name="phone" type="tel" required></div>
-    </div>
-    <div class="field"><label><span class="t" style="--w:6em" data-k="idx.62"></span></label><textarea class="input" name="memo"></textarea></div>
-    <label class="check"><input type="checkbox" required><span class="t" data-k="idx.63"></span></label>
-  </div>
-  <div class="d-foot"><button type="button" class="btn" data-close><span class="t" style="--w:3em" data-k="idx.64"></span></button><button type="submit" class="btn primary"><span class="t" style="--w:5em" data-k="idx.65"></span></button></div>
-</form></dialog>
 
 <!-- 복제용 템플릿 -->
 <template id="tpl-brand">
