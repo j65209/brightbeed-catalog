@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>개인 셀러 등록 · 브라이트비드 공구</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;600;700;800;900&display=swap">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="assets/app.css?v=202610230511">
+</head>
+<body data-page="personal">
+<div data-part="header"></div>
+
+<main class="wrap join-page">
+  <h1><span class="t" data-k="personal.title" style="--w:7em"></span></h1>
+  <p class="lines join-lead"><span class="t" data-k="personal.desc" style="--w:100%"></span></p>
+  <p class="join-switch"><span class="t" data-k="personal.switch" style="--w:14em"></span> <a href="vendor.html">→ <span class="t" data-k="personal.switch.link" style="--w:5em"></span></a></p>
+
+  <form class="card form-card" data-submit="seller">
+    <input type="hidden" name="seller_type" value="personal">
+    <div class="field"><label><span class="t" data-k="personal.f.name" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="name" required autocomplete="name"></div>
+    <div class="field"><label><span class="t" data-k="personal.f.channel" style="--w:4em"></span><span class="req">*</span></label><input class="input" name="channel_url" required placeholder="예: instagram.com/아이디"></div>
+    <div class="field"><label><span class="t" data-k="personal.f.phone" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="phone" type="tel" required placeholder="010-0000-0000" autocomplete="tel"></div>
+    <div class="field"><label><span class="t" data-k="personal.f.biz" style="--w:4em"></span><span class="req">*</span></label>
+      <select class="input" name="business_type" required>
+        <option value="">선택</option>
+        <option value="사업자">사업자</option>
+        <option value="법인">법인</option>
+        <option value="사업자 없음">사업자 없음</option>
+      </select></div>
+    <label class="check"><input type="checkbox" required><span class="t" data-k="personal.agree" style="--w:16em"></span></label>
+    <button type="submit" class="btn primary lg block" style="margin-top:18px"><span class="t" data-k="personal.submit" style="--w:6em"></span></button>
+  </form>
+</main>
+
+<div data-part="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="assets/db.js?v=202610230511"></script>
+<script src="assets/app.js?v=202610230511"></script>
+</body>
+</html>

@@ -12,7 +12,7 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#ffffff">
-<link rel="stylesheet" href="assets/app.css?v=202610230453">
+<link rel="stylesheet" href="assets/app.css?v=202610230511">
 </head>
 <body data-page="index">
 <div data-part="header"></div>
@@ -27,7 +27,7 @@
       <h1><span class="t" style="--w:80%" data-k="idx.2"></span><span class="t" style="--w:62%" data-k="idx.3"></span></h1>
       <p class="lead lines"><span class="t" style="--w:100%" data-k="idx.4"></span><span class="t" style="--w:72%" data-k="idx.5"></span></p>
       <div class="cta-row">
-        <a class="btn primary lg" href="#brands"><span class="t" style="--w:5em" data-k="idx.9"></span></a>
+        <a class="btn primary lg" href="#products"><span class="t" style="--w:5em" data-k="idx.9"></span></a>
         <a class="btn lg blue" href="#seller"><i data-i="users"></i><span class="t" style="--w:4em" data-k="idx.10"></span></a>
       </div>
     </div>
@@ -35,23 +35,6 @@
       <span class="anno">BEST 공구 (자동)</span>
       <div class="hero-art" id="bestBox"><a class="best-card skel-best"><div class="img"></div><span class="best-rank">BEST 1</span></a><a class="best-card skel-best"><div class="img"></div><span class="best-rank">BEST 2</span></a><a class="best-card skel-best"><div class="img"></div><span class="best-rank">BEST 3</span></a></div>
       <p class="best-note"><span class="t" data-k="idx.best.note" style="--w:16em"></span></p>
-    </div>
-  </section>
-
-  <!-- 브랜드 -->
-  <section class="block" id="brands">
-    <span class="anno">브랜드 섹션</span>
-    <div class="sec-head">
-      <div>
-        <h2 class="sec-title"><span class="t" data-k="idx.12"></span></h2>
-        <p class="sec-sub"><span class="t" data-k="idx.13"></span></p>
-      </div>
-      <div class="sec-tools">
-        <button class="btn btn-add sm" data-db-add="cat_brands"><i data-i="plus"></i>브랜드 추가</button>
-      </div>
-    </div>
-    <div class="grid brand-grid" id="brandGrid" data-repeat="4" data-tpl="tpl-brand">
-      <button class="add-tile" data-db-add="cat_brands"><span class="plus"><i data-i="plus"></i></span>브랜드 추가</button>
     </div>
   </section>
 
@@ -104,25 +87,12 @@
           <a class="btn blue" href="seller.html"><i data-i="lock"></i><span class="t" style="--w:4em" data-k="idx.38"></span></a>
         </div>
       </div>
-
-      <form class="card form-card" data-submit="seller">
-        <h3><span class="t" data-k="idx.39"></span></h3>
-        <p class="lines" style="color:var(--ink-2)"><span class="t" style="--w:85%" data-k="idx.40"></span></p>
-        <div class="field">
-          <label><span class="t" data-k="idx.41"></span><span class="req">*</span></label>
-          <div class="seg"><button type="button" class="on" data-v="influencer"><span class="t" data-k="idx.42"></span></button><button type="button" data-v="vendor"><span class="t" data-k="idx.43"></span></button><button type="button" data-v="personal"><span class="t" data-k="idx.44"></span></button></div>
-        </div>
-        <div class="field"><label><span class="t" data-k="idx.45"></span><span class="req">*</span></label><input class="input" name="name" required></div>
-        <div class="field"><label><span class="t" style="--w:7em" data-k="idx.46"></span><span class="req">*</span></label><input class="input" name="channel_url" required></div>
-        <div class="row-2">
-          <div class="field"><label><span class="t" style="--w:4em" data-k="idx.47"></span><span class="req">*</span></label><input class="input" name="contact_name" required></div>
-          <div class="field"><label><span class="t" style="--w:4em" data-k="idx.48"></span><span class="req">*</span></label><input class="input" name="phone" type="tel" required></div>
-        </div>
-        <div class="field"><label><span class="t" style="--w:4em" data-k="idx.49"></span></label><input class="input" name="email" type="email"></div>
-        <div class="field"><label><span class="t" style="--w:6em" data-k="idx.50"></span></label><textarea class="input" name="memo"></textarea></div>
-        <label class="check"><input type="checkbox" required><span class="t" data-k="idx.51"></span></label>
-        <button type="submit" class="btn primary lg block" style="margin-top:18px"><span class="t" style="--w:6em" data-k="idx.52"></span></button>
-      </form>
+      <div class="card form-card join-card">
+        <h3><span class="t" data-k="idx.join.title"></span></h3>
+        <p class="lines" style="color:var(--ink-2)"><span class="t" data-k="idx.join.desc" style="--w:90%"></span></p>
+        <a class="join-opt" href="vendor.html"><span class="join-ico"><i data-i="store"></i></span><span class="grow"><b><span class="t" data-k="idx.join.v.title" style="--w:6em"></span></b><small><span class="t" data-k="idx.join.v.desc" style="--w:12em"></span></small></span><span class="join-go">›</span></a>
+        <a class="join-opt" href="personal.html"><span class="join-ico"><i data-i="users"></i></span><span class="grow"><b><span class="t" data-k="idx.join.p.title" style="--w:6em"></span></b><small><span class="t" data-k="idx.join.p.desc" style="--w:12em"></span></small></span><span class="join-go">›</span></a>
+      </div>
     </div>
   </section>
 
@@ -207,8 +177,8 @@
 </template>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="assets/db.js?v=202610230453"></script>
-<script src="assets/app.js?v=202610230453"></script>
-<script src="assets/site.js?v=202610230453"></script>
+<script src="assets/db.js?v=202610230511"></script>
+<script src="assets/app.js?v=202610230511"></script>
+<script src="assets/site.js?v=202610230511"></script>
 </body>
 </html>

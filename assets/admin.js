@@ -6,7 +6,7 @@
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   var D = { brands: [], products: [], prices: {}, sellers: [], requests: [], content: [], cats: [] };
   var sb;
-  var TYPE = { influencer: '인플루언서', vendor: '벤더 업체', personal: '개인 셀러' };
+  var TYPE = { influencer: '인플루언서', vendor: '업체 셀러', personal: '개인 셀러' };
   var ST = { pending: ['대기', 'warn'], approved: ['승인', 'ok'], rejected: ['거절', 'danger'] };
   var RQ = { new: '신규', progress: '진행', done: '완료', hold: '보류' };
 
@@ -74,7 +74,7 @@
     D.sellers = r[3].data || []; D.requests = r[4].data || []; D.content = r[5].data || []; D.cats = r[6].data || [];
     renderAll();
   }
-  function renderAll() { renderDash(); renderBrands(); renderProducts(); renderSellers(); renderKanban(); renderContent(); renderCats(); applySearch(); }
+  function renderAll() { fillKakao(); renderDash(); renderBrands(); renderProducts(); renderSellers(); renderKanban(); renderContent(); renderCats(); applySearch(); }
   function brandName(id) { var b = D.brands.find(function (x) { return x.id === id; }); return b ? (b.name || '(이름 없음)') : '–'; }
   function productName(id) { var p = D.products.find(function (x) { return x.id === id; }); return p ? (p.name || '(이름 없음)') : null; }
   function dateStr(iso) { return new Date(iso).toLocaleDateString('ko-KR', { year: '2-digit', month: 'numeric', day: 'numeric' }); }
@@ -150,10 +150,11 @@
         '<td class="r">' + (BB.won(p.price) || '<span class="muted">–</span>') + '</td>' +
         '<td class="r accent-text">' + (BB.won(pr.supply_price) || '<span class="muted">–</span>') + '</td>' +
         '<td class="r">' + (p.stock == null ? '<span class="muted">–</span>' : p.stock) + '</td>' +
+        '<td><select class="input mini-select best-select' + (p.best_rank ? ' on' : '') + '" data-best aria-label="BEST 순위"><option value="">자동</option>' + [1, 2, 3].map(function (n) { return '<option value="' + n + '"' + (p.best_rank === n ? ' selected' : '') + '>BEST ' + n + '</option>'; }).join('') + '</select></td>' +
         '<td><button class="switch" data-db data-vis="cat_products" aria-checked="' + p.visible + '" aria-label="노출"></button></td>' +
         '<td><div class="actions"><a class="btn sm" href="' + href + '&edit=1" title="페이지에서 편집"><i data-i="eye"></i>페이지에서 편집</a>' +
         '<button class="btn sm" data-edit-product title="정보 수정"><i data-i="edit"></i></button><button class="btn btn-del sm" data-row-del="cat_products"><i data-i="trash"></i>삭제</button></div></td></tr>';
-    }).join('') || '<tr><td colspan="8" class="muted empty">상품이 없어요. 오른쪽 위 \'상품 추가\'를 눌러 주세요</td></tr>';
+    }).join('') || '<tr><td colspan="9" class="muted empty">상품이 없어요. 오른쪽 위 \'상품 추가\'를 눌러 주세요</td></tr>';
     UI.hydrate($('#productRows'));
   }
 
@@ -165,7 +166,7 @@
       var stl = ST[s.status];
       return '<tr data-id="' + s.id + '" data-search="' + esc((s.name || '') + ' ' + (s.contact_name || '') + ' ' + (s.phone || '')) + '"><td><input type="checkbox" aria-label="선택"></td>' +
         '<td><div class="stack"><b>' + esc(s.name || '(이름 없음)') + '</b>' + (s.channel_url ? '<a class="muted small-link" href="' + esc(/^https?:/.test(s.channel_url) ? s.channel_url : 'https://' + s.channel_url) + '" target="_blank" rel="noopener">' + esc(s.channel_url) + '</a>' : '') + '</div></td>' +
-        '<td><span class="badge accent">' + esc(TYPE[s.seller_type] || '–') + '</span></td>' +
+        '<td><span class="badge accent">' + esc(TYPE[s.seller_type] || '–') + '</span>' + (s.business_type ? '<br><small class="muted">' + esc(s.business_type) + '</small>' : '') + '</td>' +
         '<td><div class="stack"><span>' + esc(s.contact_name || '') + '</span><small class="muted">' + esc(s.phone || '') + (s.email ? ' · ' + esc(s.email) : '') + '</small></div></td>' +
         '<td class="memo-cell" title="' + esc(s.memo || '') + '">' + esc(s.memo || '') + '</td>' +
         '<td><span class="badge ' + stl[1] + '">' + stl[0] + '</span></td>' +
@@ -333,6 +334,18 @@
     renderAll(); UI.toast(ids.length > 1 ? ids.length + '개 삭제했어요' : '삭제했어요');
   }
   document.addEventListener('change', async function (e) {
+    var bs = e.target.closest('[data-best]');
+    if (bs) {                                            // BEST 1·2·3 지정: 같은 순위를 가진 다른 상품은 먼저 비운다
+      var pid = bs.closest('tr').dataset.id, rank = bs.value ? Number(bs.value) : null;
+      var other = rank && D.products.find(function (p) { return p.best_rank === rank && p.id !== pid; });
+      if (other) { var c1 = await sb.from('cat_products').update({ best_rank: null }).eq('id', other.id); if (c1.error) { UI.toast('바꾸지 못했어요'); renderProducts(); return; } other.best_rank = null; }
+      var r1 = await sb.from('cat_products').update({ best_rank: rank }).eq('id', pid);
+      if (r1.error) { console.warn(r1.error); UI.toast('바꾸지 못했어요'); renderProducts(); return; }
+      D.products.find(function (p) { return p.id === pid; }).best_rank = rank;
+      renderProducts(); applySearch();
+      UI.toast(rank ? 'BEST ' + rank + '(으)로 지정했어요' + (other ? ' · 원래 ' + rank + '위였던 상품은 자동으로 돌렸어요' : '') : '자동 순위로 돌렸어요');
+      return;
+    }
     var s = e.target.closest('[data-req-st]'); if (!s) return;
     var id = s.closest('[data-id]').dataset.id;
     var r = await sb.from('cat_requests').update({ status: s.value }).eq('id', id);
@@ -438,6 +451,18 @@
     var r = await sb.from('cat_sellers').insert(row);
     if (r.error) { console.warn(r.error); UI.toast('추가하지 못했어요'); return; }
     $('#dlgSeller').close(); UI.toast('셀러를 추가했어요'); loadAll();
+  });
+
+  /* ---------- 카카오 채널 버튼 ---------- */
+  function fillKakao() {
+    var f = $('#kakaoForm'); f.url.value = BB.content['c.kakao.url'] || ''; f.label.value = BB.content['c.kakao.label'] || '';
+  }
+  $('#kakaoForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var url = this.url.value.trim(), label = this.label.value.trim();
+    if (url && !/^https?:\/\//.test(url)) url = 'https://' + url;
+    try { await BB.saveContent('c.kakao.url', url); await BB.saveContent('c.kakao.label', label); this.url.value = url; UI.toast(url ? '카카오 채널 버튼을 저장했어요' : '카카오 버튼을 숨겼어요'); loadAll(); }
+    catch (err) { console.warn(err); UI.toast('저장하지 못했어요'); }
   });
 
   /* ---------- PIN 변경 ---------- */

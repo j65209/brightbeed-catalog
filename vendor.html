@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>업체 셀러 등록 · 브라이트비드 공구</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;600;700;800;900&display=swap">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="assets/app.css?v=202610230511">
+</head>
+<body data-page="vendor">
+<div data-part="header"></div>
+
+<main class="wrap join-page">
+  <h1><span class="t" data-k="vendor.title" style="--w:7em"></span></h1>
+  <p class="lines join-lead"><span class="t" data-k="vendor.desc" style="--w:100%"></span></p>
+  <p class="join-switch"><span class="t" data-k="vendor.switch" style="--w:14em"></span> <a href="personal.html">→ <span class="t" data-k="vendor.switch.link" style="--w:5em"></span></a></p>
+
+  <form class="card form-card" data-submit="seller">
+    <input type="hidden" name="seller_type" value="vendor">
+    <div class="field"><label><span class="t" data-k="vendor.f.name" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="name" required autocomplete="organization"></div>
+    <div class="field"><label><span class="t" data-k="vendor.f.contact" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="contact_name" required autocomplete="name"></div>
+    <div class="field"><label><span class="t" data-k="vendor.f.phone" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="phone" type="tel" required placeholder="010-0000-0000" autocomplete="tel"></div>
+    <div class="field"><label><span class="t" data-k="vendor.f.channel" style="--w:8em"></span></label><input class="input" name="channel_url" placeholder="예: 인스타 공구, 밴드, 자사몰"></div>
+    <div class="field"><label><span class="t" data-k="vendor.f.memo" style="--w:4em"></span></label><textarea class="input" name="memo"></textarea></div>
+    <label class="check"><input type="checkbox" required><span class="t" data-k="vendor.agree" style="--w:16em"></span></label>
+    <button type="submit" class="btn primary lg block" style="margin-top:18px"><span class="t" data-k="vendor.submit" style="--w:6em"></span></button>
+  </form>
+</main>
+
+<div data-part="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="assets/db.js?v=202610230511"></script>
+<script src="assets/app.js?v=202610230511"></script>
+</body>
+</html>

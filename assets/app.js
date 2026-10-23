@@ -70,9 +70,9 @@
       '<header class="top"><div class="wrap">' +
       '<a class="logo" href="index.html"><span class="img" data-ki="c.logo.img"></span>' + T('6.5em', 'c.logo') + '</a>' +
       '<nav class="top-nav">' +
-      '<a class="btn ghost sm hide-m" href="index.html#brands">' + T('3em', 'c.nav.brands') + '</a>' +
       '<a class="btn ghost sm hide-m" href="index.html#products">' + T('3em', 'c.nav.products') + '</a>' +
-      '<a class="btn sm hide-m" href="index.html#seller"><i data-i="users"></i>' + T('3.5em', 'c.nav.seller') + '</a>' +
+      '<a class="btn sm hide-m" href="vendor.html">' + T('5em', 'c.nav.vendor') + '</a>' +
+      '<a class="btn sm hide-m" href="personal.html">' + T('5em', 'c.nav.personal') + '</a>' +
       '<a class="btn soft sm" href="seller.html"><i data-i="lock"></i>' + T('3.5em', 'c.nav.sellerLogin') + '</a>' +
       '<a class="btn sm" href="admin.html">' + T('4.5em', 'c.nav.admin') + '</a>' +
       '</nav></div></header>',
@@ -165,7 +165,7 @@
   function updateWish() {
     if (!sticky) return;
     var n = wishList().length + document.querySelectorAll('.wish:not([data-pid])[aria-pressed="true"]').length;
-    wishCount.textContent = n; sticky.classList.toggle('on', n > 0);
+    wishCount.textContent = n; sticky.classList.toggle('on', n > 0); document.body.classList.toggle('sticky-on', n > 0);
   }
   function fillPicked() {
     var box = document.getElementById('picked'), list = wishList();
@@ -285,6 +285,23 @@
     (root || document).querySelectorAll('[data-ki]').forEach(function (el) { setImg(el, c[el.dataset.ki] || ''); });
   }
 
+  /* ---------- 카카오 채널 버튼 (오른쪽 아래 고정, 링크는 관리자 설정의 c.kakao.url) ---------- */
+  var KAKAO_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#3a1d1d" d="M12 3.5c-5.25 0-9.5 3.3-9.5 7.4 0 2.6 1.7 4.9 4.3 6.2-.2.7-.7 2.6-.8 3-.1.5.2.5.4.3.2-.1 2.6-1.8 3.7-2.5.6.1 1.2.1 1.9.1 5.25 0 9.5-3.3 9.5-7.4S17.25 3.5 12 3.5z"/></svg>';
+  function mountKakao() {
+    if (document.body.classList.contains('adm')) return;
+    var url = ((window.BB && BB.content) || {})['c.kakao.url'] || '';
+    var old = document.getElementById('kakaoFab'); if (old) old.remove();
+    if (!url && !(window.BB && BB.admin)) return;        // 손님에게는 링크가 있을 때만 보인다
+    var a = document.createElement('a');
+    a.id = 'kakaoFab'; a.className = 'kakao-fab' + (url ? '' : ' unset');
+    a.href = url || 'admin.html#settings';
+    if (url) { a.target = '_blank'; a.rel = 'noopener'; }
+    a.setAttribute('aria-label', '카카오 채널');
+    a.innerHTML = '<span class="kakao-ico">' + KAKAO_SVG + '</span><span class="kakao-txt"></span>';
+    a.querySelector('.kakao-txt').textContent = url ? (BB.content['c.kakao.label'] || '카카오 채널 문의') : '카카오 링크 넣기';
+    document.body.appendChild(a);
+  }
+
   /* ---------- 관리자 편집 모드 ---------- */
   function editableTargets(root) {
     return (root || document).querySelectorAll('[data-k], [data-rec] [data-f]:not(.img), [data-rec][data-f]:not(.img), [data-cat-name]');
@@ -385,11 +402,12 @@
   if (logout) logout.addEventListener('click', function () { document.getElementById('auth').hidden = false; document.getElementById('dash').hidden = true; });
 
   window.UI = { svg: svg, hydrate: hydrate, setImg: setImg, toast: toast, askConfirm: askConfirm, cloneTpl: cloneTpl, place: place,
-    applyContent: applyContent, setEditable: setEditable, syncWishButtons: syncWishButtons, updateWish: updateWish, syncBulk: syncBulk, store: store };
+    applyContent: applyContent, mountKakao: mountKakao, setEditable: setEditable, syncWishButtons: syncWishButtons, updateWish: updateWish, syncBulk: syncBulk, store: store };
 
   syncWishButtons(); updateWish();
   if (window.BB) BB.ready.then(function () {
     applyContent(document);
+    mountKakao();
     if (BB.admin) mountAdminBar();
     document.dispatchEvent(new CustomEvent('bb:ready'));
   });

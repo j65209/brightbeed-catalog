@@ -110,6 +110,7 @@ create table public.cat_sellers (
   email text,
   memo text,
   status text not null default 'pending' check (status in ('pending','approved','rejected')),
+  business_type text,                    -- 개인 셀러: 사업자 / 법인 / 사업자 없음
   created_at timestamptz not null default now()
 );
 
@@ -177,22 +178,37 @@ create policy cat_storage_admin_delete on storage.objects for delete to authenti
 insert into public.cat_admin_config (id, pin_hash, admin_email)
 values (1, '99297593db3ba42c487d983397b32000f1ba57f9c781bbd94f871d8b010d63aa', 'catalog-admin@brightbeed.kr');
 
--- BEST 공구 순위: 최근 30일 공구 신청에 많이 담긴 상품 순 (같으면 BEST 배지 → 순서).
--- 신청서 내용은 관리자만 읽을 수 있어서, 손님 화면에는 상품 id 와 건수만 내주는 함수로 연다.
+-- BEST 공구 순위: 관리자가 지정한 BEST 1·2·3(cat_products.best_rank)이 먼저 그 자리를 차지하고,
+-- 빈 자리는 최근 30일 공구 신청에 많이 담긴 상품 순(같으면 BEST 배지 → 순서)으로 자동 채운다.
+-- 신청서 내용은 관리자만 읽을 수 있어서, 손님 화면에는 상품 id·건수만 내주는 함수로 연다.
+alter table public.cat_products add column if not exists best_rank smallint check (best_rank between 1 and 3);
+create unique index if not exists cat_products_best_rank_uniq on public.cat_products (best_rank) where best_rank is not null;
+drop function if exists public.cat_best_products(int);
 create or replace function public.cat_best_products(n int default 3)
-returns table (product_id uuid, requests bigint)
+returns table (product_id uuid, requests bigint, pinned boolean)
 language sql stable security definer set search_path = public as $$
-  select p.id, coalesce(r.cnt, 0)
-  from public.cat_products p
-  left join (
+  with req as (
     select unnest(product_ids) as pid, count(*) as cnt
     from public.cat_requests
     where kind = 'apply' and created_at > now() - interval '30 days'
     group by 1
-  ) r on r.pid = p.id
-  where p.visible
-  order by coalesce(r.cnt, 0) desc, (coalesce(p.badge, '') ilike 'best') desc, p.sort, p.created_at
-  limit greatest(1, least(n, 12));
+  ), pin as (
+    select id, best_rank from public.cat_products where visible and best_rank is not null
+  ), auto as (
+    select p.id, coalesce(r.cnt, 0) as cnt,
+      row_number() over (order by coalesce(r.cnt, 0) desc, (coalesce(p.badge, '') ilike 'best') desc, p.sort, p.created_at) as rn
+    from public.cat_products p left join req r on r.pid = p.id
+    where p.visible and p.best_rank is null
+  ), slots as (
+    select s as slot, (select count(*) from pin where best_rank < s) as pinned_before
+    from generate_series(1, greatest(1, least(n, 12))) s
+  )
+  select coalesce(pin.id, auto.id), coalesce((select cnt from req where pid = coalesce(pin.id, auto.id)), 0), pin.id is not null
+  from slots
+  left join pin on pin.best_rank = slots.slot
+  left join auto on pin.id is null and auto.rn = slots.slot - slots.pinned_before
+  where coalesce(pin.id, auto.id) is not null
+  order by slots.slot;
 $$;
 revoke all on function public.cat_best_products(int) from public;
 grant execute on function public.cat_best_products(int) to anon, authenticated;

@@ -203,7 +203,8 @@ section.block { padding: 56px 0 8px; }
 .brand-card .meta { display: flex; gap: 6px; align-items: center; margin-top: auto; padding-top: 8px; }
 
 /* ---------- 상품 카드 ---------- */
-.product-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+.product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }   /* 데스크톱 4열 */
+@media (max-width: 960px) { .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .p-card { display: flex; flex-direction: column; padding: 10px; gap: 10px; transition: transform .15s, box-shadow .15s; }
 .p-card:hover { transform: translateY(-3px); box-shadow: var(--sh-lg); }
 .p-card .media { position: relative; }
@@ -591,6 +592,7 @@ body.edit .img[data-ki]:hover::after, body.edit .img[data-fi]:hover::after { con
 .kmemo { font-size: 13px; color: var(--ink-2); white-space: pre-line; background: var(--surface-2); padding: 8px 10px; border-radius: 8px; }
 .kfoot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
 .mini-select { min-height: 32px; width: auto; padding: 0 8px; font-size: 13px; }
+.best-select.on { background: var(--neon); border-color: var(--neon); color: var(--on-neon); font-weight: 900; }
 .chip.mini { min-height: 24px; padding: 0 9px; font-size: 12px; cursor: default; }
 .kcol .kbox { display: flex; flex-direction: column; gap: 10px; }
 .up-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
@@ -636,6 +638,33 @@ header.top { background: rgba(255, 255, 255, .88); }
 [data-rec].is-hidden { opacity: .55; }
 [data-rec].is-hidden::before { content: "숨김 · 손님에게 안 보임"; position: absolute; left: 50%; top: 46px; transform: translateX(-50%); z-index: 4; padding: 4px 10px; border-radius: 99px; background: var(--ink); color: #fff; font-size: 11px; font-weight: 800; white-space: nowrap; }
 body:not(.is-admin) .card-vis { display: none !important; }
+
+/* 카카오 채널 버튼: 오른쪽 아래 고정 */
+.kakao-fab { position: fixed; right: 20px; bottom: calc(24px + env(safe-area-inset-bottom)); z-index: 60; display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 22px 0 8px;
+  border-radius: 99px; background: #fee500; color: #3a1d1d; font-size: 15px; font-weight: 900; box-shadow: 0 10px 28px rgba(60, 40, 0, .28), 0 2px 6px rgba(0, 0, 0, .1); transition: transform .15s, bottom .25s; }
+.kakao-fab:hover { transform: translateY(-2px); }
+.kakao-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: #fff7a8; }
+.kakao-ico svg { width: 26px; height: 26px; }
+.kakao-fab.unset { background: #fff; border: 2px dashed #e0c400; color: var(--ink-3); }
+body.sticky-on .kakao-fab { bottom: calc(92px + env(safe-area-inset-bottom)); }
+@media (max-width: 720px) { .kakao-fab { right: 14px; height: 54px; padding: 0 6px; } .kakao-txt { display: none; } }
+
+/* 셀러 등록 (메인 카드 + 업체·개인 등록 페이지) */
+.join-card { display: flex; flex-direction: column; gap: 12px; }
+.join-opt { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); transition: border-color .15s, box-shadow .15s, transform .15s; }
+.join-opt:hover { border-color: transparent; box-shadow: 0 0 0 2px var(--neon), var(--sh); transform: translateY(-2px); }
+.join-opt .grow { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.join-opt b { font-size: 16px; font-weight: 900; }
+.join-opt small { color: var(--ink-2); font-size: 13px; }
+.join-ico { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; background: var(--neon); color: var(--on-neon); flex: none; }
+.join-opt:nth-of-type(2) .join-ico { background: var(--accent); color: #fff; }
+.join-ico i[data-i] { width: 22px; height: 22px; }
+.join-go { font-size: 26px; color: var(--ink-3); }
+.join-page { max-width: 640px; padding: 48px 0 24px; }
+.join-page h1 { font-size: 32px; font-weight: 900; margin-bottom: 12px; }
+.join-lead { color: var(--ink-2); }
+.join-switch { margin: 12px 0 22px; font-size: 14px; color: var(--ink-2); }
+.join-switch a { color: var(--accent); font-weight: 900; }
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 960px) {

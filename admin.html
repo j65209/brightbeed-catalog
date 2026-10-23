@@ -13,7 +13,7 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#ffffff">
-<link rel="stylesheet" href="assets/app.css?v=202610230453">
+<link rel="stylesheet" href="assets/app.css?v=202610230511">
 </head>
 <body class="adm locked" data-page="admin">
 
@@ -109,7 +109,7 @@
 
       <!-- ===== 상품 ===== -->
       <section data-panel="products" data-group="view" hidden>
-        <div class="view-head"><div><h1>상품</h1><p class="sec-sub">공급가는 사이트에 보이지 않고 관리자만 볼 수 있어요</p></div>
+        <div class="view-head"><div><h1>상품</h1><p class="sec-sub">공급가는 관리자만 볼 수 있어요 · <b>BEST</b> 칸에서 1·2·3위를 고르면 메인 위쪽 BEST 카드에 고정되고, 비워 둔 자리는 공구 신청이 많은 순으로 자동으로 채워져요</p></div>
           <button class="btn primary" data-new="product"><i data-i="plus"></i>상품 추가</button></div>
         <div class="toolbar">
           <div class="left"><span class="chips" id="prodBrandChips" data-single></span></div>
@@ -117,7 +117,7 @@
         </div>
         <div class="table-wrap"><table class="tbl" id="tblProducts">
           <thead><tr><th style="width:40px"><input type="checkbox" data-check-all="#tblProducts" aria-label="전체 선택"></th>
-            <th>상품</th><th>브랜드</th><th class="r">판매가</th><th class="r">공급가</th><th class="r">재고</th><th>노출</th><th class="r"></th></tr></thead>
+            <th>상품</th><th>브랜드</th><th class="r">판매가</th><th class="r">공급가</th><th class="r">재고</th><th>BEST</th><th>노출</th><th class="r"></th></tr></thead>
           <tbody id="productRows"></tbody>
         </table></div>
       </section>
@@ -175,6 +175,14 @@
       <section data-panel="settings" data-group="view" hidden>
         <div class="view-head"><div><h1>설정</h1></div></div>
         <div class="adm-card">
+          <div class="set-sec">
+            <div><h3>카카오 채널 버튼</h3><p class="muted" style="font-size:13px">사이트 오른쪽 아래에 따라다니는 노란 버튼이에요. 링크를 비우면 손님에게는 숨겨져요</p></div>
+            <form id="kakaoForm">
+              <div class="field"><label>카카오 채널 링크</label><input class="input" name="url" inputmode="url" placeholder="예: https://pf.kakao.com/_xxxxx/chat"></div>
+              <div class="field"><label>버튼 문구</label><input class="input" name="label" placeholder="카카오 채널 문의"></div>
+              <button class="btn primary" style="margin-top:14px"><i data-i="check"></i>저장</button>
+            </form>
+          </div>
           <div class="set-sec">
             <div><h3>카테고리</h3><p class="muted" style="font-size:13px">메인 상품 목록의 필터 칩과 상품 카테고리 선택지로 쓰여요. 이름을 바꾸면 그 카테고리의 상품도 같이 바뀌어요</p></div>
             <div>
@@ -295,8 +303,8 @@
 </form></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="assets/db.js?v=202610230453"></script>
-<script src="assets/app.js?v=202610230453"></script>
-<script src="assets/admin.js?v=202610230453"></script>
+<script src="assets/db.js?v=202610230511"></script>
+<script src="assets/app.js?v=202610230511"></script>
+<script src="assets/admin.js?v=202610230511"></script>
 </body>
 </html>
