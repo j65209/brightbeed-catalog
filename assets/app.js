@@ -70,7 +70,6 @@
       '<header class="top"><div class="wrap">' +
       '<a class="logo" href="index.html"><span class="img" data-ki="c.logo.img"></span>' + T('6.5em', 'c.logo') + '</a>' +
       '<nav class="top-nav">' +
-      '<a class="btn ghost sm hide-m" href="index.html#products">' + T('3em', 'c.nav.products') + '</a>' +
       '<a class="btn sm hide-m" href="vendor.html">' + T('5em', 'c.nav.vendor') + '</a>' +
       '<a class="btn sm hide-m" href="personal.html">' + T('5em', 'c.nav.personal') + '</a>' +
       '<a class="btn soft sm" href="seller.html"><i data-i="lock"></i>' + T('3.5em', 'c.nav.sellerLogin') + '</a>' +
