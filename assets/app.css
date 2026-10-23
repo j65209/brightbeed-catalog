@@ -505,6 +505,19 @@ body.adm { background: var(--bg); }
 .upload .img { width: 64px; flex: none; }
 .drawer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
+/* ---------- 관리자 잠금 ---------- */
+body.locked .adm-shell { display: none; }
+[data-admin-only] { display: none; }
+body.is-admin [data-admin-only] { display: block; }
+.gate { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; background: var(--bg); }
+.gate .card { width: min(360px, 100%); padding: 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.gate h2 { font-size: 22px; margin-top: 8px; }
+.gate p { color: var(--ink-2); font-size: 14px; }
+.pin4 { grid-template-columns: repeat(4, 56px); justify-content: center; margin: 12px 0 4px; }
+.gate-err { color: var(--danger) !important; font-weight: 700; }
+.shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+
 /* ---------- 반응형 ---------- */
 @media (max-width: 960px) {
   .hero, .d-hero, .seller-sec, .admin-grid, .adm-cols, .kit, .s-grid { grid-template-columns: minmax(0, 1fr); }

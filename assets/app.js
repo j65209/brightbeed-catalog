@@ -264,5 +264,50 @@
   var logout = document.getElementById('logoutBtn');
   if (logout) logout.addEventListener('click', function () { document.getElementById('auth').hidden = false; document.getElementById('dash').hidden = true; });
 
+  /* ---------- 관리자 PIN ----------
+     정적 사이트라 화면만 가리는 잠금이다. 실제 데이터 보호는 Supabase 연결 때 서버 쪽에서 한다.
+     http 에서는 crypto.subtle 이 없어서 FNV 해시로 비교한다. */
+  var PIN_HASH = '1unpbfe', ADMIN_KEY = 'bb-admin';
+  function pinHash(p) { var h = 2166136261; for (var i = 0, s = 'bb-admin:' + p; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(36); }
+  function isAdmin() { return store.get(ADMIN_KEY) === PIN_HASH; }
+  if (isAdmin()) document.body.classList.add('is-admin');
+
+  if (document.body.hasAttribute('data-gate')) {
+    if (isAdmin()) document.body.classList.remove('locked');
+    else {
+      document.body.insertAdjacentHTML('beforeend',
+        '<div class="gate"><form class="card" id="gateForm"><span class="lock-ico"><i data-i="lock"></i></span>' +
+        '<h2>관리자 입장</h2><p>PIN 4자리를 입력하세요</p>' +
+        '<div class="pin pin4"><input inputmode="numeric" autocomplete="off"><input inputmode="numeric" autocomplete="off">' +
+        '<input inputmode="numeric" autocomplete="off"><input inputmode="numeric" autocomplete="off"></div>' +
+        '<p class="gate-err" id="gateErr" hidden>PIN이 맞지 않아요</p>' +
+        '<a class="btn ghost sm" href="index.html"><i data-i="back"></i>사이트로 돌아가기</a></form></div>');
+      var gate = document.querySelector('.gate'), boxes = gate.querySelectorAll('input');
+      hydrate(gate); boxes[0].focus();
+      boxes.forEach(function (inp, i) {
+        inp.addEventListener('input', function () {
+          var digits = inp.value.replace(/\D/g, '').split('');   // 붙여넣기·자동완성으로 여러 자리가 한 번에 들어오면 다음 칸으로 나눠 담는다
+          inp.value = digits.shift() || '';
+          for (var k = i + 1; k < boxes.length && digits.length; k++) boxes[k].value = digits.shift();
+          var next = [].find.call(boxes, function (b) { return !b.value; });
+          if (inp.value) (next || boxes[boxes.length - 1]).focus();
+          var pin = [].map.call(boxes, function (b) { return b.value; }).join('');
+          if (pin.length < 4) return;
+          if (pinHash(pin) === PIN_HASH) {
+            store.set(ADMIN_KEY, PIN_HASH); gate.remove();
+            document.body.classList.remove('locked'); document.body.classList.add('is-admin');
+          } else {
+            document.getElementById('gateErr').hidden = false; gate.querySelector('form').classList.add('shake');
+            setTimeout(function () { gate.querySelector('form').classList.remove('shake'); boxes.forEach(function (b) { b.value = ''; }); boxes[0].focus(); }, 450);
+          }
+        });
+        inp.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !inp.value && boxes[i - 1]) boxes[i - 1].focus(); });
+      });
+    }
+  }
+  document.querySelectorAll('[data-admin-logout]').forEach(function (b) {
+    b.addEventListener('click', function () { try { localStorage.removeItem(ADMIN_KEY); } catch (e) {} location.href = 'index.html'; });
+  });
+
   updateWish();
 })();
