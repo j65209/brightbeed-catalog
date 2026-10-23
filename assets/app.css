@@ -550,6 +550,9 @@ dialog.confirm { width: min(380px, 100% - 32px); }
 /* 실제 브랜드·상품에서 비어 있는 칸은 손님에게 숨긴다 (편집 모드에서는 보여서 채울 수 있음) */
 body:not(.edit) [data-rec] .t[data-f]:empty, body:not(.edit) [data-rec] .badge:has(> .t[data-f]:empty), [data-rec] .t[data-brand-name]:empty { display: none; }
 
+/* 손님에게는 채워지지 않은 빈칸(회색 막대)·빈칸 카드를 보여 주지 않는다 */
+body:not(.is-admin) .t:empty, body:not(.is-admin) .skel-item { display: none !important; }
+
 /* 손님에게는 관리용 버튼을 숨긴다 */
 body:not(.is-admin) :is(.card-del, .add-tile, .btn-add, .btn-del, .thumb-item .x, .swatch .x, .swatch-add, .chip-x, .admin-only) { display: none !important; }
 body.is-admin .visitor-only { display: none !important; }
@@ -642,17 +645,15 @@ header.top { background: rgba(255, 255, 255, .88); }
 [data-rec].is-hidden::before { content: "숨김 · 손님에게 안 보임"; position: absolute; left: 50%; top: 46px; transform: translateX(-50%); z-index: 4; padding: 4px 10px; border-radius: 99px; background: var(--ink); color: #fff; font-size: 11px; font-weight: 800; white-space: nowrap; }
 body:not(.is-admin) .card-vis { display: none !important; }
 
-/* 카카오 채널 플로팅 아이콘: 오른쪽 맨 아래, 여백 넉넉히 */
-.kakao-fab { position: fixed; right: 28px; bottom: calc(28px + env(safe-area-inset-bottom)); z-index: 60; display: grid; place-items: center; width: 62px; height: 62px;
-  border-radius: 50%; background: #fee500; box-shadow: 0 10px 26px rgba(60, 40, 0, .26), 0 2px 6px rgba(0, 0, 0, .1); transition: transform .15s, bottom .25s; }
-.kakao-fab:hover { transform: translateY(-3px) scale(1.04); }
-.kakao-fab svg { width: 34px; height: 34px; }
-.kakao-tip { position: absolute; right: calc(100% + 12px); top: 50%; transform: translateY(-50%); padding: 8px 12px; border-radius: 10px; background: var(--ink); color: #fff;
-  font-size: 13px; font-weight: 800; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s; }
-.kakao-fab:hover .kakao-tip { opacity: 1; }
-.kakao-fab.unset { opacity: .9; }
+/* 카카오 채널 버튼: 오른쪽 맨 아래 고정, 여백 넉넉히 (노란 알약 모양 + 아이콘 + 문구) */
+.kakao-fab { position: fixed; right: 28px; bottom: calc(28px + env(safe-area-inset-bottom)); z-index: 60; display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 22px 0 8px;
+  border-radius: 99px; background: #fee500; color: #3a1d1d; font-size: 15px; font-weight: 900; box-shadow: 0 10px 28px rgba(60, 40, 0, .28), 0 2px 6px rgba(0, 0, 0, .1); transition: transform .15s, bottom .25s; }
+.kakao-fab:hover { transform: translateY(-2px); }
+.kakao-ico { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: #fff7a8; }
+.kakao-ico svg { width: 26px; height: 26px; }
+.kakao-fab.unset { opacity: .92; }
 body.sticky-on .kakao-fab { bottom: calc(96px + env(safe-area-inset-bottom)); }
-@media (max-width: 720px) { .kakao-fab { right: 18px; bottom: calc(20px + env(safe-area-inset-bottom)); width: 56px; height: 56px; } .kakao-fab svg { width: 30px; height: 30px; } .kakao-tip { display: none; } }
+@media (max-width: 720px) { .kakao-fab { right: 18px; bottom: calc(20px + env(safe-area-inset-bottom)); height: 54px; padding: 0 6px; } .kakao-txt { display: none; } }
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 960px) {

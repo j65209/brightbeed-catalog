@@ -194,12 +194,12 @@ language sql stable security definer set search_path = public as $$
     where kind = 'apply' and created_at > now() - interval '30 days'
     group by 1
   ), pin as (
-    select id, best_rank from public.cat_products where visible and best_rank is not null
+    select id, best_rank from public.cat_products where visible and best_rank is not null and coalesce(name, '') <> ''
   ), auto as (
     select p.id, coalesce(r.cnt, 0) as cnt,
       row_number() over (order by coalesce(r.cnt, 0) desc, (coalesce(p.badge, '') ilike 'best') desc, p.sort, p.created_at) as rn
     from public.cat_products p left join req r on r.pid = p.id
-    where p.visible and p.best_rank is null
+    where p.visible and p.best_rank is null and coalesce(p.name, '') <> ''
   ), slots as (
     select s as slot, (select count(*) from pin where best_rank < s) as pinned_before
     from generate_series(1, greatest(1, least(n, 12))) s

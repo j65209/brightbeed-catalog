@@ -294,8 +294,8 @@
     var a = document.createElement('a');
     a.id = 'kakaoFab'; a.className = 'kakao-fab' + (url ? '' : ' unset');
     a.setAttribute('aria-label', label); a.title = label;
-    a.innerHTML = KAKAO_SVG + '<span class="kakao-tip"></span>';
-    a.querySelector('.kakao-tip').textContent = url ? label : (window.BB && BB.admin ? '관리자 설정에서 카카오 링크를 넣어 주세요' : '카카오 채널 준비 중이에요');
+    a.innerHTML = '<span class="kakao-ico">' + KAKAO_SVG + '</span><span class="kakao-txt"></span>';
+    a.querySelector('.kakao-txt').textContent = url || !(window.BB && BB.admin) ? label : '카카오 링크 넣기';
     if (url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
     else if (window.BB && BB.admin) a.href = 'admin.html#settings';
     else { a.href = '#'; a.addEventListener('click', function (e) { e.preventDefault(); toast('카카오 채널은 곧 연결돼요'); }); }

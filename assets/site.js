@@ -111,7 +111,9 @@
   function fillGrid(box, items, make) {
     if (!box) return;
     box.querySelectorAll(':scope > [data-rec], :scope > .skel-item').forEach(function (n) { n.remove(); });
-    if (!items.length) {                            // 아직 데이터가 없으면 빈칸 카드를 그대로 보여 준다
+    if (!BB.admin) items = items.filter(function (it) { return it.name && String(it.name).trim(); });   // 손님에게는 이름 없는(작성 중) 항목을 숨긴다
+    if (!items.length) {                            // 데이터가 없으면 관리자에게만 빈칸 카드를 보여 준다
+      if (!BB.admin) return;
       for (var i = 0; i < (+box.dataset.repeat || 0); i++) { var s = UI.cloneTpl(box.dataset.tpl); s.classList.add('skel-item'); s.removeAttribute('href'); UI.place(box, s); }
       UI.hydrate(box); return;
     }
@@ -155,7 +157,7 @@
     var byId = {}; (state.products || []).forEach(function (p) { byId[p.id] = p; });
     box.innerHTML = '';
     r.data.forEach(function (row, i) {
-      var p = byId[row.product_id]; if (!p) return;
+      var p = byId[row.product_id]; if (!p || !(p.name || '').trim()) return;
       var a = document.createElement('a');
       a.className = 'best-card'; a.href = productHref(p);
       a.innerHTML = '<div class="img"></div><span class="best-rank">BEST ' + (i + 1) + '</span>' +
