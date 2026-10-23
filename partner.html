@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>브랜드 등록 · 브라이트비드 공구</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="assets/app.css?v=202610230529">
+</head>
+<body data-page="partner">
+<div data-part="header"></div>
+
+<main class="wrap join-page">
+  <h1><span class="t" data-k="partner.title" style="--w:6em"></span></h1>
+  <p class="join-sub"><span class="t" data-k="partner.sub" style="--w:12em"></span></p>
+  <p class="lines join-lead"><span class="t" data-k="partner.desc" style="--w:100%"></span></p>
+  <ol class="flow join-flow">
+    <li><span class="t" data-k="partner.step1" style="--w:4em"></span></li>
+    <li><span class="t" data-k="partner.step2" style="--w:7em"></span></li>
+    <li><span class="t" data-k="partner.step3" style="--w:6em"></span></li>
+  </ol>
+
+  <form class="card form-card" data-submit="partner">
+    <div class="row-2">
+      <div class="field"><label><span class="t" data-k="partner.f.company" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="company" required autocomplete="organization"></div>
+      <div class="field"><label><span class="t" data-k="partner.f.brand" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="brand_name" required></div>
+    </div>
+    <div class="field"><label><span class="t" data-k="partner.f.category" style="--w:4em"></span><span class="req">*</span></label>
+      <select class="input" name="category" id="partnerCat" required>
+        <option value="">선택</option>
+        <option>패션 · 잡화</option><option>뷰티 · 화장품</option><option>건강식품</option><option>식품</option>
+        <option>생활 · 리빙</option><option>주방용품</option><option>침구</option><option>유아 · 키즈</option><option>기타</option>
+      </select></div>
+    <div class="field"><label><span class="t" data-k="partner.f.link" style="--w:12em"></span></label><input class="input" name="link" placeholder="예: 스마트스토어 상품 링크, 소개서 PDF 링크"></div>
+    <div class="field"><label><span class="t" data-k="partner.f.channels" style="--w:7em"></span></label><input class="input" name="channels" placeholder="예: 자사몰, 스마트스토어, 쿠팡"></div>
+    <div class="row-2">
+      <div class="field"><label><span class="t" data-k="partner.f.contact" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="contact_name" required autocomplete="name"></div>
+      <div class="field"><label><span class="t" data-k="partner.f.phone" style="--w:3em"></span><span class="req">*</span></label><input class="input" name="phone" type="tel" required placeholder="010-0000-0000" autocomplete="tel"></div>
+    </div>
+    <div class="field"><label><span class="t" data-k="partner.f.email" style="--w:5em"></span></label><input class="input" name="email" type="email" autocomplete="email"></div>
+    <div class="field"><label><span class="t" data-k="partner.f.memo" style="--w:6em"></span></label><textarea class="input" name="memo"></textarea></div>
+    <label class="check"><input type="checkbox" required><span class="t" data-k="partner.agree" style="--w:16em"></span></label>
+    <button type="submit" class="btn primary lg block" style="margin-top:18px"><span class="t" data-k="partner.submit" style="--w:6em"></span></button>
+  </form>
+</main>
+
+<div data-part="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="assets/db.js?v=202610230529"></script>
+<script src="assets/app.js?v=202610230529"></script>
+</body>
+</html>

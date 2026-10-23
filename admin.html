@@ -11,7 +11,7 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#ffffff">
-<link rel="stylesheet" href="assets/app.css?v=202610230522">
+<link rel="stylesheet" href="assets/app.css?v=202610230529">
 </head>
 <body class="adm locked" data-page="admin">
 
@@ -38,6 +38,7 @@
     <div class="grp">신청</div>
     <button class="side-link" data-tab="sellers" data-group="view"><i data-i="users"></i>셀러<span class="cnt" id="cntSellers" hidden>0</span></button>
     <button class="side-link" data-tab="apps" data-group="view"><i data-i="inbox"></i>공구 신청·문의<span class="cnt" id="cntApps" hidden>0</span></button>
+    <button class="side-link" data-tab="partners" data-group="view"><i data-i="tag"></i>브랜드 입점<span class="cnt" id="cntPartners" hidden>0</span></button>
     <div class="grp">사이트</div>
     <button class="side-link" data-tab="content" data-group="view"><i data-i="edit"></i>사이트 문구</button>
     <button class="side-link" data-tab="settings" data-group="view"><i data-i="gear"></i>설정</button>
@@ -145,6 +146,19 @@
           <div class="kcol" data-col="done"><div class="kcol-head"><span><span class="dot" style="background:var(--ok)"></span>완료</span><span class="badge" data-cnt>0</span></div><div class="kbox"></div></div>
           <div class="kcol" data-col="hold"><div class="kcol-head"><span><span class="dot" style="background:var(--ink-3)"></span>보류</span><span class="badge" data-cnt>0</span></div><div class="kbox"></div></div>
         </div>
+      </section>
+
+      <!-- ===== 브랜드 입점 ===== -->
+      <section data-panel="partners" data-group="view" hidden>
+        <div class="view-head"><div><h1>브랜드 입점</h1><p class="sec-sub">사이트 '브랜드 등록' 페이지로 들어온 입점 신청이에요</p></div></div>
+        <div class="toolbar">
+          <div class="left"><span class="chips" id="partnerChips" data-single>
+            <button class="chip on" data-st="">전체</button><button class="chip" data-st="new">신규</button><button class="chip" data-st="contacted">연락함</button><button class="chip" data-st="done">입점 완료</button><button class="chip" data-st="rejected">보류</button></span></div>
+        </div>
+        <div class="table-wrap"><table class="tbl" id="tblPartners">
+          <thead><tr><th>브랜드·회사</th><th>카테고리</th><th>담당자·연락처</th><th>링크·판매 채널</th><th>메모</th><th>상태</th><th>신청일</th><th class="r"></th></tr></thead>
+          <tbody id="partnerRows"></tbody>
+        </table></div>
       </section>
 
       <!-- ===== 사이트 문구 ===== -->
@@ -301,8 +315,8 @@
 </form></dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="assets/db.js?v=202610230522"></script>
-<script src="assets/app.js?v=202610230522"></script>
-<script src="assets/admin.js?v=202610230522"></script>
+<script src="assets/db.js?v=202610230529"></script>
+<script src="assets/app.js?v=202610230529"></script>
+<script src="assets/admin.js?v=202610230529"></script>
 </body>
 </html>

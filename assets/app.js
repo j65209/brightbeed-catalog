@@ -72,6 +72,7 @@
       '<nav class="top-nav">' +
       '<a class="btn sm hide-m" href="vendor.html">' + T('5em', 'c.nav.vendor') + '</a>' +
       '<a class="btn sm hide-m" href="personal.html">' + T('5em', 'c.nav.personal') + '</a>' +
+      '<a class="btn sm hide-m" href="partner.html">' + T('4em', 'c.nav.partner') + '</a>' +
       '<a class="btn soft sm" href="seller.html"><i data-i="lock"></i>' + T('3.5em', 'c.nav.sellerLogin') + '</a>' +
       '<a class="btn sm" href="admin.html">' + T('4.5em', 'c.nav.admin') + '</a>' +
       '</nav></div></header>',
@@ -261,9 +262,9 @@
     var row = {};
     form.querySelectorAll('[name]').forEach(function (f) { if (f.value.trim()) row[f.name] = f.value.trim(); });
     var seg = form.querySelector('.seg > button.on');
-    var table = form.dataset.submit === 'seller' ? 'cat_sellers' : 'cat_requests';
+    var table = { seller: 'cat_sellers', partner: 'cat_partners' }[form.dataset.submit] || 'cat_requests';
     if (table === 'cat_sellers') { if (seg) row.seller_type = seg.dataset.v; }
-    else {
+    else if (table === 'cat_requests') {
       row.kind = form.dataset.kind || 'apply';
       if (row.kind === 'apply') row.product_ids = wishList().map(function (w) { return w.id; }).filter(function (id) { return /^[0-9a-f-]{36}$/.test(id); });
     }
@@ -274,7 +275,7 @@
     form.reset();
     if (row.kind === 'apply') { setWishList([]); syncWishButtons(); updateWish(); }
     var dlg = form.closest('dialog'); if (dlg) dlg.close();
-    toast(table === 'cat_sellers' ? '셀러 신청이 접수됐어요. 검토 후 연락드릴게요' : '접수됐어요. 담당자가 연락드릴게요');
+    toast(table === 'cat_sellers' ? '셀러 신청이 접수됐어요. 검토 후 연락드릴게요' : table === 'cat_partners' ? '브랜드 등록 신청이 접수됐어요. 검토 후 연락드릴게요' : '접수됐어요. 담당자가 연락드릴게요');
   });
 
   /* ---------- 사이트 문구 채우기 ---------- */
@@ -288,16 +289,16 @@
   var KAKAO_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#3a1d1d" d="M12 3.5c-5.25 0-9.5 3.3-9.5 7.4 0 2.6 1.7 4.9 4.3 6.2-.2.7-.7 2.6-.8 3-.1.5.2.5.4.3.2-.1 2.6-1.8 3.7-2.5.6.1 1.2.1 1.9.1 5.25 0 9.5-3.3 9.5-7.4S17.25 3.5 12 3.5z"/></svg>';
   function mountKakao() {
     if (document.body.classList.contains('adm')) return;
-    var url = ((window.BB && BB.content) || {})['c.kakao.url'] || '';
+    var c = (window.BB && BB.content) || {}, url = c['c.kakao.url'] || '', label = c['c.kakao.label'] || '카카오 채널 문의';
     var old = document.getElementById('kakaoFab'); if (old) old.remove();
-    if (!url && !(window.BB && BB.admin)) return;        // 손님에게는 링크가 있을 때만 보인다
     var a = document.createElement('a');
     a.id = 'kakaoFab'; a.className = 'kakao-fab' + (url ? '' : ' unset');
-    a.href = url || 'admin.html#settings';
-    if (url) { a.target = '_blank'; a.rel = 'noopener'; }
-    a.setAttribute('aria-label', '카카오 채널');
-    a.innerHTML = '<span class="kakao-ico">' + KAKAO_SVG + '</span><span class="kakao-txt"></span>';
-    a.querySelector('.kakao-txt').textContent = url ? (BB.content['c.kakao.label'] || '카카오 채널 문의') : '카카오 링크 넣기';
+    a.setAttribute('aria-label', label); a.title = label;
+    a.innerHTML = KAKAO_SVG + '<span class="kakao-tip"></span>';
+    a.querySelector('.kakao-tip').textContent = url ? label : (window.BB && BB.admin ? '관리자 설정에서 카카오 링크를 넣어 주세요' : '카카오 채널 준비 중이에요');
+    if (url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+    else if (window.BB && BB.admin) a.href = 'admin.html#settings';
+    else { a.href = '#'; a.addEventListener('click', function (e) { e.preventDefault(); toast('카카오 채널은 곧 연결돼요'); }); }
     document.body.appendChild(a);
   }
 

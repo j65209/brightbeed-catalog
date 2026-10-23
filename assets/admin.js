@@ -4,7 +4,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-  var D = { brands: [], products: [], prices: {}, sellers: [], requests: [], content: [], cats: [] };
+  var D = { brands: [], products: [], prices: {}, sellers: [], requests: [], content: [], cats: [], partners: [] };
   var sb;
   var TYPE = { influencer: '인플루언서', vendor: '업체 셀러', personal: '개인 셀러' };
   var ST = { pending: ['대기', 'warn'], approved: ['승인', 'ok'], rejected: ['거절', 'danger'] };
@@ -65,16 +65,17 @@
       sb.from('cat_sellers').select('*').order('created_at', { ascending: false }),
       sb.from('cat_requests').select('*').order('created_at', { ascending: false }),
       sb.from('cat_content').select('*').order('key'),
-      sb.from('cat_categories').select('*').order('sort').order('created_at')
+      sb.from('cat_categories').select('*').order('sort').order('created_at'),
+      sb.from('cat_partners').select('*').order('created_at', { ascending: false })
     ]);
     var bad = r.find(function (x) { return x.error; });
     if (bad) { console.warn(bad.error); UI.toast('불러오지 못한 항목이 있어요'); }
     D.brands = r[0].data || []; D.products = r[1].data || []; D.prices = {};
     (r[2].data || []).forEach(function (p) { D.prices[p.product_id] = p; });
-    D.sellers = r[3].data || []; D.requests = r[4].data || []; D.content = r[5].data || []; D.cats = r[6].data || [];
+    D.sellers = r[3].data || []; D.requests = r[4].data || []; D.content = r[5].data || []; D.cats = r[6].data || []; D.partners = r[7].data || [];
     renderAll();
   }
-  function renderAll() { fillKakao(); renderDash(); renderBrands(); renderProducts(); renderSellers(); renderKanban(); renderContent(); renderCats(); applySearch(); }
+  function renderAll() { fillKakao(); renderDash(); renderBrands(); renderProducts(); renderSellers(); renderKanban(); renderContent(); renderCats(); renderPartners(); applySearch(); }
   function brandName(id) { var b = D.brands.find(function (x) { return x.id === id; }); return b ? (b.name || '(이름 없음)') : '–'; }
   function productName(id) { var p = D.products.find(function (x) { return x.id === id; }); return p ? (p.name || '(이름 없음)') : null; }
   function dateStr(iso) { return new Date(iso).toLocaleDateString('ko-KR', { year: '2-digit', month: 'numeric', day: 'numeric' }); }
@@ -221,6 +222,34 @@
     try { await BB.saveContent(key, v); row.value = v; UI.toast('저장했어요'); if (!v) loadAll(); } catch (err) { UI.toast('저장하지 못했어요'); }
   });
 
+  /* ---------- 브랜드 입점 ---------- */
+  var PST = { new: ['신규', 'accent'], contacted: ['연락함', 'warn'], done: ['입점 완료', 'ok'], rejected: ['보류', 'danger'] };
+  function renderPartners() {
+    var st = $('#partnerChips').dataset.cur || '';
+    var n = D.partners.filter(function (p) { return p.status === 'new'; }).length;
+    var cnt = $('#cntPartners'); cnt.textContent = n; cnt.hidden = !n;
+    var link = function (u) { return /^https?:/.test(u) ? u : 'https://' + u; };
+    $('#partnerRows').innerHTML = D.partners.filter(function (p) { return !st || p.status === st; }).map(function (p) {
+      return '<tr data-id="' + p.id + '" data-search="' + esc((p.brand_name || '') + ' ' + (p.company || '') + ' ' + (p.contact_name || '')) + '">' +
+        '<td><div class="stack"><b>' + esc(p.brand_name || '(브랜드명 없음)') + '</b><small class="muted">' + esc(p.company || '') + '</small></div></td>' +
+        '<td>' + (p.category ? '<span class="badge accent">' + esc(p.category) + '</span>' : '') + '</td>' +
+        '<td><div class="stack"><span>' + esc(p.contact_name || '') + '</span><small class="muted">' + esc(p.phone || '') + (p.email ? ' · ' + esc(p.email) : '') + '</small></div></td>' +
+        '<td><div class="stack">' + (p.link ? '<a class="small-link" href="' + esc(link(p.link)) + '" target="_blank" rel="noopener">' + esc(p.link) + '</a>' : '') + '<small class="muted">' + esc(p.channels || '') + '</small></div></td>' +
+        '<td class="memo-cell" title="' + esc(p.memo || '') + '">' + esc(p.memo || '') + '</td>' +
+        '<td><select class="input mini-select" data-partner-st aria-label="상태">' + Object.keys(PST).map(function (k) { return '<option value="' + k + '"' + (k === p.status ? ' selected' : '') + '>' + PST[k][0] + '</option>'; }).join('') + '</select></td>' +
+        '<td>' + dateStr(p.created_at) + '</td>' +
+        '<td><div class="actions"><button class="btn btn-del sm" data-row-del="cat_partners"><i data-i="trash"></i>삭제</button></div></td></tr>';
+    }).join('') || '<tr><td colspan="8" class="muted empty">아직 들어온 입점 신청이 없어요</td></tr>';
+    UI.hydrate($('#partnerRows'));
+  }
+  $('#partnerChips').addEventListener('click', function (e) { var c = e.target.closest('.chip'); if (!c) return; this.dataset.cur = c.dataset.st; renderPartners(); applySearch(); });
+  $('#partnerRows').addEventListener('change', async function (e) {
+    var sel = e.target.closest('[data-partner-st]'); if (!sel) return;
+    var id = sel.closest('tr').dataset.id, r = await sb.from('cat_partners').update({ status: sel.value }).eq('id', id);
+    if (r.error) { UI.toast('바꾸지 못했어요'); return; }
+    D.partners.find(function (p) { return p.id === id; }).status = sel.value; renderPartners(); applySearch(); UI.toast(PST[sel.value][0] + '(으)로 바꿨어요');
+  });
+
   /* ---------- 카테고리 ---------- */
   function renderCats() {
     $('#catRows').innerHTML = D.cats.map(function (c) {
@@ -306,7 +335,7 @@
     var del = t.closest('[data-row-del], [data-seller-del]');
     if (del) {
       var table = del.dataset.rowDel || 'cat_sellers', rid = del.closest('[data-id]').dataset.id;
-      var msg = { cat_brands: '이 브랜드를 삭제할까요? 상품은 남고 브랜드 연결만 풀려요.', cat_products: '이 상품을 삭제할까요?', cat_sellers: '이 셀러 신청을 삭제할까요?', cat_requests: '이 신청을 삭제할까요?' }[table];
+      var msg = { cat_partners: '이 입점 신청을 삭제할까요?', cat_brands: '이 브랜드를 삭제할까요? 상품은 남고 브랜드 연결만 풀려요.', cat_products: '이 상품을 삭제할까요?', cat_sellers: '이 셀러 신청을 삭제할까요?', cat_requests: '이 신청을 삭제할까요?' }[table];
       if (!(await UI.askConfirm(msg))) return;
       await deleteRows(table, [rid]); return;
     }
@@ -328,7 +357,7 @@
   async function deleteRows(table, ids) {
     var r = await sb.from(table).delete().in('id', ids);
     if (r.error) { console.warn(r.error); UI.toast('삭제하지 못했어요'); return; }
-    var key = { cat_brands: 'brands', cat_products: 'products', cat_sellers: 'sellers', cat_requests: 'requests' }[table];
+    var key = { cat_brands: 'brands', cat_products: 'products', cat_sellers: 'sellers', cat_requests: 'requests', cat_partners: 'partners' }[table];
     D[key] = D[key].filter(function (x) { return ids.indexOf(x.id) < 0; });
     if (table === 'cat_brands') D.products.forEach(function (p) { if (ids.indexOf(p.brand_id) >= 0) p.brand_id = null; });
     renderAll(); UI.toast(ids.length > 1 ? ids.length + '개 삭제했어요' : '삭제했어요');

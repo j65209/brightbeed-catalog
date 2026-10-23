@@ -224,3 +224,22 @@ create table public.cat_categories (
 alter table public.cat_categories enable row level security;
 create policy cat_categories_read on public.cat_categories for select to anon, authenticated using (true);
 create policy cat_categories_admin on public.cat_categories for all to authenticated using (public.cat_is_admin()) with check (public.cat_is_admin());
+
+-- 브랜드 등록(입점 신청): 브랜드·제조사·수입사가 보내는 신청서. 손님은 넣기만, 보는 건 관리자만.
+create table public.cat_partners (
+  id uuid primary key default gen_random_uuid(),
+  company text,
+  brand_name text,
+  category text,
+  link text,
+  channels text,
+  contact_name text,
+  phone text,
+  email text,
+  memo text,
+  status text not null default 'new' check (status in ('new','contacted','done','rejected')),
+  created_at timestamptz not null default now()
+);
+alter table public.cat_partners enable row level security;
+create policy cat_partners_insert on public.cat_partners for insert to anon, authenticated with check (status = 'new');
+create policy cat_partners_admin on public.cat_partners for all to authenticated using (public.cat_is_admin()) with check (public.cat_is_admin());
