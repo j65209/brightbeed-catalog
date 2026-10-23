@@ -678,6 +678,11 @@ body.sticky-on .kakao-fab { bottom: calc(96px + env(safe-area-inset-bottom)); }
 .join-switch { margin: 12px 0 22px; font-size: 14px; color: var(--ink-2); }
 .join-switch a { color: var(--accent); font-weight: 900; }
 
+/* 푸터를 없앤 대신 맨 아래 여백 (카카오 버튼·찜 막대가 내용을 가리지 않게) */
+body:not(.adm) > main { padding-bottom: 120px; }
+.not-found { padding: 80px 0; text-align: center; color: var(--ink-2); }
+.not-found b { display: block; font-size: 20px; color: var(--ink); margin-bottom: 10px; }
+
 /* ---------- 반응형 ---------- */
 @media (max-width: 960px) {
   .hero, .d-hero, .seller-sec, .admin-grid, .adm-cols, .kit, .s-grid { grid-template-columns: minmax(0, 1fr); }
@@ -691,9 +696,13 @@ body.sticky-on .kakao-fab { bottom: calc(96px + env(safe-area-inset-bottom)); }
   footer.site .wrap { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 720px) {
+  .hero-art { aspect-ratio: 1 / 1.15; }
+  .hero-art > :not(:first-child) .best-info span, .hero-art > :not(:first-child) .best-info small { display: none; }
+  .hero-art > :not(:first-child) .best-info b { font-size: 13px; }
+  .hero-art > :not(:first-child) .best-rank { top: 8px; left: 8px; padding: 4px 9px; font-size: 11px; }
+  .best-info { padding: 22px 10px 10px; }
   .top-nav .hide-m { display: none; }
   .hero h1 { font-size: 32px; }
-  .hero-art { aspect-ratio: 4 / 3; }
   .benefits, .flow { grid-template-columns: minmax(0, 1fr); }
   .flow li:not(:last-child)::after { display: none; }
   .facts { grid-template-columns: 1fr 1fr; }

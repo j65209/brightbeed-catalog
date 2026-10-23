@@ -76,15 +76,6 @@
       '<a class="btn soft sm" href="seller.html"><i data-i="lock"></i>' + T('3.5em', 'c.nav.sellerLogin') + '</a>' +
       '<a class="btn sm" href="admin.html">' + T('4.5em', 'c.nav.admin') + '</a>' +
       '</nav></div></header>',
-    footer:
-      '<footer class="site"><div class="wrap">' +
-      '<div><a class="logo" href="index.html"><span class="img" data-ki="c.logo.img"></span>' + T('6.5em', 'c.logo') + '</a>' +
-      '<p class="lines" style="margin-top:14px">' + T('90%', 'c.foot.l1') + T('70%', 'c.foot.l2') + T('50%', 'c.foot.l3') + '</p></div>' +
-      [1, 2, 3].map(function (n) {
-        return '<div><h5>' + T('4em', 'c.foot.h' + n) + '</h5><p class="lines">' +
-          T('60%', 'c.foot.c' + n + '.1') + T('50%', 'c.foot.c' + n + '.2') + T('65%', 'c.foot.c' + n + '.3') + '</p></div>';
-      }).join('') +
-      '</div></footer>',
     apply:
       '<div class="sticky-apply" id="stickyApply"><span class="count" id="wishCount">0</span>' + T('7em', 'c.sticky.text') +
       '<button class="btn primary sm" data-open="#applyDlg">' + T('4em', 'c.sticky.btn') + '</button></div>' +
@@ -389,14 +380,16 @@
     }
   }
 
-  /* ---------- 셀러 입장 (아직 템플릿: 아무 값이나 통과) ---------- */
+  /* ---------- 셀러 입장: 셀러 로그인 기능 전이라 손님은 안내만, 관리자만 예시 화면 미리보기 ---------- */
   document.querySelectorAll('#loginForm .pin input').forEach(function (inp, i, all) {
     inp.addEventListener('input', function () { inp.value = inp.value.replace(/\D/g, '').slice(0, 1); if (inp.value && all[i + 1]) all[i + 1].focus(); });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !inp.value && all[i - 1]) all[i - 1].focus(); });
   });
   var login = document.getElementById('loginForm');
   if (login) login.addEventListener('submit', function (e) {
-    e.preventDefault(); document.getElementById('auth').hidden = true; document.getElementById('dash').hidden = false; window.scrollTo({ top: 0 });
+    e.preventDefault();
+    if (!(window.BB && BB.admin)) { toast('셀러 전용 화면은 준비 중이에요. 승인된 셀러에게 따로 안내드릴게요'); return; }
+    document.getElementById('auth').hidden = true; document.getElementById('dash').hidden = false; window.scrollTo({ top: 0 });
   });
   var logout = document.getElementById('logoutBtn');
   if (logout) logout.addEventListener('click', function () { document.getElementById('auth').hidden = false; document.getElementById('dash').hidden = true; });

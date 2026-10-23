@@ -177,11 +177,14 @@
   }
   function renderCats() {
     var box = document.getElementById('catChips'); if (!box) return;
-    if (!state.cats.length && !BB.admin) return;                 // 카테고리가 없으면 예시 칩 그대로
+    var cats = BB.admin ? state.cats : state.cats.filter(function (c) {   // 손님에게는 상품이 있는 카테고리만
+      return (state.products || []).some(function (p) { return p.category === c.name && (p.name || '').trim(); });
+    });
+    if (!cats.length && !BB.admin) { box.hidden = true; return; }
     var cur = box.dataset.cur || '';
     box.innerHTML = '';
     var all = document.createElement('button'); all.className = 'chip' + (cur ? '' : ' on'); all.dataset.cat = ''; all.textContent = '전체'; box.appendChild(all);
-    state.cats.forEach(function (c) {
+    cats.forEach(function (c) {
       var b = document.createElement('button'); b.className = 'chip' + (cur === c.name ? ' on' : ''); b.dataset.cat = c.name; b.dataset.cid = c.id;
       b.innerHTML = '<span class="t" data-cat-name></span><span class="icon-btn del chip-x cat-del" role="button" aria-label="카테고리 삭제">' + UI.svg('x') + '</span>';
       b.firstChild.textContent = c.name; box.appendChild(b);
@@ -254,6 +257,7 @@
     await loadBrands();
     var b = findBy(state.brands, BB.qs('b'));
     var main = document.getElementById('brandMain');
+    if (!b && !BB.admin) { notFound(main, '브랜드를 찾을 수 없어요'); return; }
     if (!b) { emptyNotice(main, 'cat_brands'); return; }
     state.products = await loadProducts(function (q) { return q.eq('brand_id', b.id); });
     rerender = function () {
@@ -274,6 +278,7 @@
     var r = key ? await sb.from('cat_products').select('*').or(/^[0-9a-f-]{36}$/.test(key) ? 'id.eq.' + key : 'slug.eq.' + key).limit(1)
       : await sb.from('cat_products').select('*').order('sort').order('created_at').limit(1);
     var p = (r.data || [])[0], main = document.getElementById('productMain');
+    if (!p && !BB.admin) { notFound(main, '상품을 찾을 수 없어요'); return; }
     if (!p) { emptyNotice(main, 'cat_products'); return; }
     await loadBrands(); await loadCats();
     var brand = state.brandMap[p.brand_id];
@@ -354,6 +359,10 @@
     var m = url && String(url).match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/);
     if (m) box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + m[1] + '" title="영상" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>';
     else box.innerHTML = UI.svg('play');
+  }
+  function notFound(main, msg) {                     // 잘못된 주소·숨긴 항목: 빈 화면 대신 안내
+    main.innerHTML = '<div class="not-found"><b></b>판매가 끝났거나 주소가 바뀌었을 수 있어요.<br><br><a class="btn primary" href="index.html#products">전체 상품 보기</a></div>';
+    main.querySelector('b').textContent = msg;
   }
   function emptyNotice(main, table) {
     if (!BB.admin) return;
