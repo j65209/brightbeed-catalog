@@ -164,7 +164,7 @@
       var b = state.brandMap && state.brandMap[p.brand_id];
       a.querySelector('small').textContent = b ? (b.name || '') : '';
       a.querySelector('b').textContent = p.name || '';
-      a.querySelector('.best-info span').textContent = BB.won(p.price) + (row.requests ? ' · 신청 ' + row.requests + '건' : '');
+      a.querySelector('.best-info span').textContent = p.summary || '';   // 메인에서는 가격 대신 간단한 설명
       box.appendChild(a);
     });
   }

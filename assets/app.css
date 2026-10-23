@@ -185,7 +185,7 @@ section.block { padding: 56px 0 8px; }
 .best-info small { font-size: 11px; font-weight: 800; opacity: .85; }
 .best-info b { font-size: 14px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .hero-art > :first-child .best-info b { font-size: 17px; }
-.best-info span { font-size: 13px; font-weight: 800; color: var(--neon); }
+.best-info span { font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, .88); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .best-note { margin-top: 10px; font-size: 12px; color: var(--ink-3); text-align: right; }
 
 /* ---------- 브랜드 카드 ---------- */
@@ -221,6 +221,9 @@ section.block { padding: 56px 0 8px; }
 .p-card .price { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-weight: 800; }
 .p-card .price .num { --w: 4.6em; height: .9em; background: var(--skel-2); }
 .p-card .price .t { --w: 2.2em; height: .6em; }
+.p-card .p-desc { margin-top: 2px; color: var(--ink-2); font-size: 13px; line-height: 1.5; }
+.p-card .p-desc .t:not(:empty) { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal; }
+body.edit .p-card .p-desc .t:not(:empty) { -webkit-line-clamp: unset; }
 
 .filters { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .select { display: inline-flex; align-items: center; gap: 10px; min-height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); font-size: 13px; cursor: pointer; }
