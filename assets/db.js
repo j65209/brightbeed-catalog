@@ -1,9 +1,9 @@
-/* 공구 제안관 — Supabase 연결 (오피스 프로젝트 안의 cat_* 테이블)
+/* 공구 제안관 — Supabase 연결 (제안관 전용 프로젝트, 스키마는 supabase/schema.sql)
    BB.ready 가 끝나면 BB.admin(관리자 여부)과 BB.content(사이트 문구)를 쓸 수 있다. */
 (function () {
   'use strict';
-  var URL = 'https://ckyjkxbqsyjoqpuqwoce.supabase.co';
-  var KEY = 'sb_publishable_WNT8oBTcKiOUAYZZ4dPJbg_RcqVzOFj';
+  var URL = 'https://jyrguzogbuurfuopvrvl.supabase.co';
+  var KEY = 'sb_publishable_nTPb9jMgmPksQ0XrX3FcMQ_uHjv4vJ3';
   var BB = window.BB = { admin: false, content: {}, ok: false };
 
   if (!window.supabase) {                      // CDN 이 막혔을 때도 화면은 빈칸 템플릿으로 뜨게 둔다
@@ -11,7 +11,7 @@
     return;
   }
   var sb = BB.sb = window.supabase.createClient(URL, KEY, {
-    auth: { persistSession: true, autoRefreshToken: true, storageKey: 'bb-catalog-auth' }
+    auth: { persistSession: true, autoRefreshToken: true, storageKey: 'bb-catalog-auth-v2' }   // v2: 전용 프로젝트로 옮기면서 예전 세션은 버린다
   });
 
   BB.ready = (async function () {
