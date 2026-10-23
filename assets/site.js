@@ -180,7 +180,7 @@
       var sp = document.getElementById('spList');
       if (sp) { sp.innerHTML = ''; state.products.forEach(function (p) { sp.appendChild(productCard(p, 'tpl-sp')); }); UI.hydrate(sp); }
       embedVideo(document.getElementById('brandVideo'), b.video_url);
-      document.title = (b.name || '브랜드') + ' · 공구 제안관';
+      document.title = (b.name || '브랜드') + ' · 브라이트비드 공구';
     };
     rerender();
   }
@@ -206,7 +206,7 @@
       var main1 = document.getElementById('mainImg'); if (main1) UI.setImg(main1, (p.images || [])[0]);
       if (price) bindRec(document.getElementById('priceBox'), 'cat_product_prices', price);
       fillGrid(document.getElementById('relatedGrid'), state.products, function (x) { return productCard(x); });
-      document.title = (p.name || '상품') + ' · 공구 제안관';
+      document.title = (p.name || '상품') + ' · 브라이트비드 공구';
     };
     rerender();
     document.getElementById('pThumbs').addEventListener('click', function (e) {      // 썸네일 누르면 큰 사진 바꾸기

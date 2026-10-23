@@ -343,7 +343,6 @@
   function setPref(k, on) {
     if (k === 'anno') document.body.classList.toggle('anno-on', on);
     if (k === 'edit') { document.body.classList.toggle('edit', on); setEditable(document, on); }
-    if (k === 'theme') document.documentElement.dataset.theme = on ? 'dark' : 'light';
     var b = document.querySelector('[data-pref="' + k + '"]'); if (b) b.setAttribute('aria-pressed', on);
     if (k !== 'edit') store.set('bb-pref-' + k, on ? '1' : '0');
   }
@@ -354,8 +353,7 @@
       '<div class="devbar" id="adminbar"><button class="dev-toggle" title="접기/펴기"><b>ADMIN</b></button>' +
       '<a href="admin.html">관리자 페이지</a><span class="sep"></span>' +
       '<button data-pref="edit" aria-pressed="false">✎ 편집 모드</button>' +
-      '<button data-pref="anno" aria-pressed="false">구역 이름</button>' +
-      '<button data-pref="theme" aria-pressed="false">다크</button><span class="sep"></span>' +
+      '<button data-pref="anno" aria-pressed="false">구역 이름</button><span class="sep"></span>' +
       '<button data-logout>나가기</button></div>');
     var bar = document.getElementById('adminbar');
     bar.querySelector('.dev-toggle').onclick = function () { bar.classList.toggle('min'); };
@@ -364,8 +362,6 @@
     setPref('anno', store.get('bb-pref-anno') === '1');
     if (page !== 'admin.html' && BB.qs('edit') === '1') setPref('edit', true);
   }
-  var th = store.get('bb-pref-theme');
-  if (th !== null) document.documentElement.dataset.theme = th === '1' ? 'dark' : 'light';
 
   /* ---------- 셀러 입장 (아직 템플릿: 아무 값이나 통과) ---------- */
   document.querySelectorAll('#loginForm .pin input').forEach(function (inp, i, all) {
