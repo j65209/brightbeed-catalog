@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>셀러 전용</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<div data-part="header"></div>
+
+<!-- 입장 -->
+<section class="auth" id="auth">
+  <form class="card" id="loginForm">
+    <span class="anno">셀러 입장</span>
+    <span class="lock-ico"><i data-i="lock"></i></span>
+    <h2><span class="t"></span></h2>
+    <p class="lines" style="color:var(--ink-2)"><span class="t" style="--w:100%"></span><span class="t" style="--w:70%"></span></p>
+    <div class="field"><label><span class="t" style="--w:4em"></span></label><input class="input" autocomplete="off"></div>
+    <div class="field"><label><span class="t" style="--w:7em"></span></label>
+      <div class="pin"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"></div>
+    </div>
+    <button class="btn primary lg block" style="margin-top:20px"><span class="t" style="--w:3em"></span></button>
+    <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:13px">
+      <a href="index.html#seller" style="color:var(--accent)"><span class="t" style="--w:5em;background:color-mix(in srgb,var(--accent) 35%,transparent)"></span></a>
+      <span class="t" style="--w:7em"></span>
+    </div>
+  </form>
+</section>
+
+<!-- 셀러 대시보드 -->
+<main class="wrap" id="dash" hidden>
+  <div class="s-head">
+    <div>
+      <span class="anno">셀러 대시보드</span>
+      <div style="display:flex;gap:6px;margin-bottom:10px"><span class="badge ok"><i data-i="check" style="width:12px;height:12px"></i><span class="t"></span></span><span class="badge"><span class="t"></span></span></div>
+      <h1><span class="t"></span></h1>
+      <p class="sec-sub"><span class="t"></span></p>
+    </div>
+    <div class="cta-row">
+      <button class="btn" data-open="#applyDlg"><i data-i="plus"></i><span class="t" style="--w:4em"></span></button>
+      <button class="btn ghost" id="logoutBtn"><i data-i="logout"></i><span class="t" style="--w:3em"></span></button>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+    <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+    <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+    <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+  </div>
+
+  <div class="s-grid">
+    <div>
+      <!-- 공급가표 -->
+      <section class="adm-card">
+        <span class="anno">공급가 · 마진표 (셀러 전용)</span>
+        <div class="adm-card-head"><h3><span class="t"></span></h3>
+          <div class="sec-tools"><span class="chips" data-single><button class="chip on"><span class="t" style="--w:2em"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button></span>
+          <button class="btn sm" data-copy><i data-i="download"></i><span class="t" style="--w:3em"></span></button></div></div>
+        <div class="table-wrap"><table class="tbl">
+          <thead><tr><th><span class="t"></span></th><th class="r"><span class="t"></span></th><th class="r"><span class="t"></span></th><th class="r"><span class="t"></span></th><th class="r"><span class="t"></span></th><th></th></tr></thead>
+          <tbody data-repeat="6" data-tpl="tpl-price"></tbody>
+        </table></div>
+      </section>
+
+      <!-- 내 공구 신청 -->
+      <section class="adm-card" style="margin-top:16px">
+        <span class="anno">내 공구 신청 내역</span>
+        <div class="adm-card-head"><h3><span class="t"></span></h3>
+          <button class="btn btn-add sm" data-add="#myApply" data-tpl="tpl-myapply" data-pos="top"><i data-i="plus"></i>신청 추가</button></div>
+        <div class="adm-list" id="myApply" data-repeat="4" data-tpl="tpl-myapply"></div>
+      </section>
+    </div>
+
+    <aside>
+      <section class="adm-card">
+        <span class="anno">자료실</span>
+        <div class="adm-card-head"><h3><span class="t" style="--w:4em"></span></h3>
+          <button class="btn btn-add sm" data-add="#files" data-tpl="tpl-file"><i data-i="plus"></i>추가</button></div>
+        <div class="file-grid" id="files" data-repeat="4" data-tpl="tpl-file" style="grid-template-columns:1fr 1fr"></div>
+      </section>
+      <section class="adm-card" style="margin-top:16px">
+        <span class="anno">공지</span>
+        <div class="adm-card-head"><h3><span class="t" style="--w:3em"></span></h3><i data-i="bell" style="color:var(--ink-3)"></i></div>
+        <div class="adm-list" data-repeat="3" data-tpl="tpl-notice"></div>
+      </section>
+      <section class="adm-card" style="margin-top:16px">
+        <span class="anno">담당자</span>
+        <div class="list-row" style="border:0;padding:0"><span class="avatar" style="background:var(--surface-2)"></span><span class="grow"><span class="t" style="--w:4em"></span><span class="t" style="--w:7em;height:.55em"></span></span>
+          <button class="btn sm"><i data-i="chat"></i></button></div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<div data-part="footer apply"></div>
+
+<template id="tpl-price">
+  <tr data-item>
+    <td><div class="cell-main"><div class="img thumb"></div><div class="stack"><span class="t" style="--w:3.5em;height:.55em"></span><span class="t" data-r="60-100" style="min-width:8em"></span></div></div></td>
+    <td class="r"><span class="num"></span></td>
+    <td class="r"><span class="num" style="background:color-mix(in srgb,var(--accent) 30%,transparent)"></span></td>
+    <td class="r"><span class="badge ok"><span class="t"></span></span></td>
+    <td class="r"><span class="num" style="--w:2.4em"></span></td>
+    <td class="r"><button class="btn sm wish" aria-pressed="false" style="position:static;box-shadow:none;border:1px solid var(--line);width:34px;height:34px;padding:0"><i data-i="heart"></i></button></td>
+  </tr>
+</template>
+<template id="tpl-myapply">
+  <div class="list-row" data-item>
+    <div class="img thumb" style="width:44px;border-radius:10px"></div>
+    <span class="grow"><span class="t" data-r="30-60"></span><span class="t" data-r="20-40" style="height:.55em"></span></span>
+    <span class="badge accent"><span class="t"></span></span>
+    <button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button>
+  </div>
+</template>
+<template id="tpl-file">
+  <div class="file" data-item>
+    <span class="ext"><i data-i="file"></i></span>
+    <span class="t" data-r="60-95"></span><span class="t" style="--w:3em;height:.55em"></span>
+    <button class="icon-btn dl" data-toast="다운로드 (템플릿)" aria-label="다운로드"><i data-i="download"></i></button>
+    <button class="btn btn-del sm" data-del style="margin-top:4px"><i data-i="trash"></i>삭제</button>
+  </div>
+</template>
+<template id="tpl-notice">
+  <div class="list-row" data-item><span class="grow"><span class="t" data-r="60-95"></span><span class="t" style="--w:4em;height:.55em"></span></span></div>
+</template>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

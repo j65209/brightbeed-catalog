@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>관리자</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body class="adm">
+<div class="adm-shell">
+
+  <!-- 사이드바 -->
+  <aside class="adm-side">
+    <a class="logo" href="index.html"><span class="img"></span><span class="t" style="--w:6em"></span></a>
+    <div class="grp"><span class="t"></span></div>
+    <button class="side-link on" data-tab="dash" data-group="view"><i data-i="home"></i><span class="t"></span></button>
+    <button class="side-link" data-tab="brands" data-group="view"><i data-i="tag"></i><span class="t" style="--w:3.5em"></span></button>
+    <button class="side-link" data-tab="products" data-group="view"><i data-i="box"></i><span class="t" style="--w:3.5em"></span></button>
+    <div class="grp"><span class="t"></span></div>
+    <button class="side-link" data-tab="sellers" data-group="view"><i data-i="users"></i><span class="t" style="--w:3.5em"></span><span class="cnt">0</span></button>
+    <button class="side-link" data-tab="apps" data-group="view"><i data-i="inbox"></i><span class="t" style="--w:4em"></span><span class="cnt">0</span></button>
+    <div class="grp"><span class="t"></span></div>
+    <button class="side-link" data-tab="content" data-group="view"><i data-i="edit"></i><span class="t" style="--w:4em"></span></button>
+    <button class="side-link" data-tab="settings" data-group="view"><i data-i="gear"></i><span class="t" style="--w:3em"></span></button>
+    <a class="side-link" href="index.html"><i data-i="external"></i><span class="t" style="--w:5em"></span></a>
+    <div class="foot"><span class="avatar"></span><span style="display:flex;flex-direction:column;gap:6px;flex:1"><span class="t" style="--w:4em"></span><span class="t" style="--w:6em;height:.5em"></span></span><i data-i="logout"></i></div>
+  </aside>
+
+  <div class="adm-main">
+    <div class="adm-top">
+      <label class="search"><i data-i="search"></i><input aria-label="검색"></label>
+      <span style="margin-left:auto;display:flex;gap:8px">
+        <button class="icon-btn" aria-label="알림"><i data-i="bell"></i></button>
+        <a class="btn sm" href="index.html"><i data-i="eye"></i><span class="t" style="--w:4em"></span></a>
+      </span>
+    </div>
+
+    <div class="adm-body">
+
+      <!-- ===== 대시보드 ===== -->
+      <section data-panel="dash" data-group="view">
+        <span class="anno">관리자 · 대시보드</span>
+        <div class="view-head"><div><h1><span class="t"></span></h1><p class="sec-sub"><span class="t"></span></p></div>
+          <div class="sec-tools">
+            <button class="btn btn-add" data-open="#dlgBrand"><i data-i="plus"></i>브랜드 추가</button>
+            <button class="btn btn-add" data-open="#dlgProduct"><i data-i="plus"></i>상품 추가</button>
+          </div></div>
+        <div class="kpis">
+          <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+          <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+          <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+          <div class="kpi"><div class="label"><span class="t"></span></div><span class="val"><span class="num"></span></span><span class="delta"><span class="t"></span></span></div>
+        </div>
+        <div class="adm-cols">
+          <div class="adm-card">
+            <div class="adm-card-head"><h3><span class="t"></span></h3><span class="chips" data-single><button class="chip on"><span class="t" style="--w:2em"></span></button><button class="chip"><span class="t" style="--w:2em"></span></button><button class="chip"><span class="t" style="--w:2em"></span></button></span></div>
+            <div class="chart"><span style="height:40%"></span><span style="height:62%"></span><span style="height:48%"></span><span style="height:75%"></span><span style="height:55%"></span><span style="height:88%"></span><span style="height:66%"></span><span style="height:80%"></span><span style="height:58%"></span><span style="height:92%"></span><span style="height:70%"></span><span style="height:84%"></span></div>
+          </div>
+          <div class="adm-card">
+            <div class="adm-card-head"><h3><span class="t"></span></h3><button class="btn sm ghost" data-tab="sellers" data-group="view"><span class="t" style="--w:3em"></span></button></div>
+            <div class="adm-list" data-repeat="5" data-tpl="tpl-pending"></div>
+          </div>
+        </div>
+        <div class="adm-card" style="margin-top:16px">
+          <div class="adm-card-head"><h3><span class="t"></span></h3><button class="btn sm ghost" data-tab="apps" data-group="view"><span class="t" style="--w:3em"></span></button></div>
+          <div class="table-wrap"><table class="tbl">
+            <thead><tr><th><span class="t"></span></th><th><span class="t"></span></th><th><span class="t"></span></th><th><span class="t"></span></th><th class="r"></th></tr></thead>
+            <tbody data-repeat="4" data-tpl="tpl-recent"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ===== 브랜드 ===== -->
+      <section data-panel="brands" data-group="view" hidden>
+        <span class="anno">관리자 · 브랜드 관리</span>
+        <div class="view-head"><div><h1><span class="t"></span></h1><p class="sec-sub"><span class="t"></span></p></div>
+          <button class="btn primary" data-open="#dlgBrand"><i data-i="plus"></i>브랜드 추가</button></div>
+        <div class="toolbar">
+          <div class="left"><label class="search" style="max-width:260px"><i data-i="search"></i><input aria-label="브랜드 검색"></label>
+            <span class="select"><span class="t"></span><i data-i="filter"></i></span></div>
+          <div class="right"><div class="bulk" data-bulk-for="#tblBrands"><span class="bulk-n"></span><button class="btn btn-del sm" data-bulk-del="#tblBrands"><i data-i="trash"></i>선택 삭제</button></div></div>
+        </div>
+        <div class="table-wrap"><table class="tbl" id="tblBrands">
+          <thead><tr><th style="width:40px"><input type="checkbox" data-check-all="#tblBrands" aria-label="전체 선택"></th>
+            <th><span class="t"></span></th><th><span class="t"></span></th><th class="r"><span class="t"></span></th><th><span class="t"></span></th><th><span class="t"></span></th><th class="r"><span class="t"></span></th></tr></thead>
+          <tbody id="brandRows" data-repeat="4" data-tpl="tpl-brand-row"></tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== 상품 ===== -->
+      <section data-panel="products" data-group="view" hidden>
+        <span class="anno">관리자 · 상품 관리</span>
+        <div class="view-head"><div><h1><span class="t"></span></h1><p class="sec-sub"><span class="t"></span></p></div>
+          <button class="btn primary" data-open="#dlgProduct"><i data-i="plus"></i>상품 추가</button></div>
+        <div class="toolbar">
+          <div class="left"><label class="search" style="max-width:260px"><i data-i="search"></i><input aria-label="상품 검색"></label>
+            <span class="chips" data-single><button class="chip on"><span class="t" style="--w:2em"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button></span></div>
+          <div class="right"><div class="bulk" data-bulk-for="#tblProducts"><span class="bulk-n"></span><button class="btn btn-del sm" data-bulk-del="#tblProducts"><i data-i="trash"></i>선택 삭제</button></div></div>
+        </div>
+        <div class="table-wrap"><table class="tbl" id="tblProducts">
+          <thead><tr><th style="width:40px"><input type="checkbox" data-check-all="#tblProducts" aria-label="전체 선택"></th>
+            <th><span class="t"></span></th><th><span class="t"></span></th><th class="r"><span class="t"></span></th><th class="r"><span class="t"></span></th><th class="r"><span class="t"></span></th><th><span class="t"></span></th><th class="r"><span class="t"></span></th></tr></thead>
+          <tbody id="productRows" data-repeat="8" data-tpl="tpl-product-row"></tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== 셀러 ===== -->
+      <section data-panel="sellers" data-group="view" hidden>
+        <span class="anno">관리자 · 셀러 관리</span>
+        <div class="view-head"><div><h1><span class="t"></span></h1><p class="sec-sub"><span class="t"></span></p></div>
+          <button class="btn primary" data-open="#dlgSeller"><i data-i="plus"></i>셀러 추가</button></div>
+        <div class="toolbar">
+          <div class="left"><span class="chips" data-single><button class="chip on"><span class="t" style="--w:2em"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button></span></div>
+          <div class="right"><div class="bulk" data-bulk-for="#tblSellers"><span class="bulk-n"></span><button class="btn btn-del sm" data-bulk-del="#tblSellers"><i data-i="trash"></i>선택 삭제</button></div></div>
+        </div>
+        <div class="table-wrap"><table class="tbl" id="tblSellers">
+          <thead><tr><th style="width:40px"><input type="checkbox" data-check-all="#tblSellers" aria-label="전체 선택"></th>
+            <th><span class="t"></span></th><th><span class="t"></span></th><th><span class="t"></span></th><th class="r"><span class="t"></span></th><th><span class="t"></span></th><th class="r"><span class="t"></span></th></tr></thead>
+          <tbody id="sellerRows" data-repeat="6" data-tpl="tpl-seller-row"></tbody>
+        </table></div>
+      </section>
+
+      <!-- ===== 공구 신청 ===== -->
+      <section data-panel="apps" data-group="view" hidden>
+        <span class="anno">관리자 · 공구 신청 / 문의</span>
+        <div class="view-head"><div><h1><span class="t"></span></h1><p class="sec-sub"><span class="t"></span></p></div>
+          <span class="chips" data-single><button class="chip on"><span class="t" style="--w:3em"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button><button class="chip"><span class="t"></span></button></span></div>
+        <div class="kanban">
+          <div class="kcol"><div class="kcol-head"><span style="display:flex;align-items:center"><span class="dot" style="background:var(--accent)"></span><span class="t" style="--w:3em"></span></span><span class="badge"><span class="num" style="--w:1em;height:.6em"></span></span></div>
+            <div class="kbox" id="k1" data-repeat="3" data-tpl="tpl-kcard" style="display:contents"></div>
+            <button class="add-tile" data-add="#k1" data-tpl="tpl-kcard"><span class="plus"><i data-i="plus"></i></span>추가</button></div>
+          <div class="kcol"><div class="kcol-head"><span style="display:flex;align-items:center"><span class="dot" style="background:var(--warn)"></span><span class="t" style="--w:3em"></span></span><span class="badge"><span class="num" style="--w:1em;height:.6em"></span></span></div>
+            <div class="kbox" id="k2" data-repeat="2" data-tpl="tpl-kcard" style="display:contents"></div>
+            <button class="add-tile" data-add="#k2" data-tpl="tpl-kcard"><span class="plus"><i data-i="plus"></i></span>추가</button></div>
+          <div class="kcol"><div class="kcol-head"><span style="display:flex;align-items:center"><span class="dot" style="background:var(--ok)"></span><span class="t" style="--w:3em"></span></span><span class="badge"><span class="num" style="--w:1em;height:.6em"></span></span></div>
+            <div class="kbox" id="k3" data-repeat="2" data-tpl="tpl-kcard" style="display:contents"></div>
+            <button class="add-tile" data-add="#k3" data-tpl="tpl-kcard"><span class="plus"><i data-i="plus"></i></span>추가</button></div>
+          <div class="kcol"><div class="kcol-head"><span style="display:flex;align-items:center"><span class="dot" style="background:var(--ink-3)"></span><span class="t" style="--w:3em"></span></span><span class="badge"><span class="num" style="--w:1em;height:.6em"></span></span></div>
+            <div class="kbox" id="k4" data-repeat="1" data-tpl="tpl-kcard" style="display:contents"></div>
+            <button class="add-tile" data-add="#k4" data-tpl="tpl-kcard"><span class="plus"><i data-i="plus"></i></span>추가</button></div>
+        </div>
+      </section>
+
+      <!-- ===== 사이트 문구 ===== -->
+      <section data-panel="content" data-group="view" hidden>
+        <span class="anno">관리자 · 사이트 문구 / 이미지</span>
+        <div class="view-head"><div><h1><span class="t"></span></h1><p class="sec-sub"><span class="t"></span></p></div>
+          <button class="btn primary" data-toast="저장했어요 (템플릿)"><i data-i="check"></i><span class="t" style="--w:3em"></span></button></div>
+        <div class="adm-card">
+          <div class="set-sec">
+            <div><h3><span class="t"></span></h3><p class="lines" style="color:var(--ink-2);font-size:13px"><span class="t" style="--w:90%"></span></p></div>
+            <div>
+              <div class="upload" data-item><div class="img"></div><span class="grow" style="flex:1"><span class="t" style="--w:8em"></span></span><button class="btn sm"><i data-i="image"></i><span class="t" style="--w:3em"></span></button><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div>
+              <div class="field"><label><span class="t"></span></label><input class="input"></div>
+            </div>
+          </div>
+          <div class="set-sec">
+            <div><h3><span class="t"></span></h3><p class="lines" style="color:var(--ink-2);font-size:13px"><span class="t" style="--w:80%"></span></p></div>
+            <div>
+              <div class="field"><label><span class="t"></span></label><input class="input"></div>
+              <div class="field"><label><span class="t"></span></label><input class="input"></div>
+              <div class="field"><label><span class="t"></span></label><textarea class="input"></textarea></div>
+              <div class="field"><label><span class="t"></span></label>
+                <div id="heroImgs" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px" data-repeat="3" data-tpl="tpl-thumb">
+                  <button class="add-tile" data-add="#heroImgs" data-tpl="tpl-thumb" style="aspect-ratio:1;padding:0"><span class="plus"><i data-i="plus"></i></span>추가</button>
+                </div></div>
+            </div>
+          </div>
+          <div class="set-sec">
+            <div><h3><span class="t"></span></h3><p class="lines" style="color:var(--ink-2);font-size:13px"><span class="t" style="--w:85%"></span></p></div>
+            <div>
+              <div id="stepRows" data-repeat="3" data-tpl="tpl-repeat-row"></div>
+              <button class="btn btn-add sm" style="margin-top:10px" data-add="#stepRows" data-tpl="tpl-repeat-row"><i data-i="plus"></i>항목 추가</button>
+            </div>
+          </div>
+          <div class="set-sec">
+            <div><h3><span class="t"></span></h3><p class="lines" style="color:var(--ink-2);font-size:13px"><span class="t" style="--w:70%"></span></p></div>
+            <div>
+              <div id="benefitRows" data-repeat="3" data-tpl="tpl-repeat-row"></div>
+              <button class="btn btn-add sm" style="margin-top:10px" data-add="#benefitRows" data-tpl="tpl-repeat-row"><i data-i="plus"></i>항목 추가</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 설정 ===== -->
+      <section data-panel="settings" data-group="view" hidden>
+        <span class="anno">관리자 · 설정</span>
+        <div class="view-head"><div><h1><span class="t"></span></h1><p class="sec-sub"><span class="t"></span></p></div>
+          <button class="btn primary" data-toast="저장했어요 (템플릿)"><i data-i="check"></i><span class="t" style="--w:3em"></span></button></div>
+        <div class="adm-card">
+          <div class="set-sec">
+            <div><h3><span class="t"></span></h3><p class="lines" style="color:var(--ink-2);font-size:13px"><span class="t" style="--w:80%"></span></p></div>
+            <div>
+              <div class="table-wrap"><table class="tbl" style="min-width:0"><tbody id="adminRows" data-repeat="2" data-tpl="tpl-admin-row"></tbody></table></div>
+              <button class="btn btn-add sm" style="margin-top:10px" data-add="#adminRows" data-tpl="tpl-admin-row"><i data-i="plus"></i>관리자 추가</button>
+            </div>
+          </div>
+          <div class="set-sec">
+            <div><h3><span class="t"></span></h3><p class="lines" style="color:var(--ink-2);font-size:13px"><span class="t" style="--w:75%"></span></p></div>
+            <div>
+              <div class="list-row" style="border-color:var(--line)"><span class="grow"><span class="t" style="--w:8em"></span><span class="t" style="--w:14em;height:.55em"></span></span><button class="switch" aria-checked="true" aria-label="켜기"></button></div>
+              <div class="list-row" style="border-color:var(--line)"><span class="grow"><span class="t" style="--w:6em"></span><span class="t" style="--w:12em;height:.55em"></span></span><button class="switch" aria-checked="false" aria-label="켜기"></button></div>
+              <div class="list-row" style="border-color:var(--line)"><span class="grow"><span class="t" style="--w:9em"></span><span class="t" style="--w:10em;height:.55em"></span></span><button class="switch" aria-checked="true" aria-label="켜기"></button></div>
+            </div>
+          </div>
+          <div class="set-sec">
+            <div><h3><span class="t"></span></h3><p class="lines" style="color:var(--ink-2);font-size:13px"><span class="t" style="--w:85%"></span></p></div>
+            <div>
+              <div id="catRows" data-repeat="4" data-tpl="tpl-repeat-row"></div>
+              <button class="btn btn-add sm" style="margin-top:10px" data-add="#catRows" data-tpl="tpl-repeat-row"><i data-i="plus"></i>카테고리 추가</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== 추가 창 ===== -->
+<dialog id="dlgBrand" class="wide">
+  <div class="d-head"><h3><span class="t"></span></h3><button class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>
+  <div class="d-body">
+    <div class="drawer-grid" style="margin-top:12px">
+      <div class="upload"><div class="img round"></div><span class="t" style="--w:5em"></span></div>
+      <div class="upload"><div class="img" style="--ar:4/3"></div><span class="t" style="--w:5em"></span></div>
+    </div>
+    <div class="drawer-grid">
+      <div class="field"><label><span class="t"></span><span class="req">*</span></label><input class="input"></div>
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+    </div>
+    <div class="field"><label><span class="t"></span></label><input class="input"></div>
+    <div class="field"><label><span class="t"></span></label><textarea class="input"></textarea></div>
+    <div class="field"><label><span class="t" style="--w:6em"></span></label>
+      <div id="dlgUsp" data-repeat="2" data-tpl="tpl-repeat-row"></div>
+      <button class="btn btn-add sm" style="margin-top:8px;align-self:flex-start" data-add="#dlgUsp" data-tpl="tpl-repeat-row"><i data-i="plus"></i>항목 추가</button></div>
+    <div class="drawer-grid">
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+    </div>
+  </div>
+  <div class="d-foot"><button class="btn" data-close><span class="t" style="--w:3em"></span></button>
+    <button class="btn primary" data-close data-add="#brandRows" data-tpl="tpl-brand-row" data-pos="top"><i data-i="plus"></i>브랜드 추가</button></div>
+</dialog>
+
+<dialog id="dlgProduct" class="wide">
+  <div class="d-head"><h3><span class="t"></span></h3><button class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>
+  <div class="d-body">
+    <div class="field"><label><span class="t"></span></label>
+      <div id="dlgImgs" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px" data-repeat="2" data-tpl="tpl-thumb">
+        <button class="add-tile" data-add="#dlgImgs" data-tpl="tpl-thumb" style="aspect-ratio:1;padding:0;font-size:11px;gap:2px"><span class="plus" style="width:28px;height:28px"><i data-i="plus"></i></span>추가</button>
+      </div></div>
+    <div class="drawer-grid">
+      <div class="field"><label><span class="t"></span><span class="req">*</span></label><span class="select" style="min-height:46px"><span class="t"></span><i data-i="filter"></i></span></div>
+      <div class="field"><label><span class="t"></span><span class="req">*</span></label><input class="input"></div>
+    </div>
+    <div class="drawer-grid">
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+      <div class="field"><label><span class="t"></span><i data-i="lock" style="width:12px;height:12px;margin-left:4px;color:var(--ink-3)"></i></label><input class="input"></div>
+    </div>
+    <div class="field"><label><span class="t" style="--w:4em"></span></label>
+      <div id="dlgOpts" data-repeat="2" data-tpl="tpl-repeat-row"></div>
+      <button class="btn btn-add sm" style="margin-top:8px;align-self:flex-start" data-add="#dlgOpts" data-tpl="tpl-repeat-row"><i data-i="plus"></i>옵션 추가</button></div>
+    <div class="field"><label><span class="t" style="--w:6em"></span></label><textarea class="input"></textarea></div>
+    <div class="drawer-grid">
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+    </div>
+  </div>
+  <div class="d-foot"><button class="btn" data-close><span class="t" style="--w:3em"></span></button>
+    <button class="btn primary" data-close data-add="#productRows" data-tpl="tpl-product-row" data-pos="top"><i data-i="plus"></i>상품 추가</button></div>
+</dialog>
+
+<dialog id="dlgSeller">
+  <div class="d-head"><h3><span class="t"></span></h3><button class="icon-btn" data-close aria-label="닫기"><i data-i="x"></i></button></div>
+  <div class="d-body">
+    <div class="field"><label><span class="t"></span></label><div class="seg"><button type="button" class="on"><span class="t"></span></button><button type="button"><span class="t"></span></button><button type="button"><span class="t"></span></button></div></div>
+    <div class="field"><label><span class="t"></span><span class="req">*</span></label><input class="input"></div>
+    <div class="drawer-grid">
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+      <div class="field"><label><span class="t"></span></label><input class="input"></div>
+    </div>
+    <div class="field"><label><span class="t" style="--w:7em"></span></label><input class="input"></div>
+  </div>
+  <div class="d-foot"><button class="btn" data-close><span class="t" style="--w:3em"></span></button>
+    <button class="btn primary" data-close data-add="#sellerRows" data-tpl="tpl-seller-row" data-pos="top"><i data-i="plus"></i>셀러 추가</button></div>
+</dialog>
+
+<!-- ===== 복제용 템플릿 ===== -->
+<template id="tpl-brand-row">
+  <tr data-item>
+    <td><input type="checkbox" aria-label="선택"></td>
+    <td><div class="cell-main"><div class="img round thumb"></div><div class="stack"><span class="t" data-r="50-90" style="min-width:6em;background:var(--skel-2)"></span><span class="t" style="--w:8em;height:.55em"></span></div></div></td>
+    <td><span class="badge accent"><span class="t"></span></span></td>
+    <td class="r"><span class="num" style="--w:1.6em"></span></td>
+    <td><button class="switch" aria-checked="true" aria-label="노출"></button></td>
+    <td><span class="t" style="--w:5em"></span></td>
+    <td><div class="actions"><button class="btn sm" data-open="#dlgBrand"><i data-i="edit"></i></button><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div></td>
+  </tr>
+</template>
+<template id="tpl-product-row">
+  <tr data-item>
+    <td><input type="checkbox" aria-label="선택"></td>
+    <td><div class="cell-main"><div class="img thumb"></div><div class="stack"><span class="t" data-r="60-100" style="min-width:9em;background:var(--skel-2)"></span><span class="t" style="--w:4em;height:.55em"></span></div></div></td>
+    <td><span class="badge"><span class="t"></span></span></td>
+    <td class="r"><span class="num"></span></td>
+    <td class="r"><span class="num" style="background:color-mix(in srgb,var(--accent) 30%,transparent)"></span></td>
+    <td class="r"><span class="num" style="--w:2em"></span></td>
+    <td><button class="switch" aria-checked="true" aria-label="노출"></button></td>
+    <td><div class="actions"><button class="btn sm" data-open="#dlgProduct"><i data-i="edit"></i></button><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div></td>
+  </tr>
+</template>
+<template id="tpl-seller-row">
+  <tr data-item>
+    <td><input type="checkbox" aria-label="선택"></td>
+    <td><div class="cell-main"><span class="img round thumb" style="width:36px"></span><div class="stack"><span class="t" data-r="50-90" style="min-width:5em;background:var(--skel-2)"></span><span class="t" style="--w:7em;height:.55em"></span></div></div></td>
+    <td><span class="badge accent"><span class="t"></span></span></td>
+    <td><span class="t" style="--w:6em"></span></td>
+    <td class="r"><span class="num" style="--w:2.4em"></span></td>
+    <td><span class="badge warn"><span class="t"></span></span></td>
+    <td><div class="actions"><button class="btn soft sm" data-toast="승인했어요 (템플릿)"><i data-i="check"></i><span class="t" style="--w:2em"></span></button><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div></td>
+  </tr>
+</template>
+<template id="tpl-pending">
+  <div class="list-row" data-item><span class="avatar"></span>
+    <span class="grow"><span class="t" data-r="35-60"></span><span class="t" data-r="50-80" style="height:.55em"></span></span>
+    <button class="btn soft sm" data-toast="승인했어요 (템플릿)"><i data-i="check"></i></button>
+    <button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div>
+</template>
+<template id="tpl-recent">
+  <tr data-item>
+    <td><div class="cell-main"><span class="img round thumb" style="width:32px"></span><span class="t" data-r="50-90" style="min-width:5em"></span></div></td>
+    <td><span class="t" data-r="50-90" style="min-width:7em"></span></td>
+    <td><span class="t" style="--w:5em"></span></td>
+    <td><span class="badge accent"><span class="t"></span></span></td>
+    <td><div class="actions"><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div></td>
+  </tr>
+</template>
+<template id="tpl-kcard">
+  <div class="kcard" data-item>
+    <button class="icon-btn del x" data-del aria-label="삭제"><i data-i="trash"></i></button>
+    <span class="badge accent" style="align-self:flex-start"><span class="t"></span></span>
+    <span class="t" data-r="50-80" style="background:var(--skel-2)"></span>
+    <span class="t" data-r="70-95" style="height:.55em"></span>
+    <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip" style="min-height:26px;padding:0 10px"><span class="t" style="--w:3em;height:.55em"></span></span><span class="chip" style="min-height:26px;padding:0 10px"><span class="t" style="--w:2.5em;height:.55em"></span></span></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px"><span class="t" style="--w:4em;height:.55em"></span><span class="avatar" style="width:24px;height:24px;border-radius:50%;background:var(--surface-2)"></span></div>
+  </div>
+</template>
+<template id="tpl-thumb">
+  <div class="thumb-item" data-item><div class="img" style="border-radius:10px"></div><button class="x" data-del aria-label="삭제"><i data-i="x"></i></button></div>
+</template>
+<template id="tpl-repeat-row">
+  <div class="repeat-row" data-item><input class="input"><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div>
+</template>
+<template id="tpl-admin-row">
+  <tr data-item>
+    <td><div class="cell-main"><span class="img round thumb" style="width:36px"></span><div class="stack"><span class="t" style="--w:5em;background:var(--skel-2)"></span><span class="t" style="--w:9em;height:.55em"></span></div></div></td>
+    <td><span class="badge"><span class="t"></span></span></td>
+    <td class="r"><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></td>
+  </tr>
+</template>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

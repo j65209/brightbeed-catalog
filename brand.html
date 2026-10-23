@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>브랜드 상세</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<div data-part="header"></div>
+
+<nav class="subnav"><div class="wrap">
+  <a class="btn sm back" href="index.html"><i data-i="back"></i><span class="t" style="--w:4em"></span></a>
+  <a class="btn ghost sm" href="#summary"><span class="t" style="--w:2.5em"></span></a>
+  <a class="btn ghost sm" href="#lineup"><span class="t" style="--w:2.5em"></span></a>
+  <a class="btn ghost sm" href="#usp"><span class="t" style="--w:2.5em"></span></a>
+  <a class="btn ghost sm" href="#kit"><span class="t" style="--w:4em"></span></a>
+</div></nav>
+
+<main class="wrap">
+  <!-- 브랜드 요약 -->
+  <section class="d-hero" id="summary">
+    <div>
+      <span class="anno">브랜드 요약</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div class="img round" style="width:48px;--ar:1"></div>
+        <span class="badge solid"><span class="t"></span></span><span class="badge"><span class="t"></span></span>
+      </div>
+      <h1><span class="t"></span></h1>
+      <p class="one"><span class="t"></span></p>
+      <p class="lines" style="color:var(--ink-2);margin-top:12px"><span class="t" style="--w:100%"></span><span class="t" style="--w:96%"></span><span class="t" style="--w:64%"></span></p>
+      <div class="cta-row" style="margin-top:20px">
+        <button class="btn primary lg" data-open="#applyDlg"><span class="t" style="--w:6em"></span></button>
+        <button class="btn lg wish" aria-pressed="false" style="position:static;width:auto;border-radius:14px;padding:0 18px;box-shadow:none;border:1px solid var(--line)"><i data-i="heart"></i><span class="t" style="--w:3em"></span></button>
+        <button class="btn lg" data-copy><i data-i="share"></i></button>
+      </div>
+      <div class="cta-row" style="margin-top:10px">
+        <a class="btn sm" href="#"><i data-i="store"></i><span class="t" style="--w:6em"></span><i data-i="external"></i></a>
+        <a class="btn sm" href="#"><i data-i="store"></i><span class="t" style="--w:7em"></span><i data-i="external"></i></a>
+        <a class="btn sm" href="#"><i data-i="file"></i><span class="t" style="--w:4em"></span></a>
+      </div>
+    </div>
+    <div class="gallery">
+      <div class="img main" style="--ar:4/3"></div>
+      <div class="thumbs" id="brandThumbs" data-repeat="3" data-tpl="tpl-thumb">
+        <button class="add-tile" data-add="#brandThumbs" data-tpl="tpl-thumb"><span class="plus"><i data-i="plus"></i></span>추가</button>
+      </div>
+    </div>
+  </section>
+
+  <dl class="facts">
+    <div><dt><span class="t"></span></dt><dd><span class="t"></span></dd></div>
+    <div><dt><span class="t"></span></dt><dd><span class="t"></span></dd></div>
+    <div><dt><span class="t"></span></dt><dd><span class="t"></span></dd></div>
+    <div><dt><i data-i="lock" style="color:var(--ink-3)"></i></dt><dd><span class="t"></span></dd></div>
+  </dl>
+
+  <!-- 상품 라인업 -->
+  <section class="block" id="lineup">
+    <span class="anno">상품 라인업</span>
+    <div class="sec-head">
+      <h2 class="sec-title"><span class="t"></span></h2>
+      <button class="btn btn-add sm" data-add="#lineGrid" data-tpl="tpl-product"><i data-i="plus"></i>상품 추가</button>
+    </div>
+    <div class="grid product-grid" id="lineGrid" data-repeat="6" data-tpl="tpl-product">
+      <button class="add-tile" data-add="#lineGrid" data-tpl="tpl-product"><span class="plus"><i data-i="plus"></i></span>상품 추가</button>
+    </div>
+  </section>
+
+  <!-- 추천 이유 -->
+  <section class="block" id="usp">
+    <span class="anno">추천 이유 (USP)</span>
+    <div class="sec-head">
+      <h2 class="sec-title"><span class="t" style="--w:10em"></span></h2>
+      <button class="btn btn-add sm" data-add="#uspGrid" data-tpl="tpl-usp"><i data-i="plus"></i>항목 추가</button>
+    </div>
+    <div class="grid usp-grid" id="uspGrid" data-repeat="3" data-tpl="tpl-usp"></div>
+  </section>
+
+  <!-- 콘텐츠 키트 -->
+  <section class="block" id="kit">
+    <span class="anno">콘텐츠 키트</span>
+    <div class="sec-head">
+      <div><h2 class="sec-title"><span class="t"></span></h2><p class="sec-sub"><span class="t" style="--w:12em"></span></p></div>
+    </div>
+    <div class="kit">
+      <div class="card">
+        <div class="kit-head"><h4><span class="t"></span></h4><button class="btn sm" data-copy><i data-i="copy"></i><span class="t" style="--w:3em"></span></button></div>
+        <div class="copybox lines"><span class="t" style="--w:70%"></span><span class="t" style="--w:100%"></span><span class="t" style="--w:92%"></span><span class="t" style="--w:80%"></span><span class="t" style="--w:45%"></span></div>
+        <div class="kit-head" style="margin-top:22px"><h4><span class="t"></span></h4><button class="btn sm" data-copy><i data-i="copy"></i><span class="t" style="--w:3em"></span></button></div>
+        <div class="copybox lines"><span class="t" style="--w:100%"></span><span class="t" style="--w:60%"></span></div>
+      </div>
+      <div class="card">
+        <div class="kit-head"><h4><span class="t" style="--w:8em"></span></h4>
+          <button class="btn btn-add sm" data-add="#spList" data-tpl="tpl-sp"><i data-i="plus"></i>추가</button></div>
+        <div id="spList" data-repeat="4" data-tpl="tpl-sp"></div>
+      </div>
+    </div>
+    <div class="card" style="padding:22px;margin-top:16px" data-item>
+      <div class="kit-head"><h4><span class="t"></span></h4><button class="btn btn-del sm" data-del><i data-i="trash"></i>삭제</button></div>
+      <div class="img video"><i data-i="play" style="width:48px;height:48px"></i></div>
+    </div>
+  </section>
+</main>
+
+<div data-part="footer apply"></div>
+
+<template id="tpl-thumb">
+  <div class="thumb-item" data-item><div class="img"></div><button class="x" data-del aria-label="삭제"><i data-i="x"></i></button></div>
+</template>
+<template id="tpl-product">
+  <a class="card p-card" href="product.html" data-item>
+    <div class="media">
+      <button class="card-del" data-del><i data-i="trash"></i>삭제</button>
+      <div class="img"></div>
+      <button class="wish" aria-pressed="false" aria-label="찜"><i data-i="heart"></i></button>
+    </div>
+    <div class="info">
+      <span class="name"><span class="t" data-r="85-100"></span><span class="t" data-r="40-70"></span></span>
+      <span class="price"><span class="num"></span><span class="t"></span></span>
+    </div>
+  </a>
+</template>
+<template id="tpl-usp">
+  <div class="card usp" data-item>
+    <button class="card-del" data-del style="left:auto;right:12px;top:14px"><i data-i="trash"></i>삭제</button>
+    <span class="n"></span>
+    <h4><span class="t" data-r="40-70"></span></h4>
+    <p class="lines" style="color:var(--ink-2);font-size:14px"><span class="t" data-r="85-100"></span><span class="t" data-r="40-75"></span></p>
+  </div>
+</template>
+<template id="tpl-sp">
+  <div class="sp-row" data-item>
+    <div class="img"></div>
+    <div class="grow"><span class="t" data-r="30-50"></span><p class="lines" style="font-size:13px;color:var(--ink-2)"><span class="t" data-r="80-100"></span><span class="t" data-r="40-70"></span></p></div>
+    <button class="icon-btn" data-copy aria-label="복사"><i data-i="copy"></i></button>
+    <button class="icon-btn del" data-del aria-label="삭제"><i data-i="trash"></i></button>
+  </div>
+</template>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
