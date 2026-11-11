@@ -273,10 +273,17 @@
     var link = SHORT + b.getAttribute('data-slug');
     copyText(link).then(function () { toast('짧은 링크를 복사했어요'); }, function () { toast(link.replace('https://', '')); });
   });
+  // 공유: 휴대폰은 공유 창, PC(또는 공유 창이 안 뜨는 앱 안 브라우저)는 주소 복사 + 안내 — 눌렀는데 아무 일도 없는 경우를 없앤다
   document.getElementById('share').addEventListener('click', function () {
     var url = 'https://brightbeed.kr/ggulggulzip/';
-    if (navigator.share) { navigator.share({ title: '꿀꿀집 · 오늘의 꿀딜 모음', text: '꿀 같은 특가만 쏙쏙 모았어요 🍯', url: url }).catch(function () {}); return; }
-    copyText(url).then(function () { toast('주소를 복사했어요'); }, function () { toast(url); });
+    var copy = function () { copyText(url).then(function () { toast('주소를 복사했어요. 붙여넣어 공유해 주세요'); }, function () { toast(url.replace('https://', '')); }); };
+    var mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.matchMedia && matchMedia('(pointer: coarse)').matches);
+    if (mobile && navigator.share) {
+      navigator.share({ title: '꿀꿀집 · 오늘의 꿀딜 모음', text: '꿀 같은 특가만 쏙쏙 모았어요 🍯', url: url })
+        .catch(function (e) { if (!e || e.name !== 'AbortError') copy(); });
+      return;
+    }
+    copy();
   });
   load();
 })();
