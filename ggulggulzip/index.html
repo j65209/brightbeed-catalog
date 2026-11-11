@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>꿀꿀집 · 오늘의 꿀딜 모음</title>
+<meta name="description" content="꿀꿀집이 고른 오늘의 꿀딜을 한곳에 모았어요. 누르면 바로 판매처로 가요.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="꿀꿀집">
+<meta property="og:url" content="https://brightbeed.kr/ggulggulzip/">
+<meta property="og:title" content="꿀꿀집 · 오늘의 꿀딜 모음">
+<meta property="og:description" content="꿀 같은 특가만 쏙쏙 모았어요. 누르면 바로 판매처로 가요.">
+<meta property="og:image" content="https://brightbeed.kr/ggulggulzip/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f8f1e7">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://ckyjkxbqsyjoqpuqwoce.supabase.co" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>
+  // 짧은 링크 ?go=<코드> → 바로 판매처로 (클릭 수는 서버가 셈)
+  (function () {
+    var g = new URLSearchParams(location.search).get('go');
+    if (g && /^[a-z0-9][a-z0-9-]{1,30}$/i.test(g)) location.replace('https://ckyjkxbqsyjoqpuqwoce.supabase.co/functions/v1/ggul-links/go/' + g.toLowerCase());
+  })();
+</script>
+<style>
+  :root {
+    --cream: #f8f1e7; --cream-2: #fffaf3; --paper: #ffffff;
+    --pink: #f3a39c; --pink-deep: #e5776d; --pink-soft: #fde4e0;
+    --honey: #ffc94a; --honey-deep: #f2a91c; --honey-soft: #fff1c9;
+    --red: #e4483b; --ink: #3f2a20; --ink-2: #7a6152; --line: #efdfcf;
+    --radius: 18px; --shadow: 0 6px 18px rgba(120, 72, 40, .08), 0 1px 2px rgba(120, 72, 40, .06);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: var(--cream); color: var(--ink); line-height: 1.45; letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: anywhere;
+    background-image: radial-gradient(circle at 12% -10%, var(--honey-soft) 0 180px, transparent 181px),
+                      radial-gradient(circle at 105% 18%, var(--pink-soft) 0 140px, transparent 141px);
+    background-repeat: no-repeat; min-height: 100vh;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: calc(18px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom)); }
+
+  /* 머리 */
+  .head { text-align: center; padding: 10px 0 6px; }
+  .pig { width: 84px; height: 84px; display: block; margin: 0 auto 6px; filter: drop-shadow(0 6px 10px rgba(229, 119, 109, .25)); }
+  h1 { font-size: 28px; font-weight: 800; margin: 2px 0 2px; letter-spacing: -0.03em; }
+  h1 .dot { color: var(--honey-deep); }
+  .tag { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .socials { display: flex; gap: 8px; justify-content: center; margin: 14px 0 4px; flex-wrap: wrap; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; border-radius: 999px;
+    background: var(--paper); border: 1px solid var(--line); font-size: 14px; font-weight: 600; text-decoration: none;
+    box-shadow: var(--shadow); cursor: pointer; color: var(--ink); font-family: inherit;
+  }
+  .chip svg { width: 18px; height: 18px; flex: none; }
+  .chip:active { transform: scale(.97); }
+
+  /* 묶음 */
+  .notice { margin: 14px 0 0; padding: 11px 14px; border-radius: 14px; background: var(--honey-soft); color: #6b4b12; font-size: 14px; font-weight: 600; text-align: center; }
+  .set { margin-top: 22px; }
+  .set.focus .set-head { background: var(--paper); border-color: var(--honey); box-shadow: 0 0 0 3px var(--honey-soft); }
+  .set-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; border: 1px solid transparent; margin-bottom: 10px; }
+  .set-head .ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--honey); font-size: 18px; flex: none; }
+  .set-head h2 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+  .set-head .when { display: block; font-size: 12.5px; color: var(--ink-2); font-weight: 500; margin-top: 1px; }
+  .set-sub { margin: -4px 4px 10px; font-size: 13.5px; color: var(--ink-2); }
+
+  /* 딜 카드 */
+  .deals { display: grid; gap: 10px; }
+  .deal { position: relative; background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid #f6e9dc; transition: transform .12s ease; }
+  .deal:active { transform: scale(.985); }
+  .deal-link {
+    display: grid; grid-template-columns: 84px 1fr; gap: 12px; align-items: center;
+    padding: 12px; min-height: 108px; text-decoration: none; color: var(--ink); border-radius: var(--radius);
+  }
+  .deal-link:focus-visible { outline: 3px solid var(--honey); outline-offset: 2px; }
+  .thumb { position: relative; width: 84px; height: 84px; border-radius: 14px; overflow: hidden; background: linear-gradient(145deg, var(--honey-soft), var(--pink-soft)); display: grid; place-items: center; font-size: 34px; }
+  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #fff; }
+  .sticker { position: absolute; left: 6px; top: 6px; padding: 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #fff; background: var(--red); letter-spacing: 0; box-shadow: 0 2px 6px rgba(228, 72, 59, .3); }
+  .sticker.new { background: #2f9e6e; box-shadow: 0 2px 6px rgba(47, 158, 110, .3); }
+  .sticker.urgent { background: #8b3dd9; box-shadow: 0 2px 6px rgba(139, 61, 217, .3); }
+  .info { min-width: 0; }
+  .title { padding-right: 30px; font-size: 15.5px; font-weight: 700; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .host { font-size: 12px; color: var(--ink-2); margin-top: 3px; }
+  .price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 6px; margin-top: 5px; }
+  .price .off { color: var(--red); font-weight: 800; font-size: 17px; }
+  .price .now { font-weight: 800; font-size: 17px; letter-spacing: -0.02em; }
+  .price .was { color: #a8958a; text-decoration: line-through; font-size: 12.5px; }
+  .note { font-size: 12.5px; color: #8a5a10; margin-top: 3px; }
+  .go { display: block; text-align: right; margin-top: 4px; font-size: 12.5px; font-weight: 700; color: var(--pink-deep); }
+  .copy {
+    position: absolute; right: 8px; top: 8px; width: 36px; height: 36px; border-radius: 10px; border: 0; background: transparent;
+    display: grid; place-items: center; color: #b49a8a; cursor: pointer;
+  }
+  .copy svg { width: 18px; height: 18px; }
+  .copy:active { background: var(--cream); }
+
+  /* 상태 */
+  .skel { height: 108px; border-radius: var(--radius); background: linear-gradient(90deg, #f3e8dc 25%, #faf3ea 37%, #f3e8dc 63%); background-size: 400% 100%; animation: sh 1.3s ease infinite; }
+  @keyframes sh { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+  .empty { margin-top: 26px; padding: 26px 18px; text-align: center; background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .empty b { display: block; font-size: 17px; margin-bottom: 4px; }
+  .empty p { margin: 0 0 14px; color: var(--ink-2); font-size: 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 18px; border-radius: 999px; background: var(--pink-deep); color: #fff; font-weight: 700; font-size: 15px; text-decoration: none; border: 0; font-family: inherit; cursor: pointer; }
+
+  .foot { margin-top: 30px; text-align: center; font-size: 12.5px; color: var(--ink-2); line-height: 1.6; }
+  .foot b { color: var(--ink); }
+  .toast {
+    position: fixed; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px); opacity: 0;
+    background: var(--ink); color: #fff; padding: 11px 16px; border-radius: 999px; font-size: 14px; font-weight: 600;
+    transition: .2s ease; pointer-events: none; white-space: nowrap; z-index: 9;
+  }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+  @media (min-width: 520px) { .wrap { padding-top: 34px; } h1 { font-size: 30px; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <svg class="pig" viewBox="0 0 96 96" role="img" aria-label="꿀꿀집 돼지">
+      <path d="M20 30 L30 12 L40 30 Z" fill="#ef9d93"/>
+      <path d="M76 30 L66 12 L56 30 Z" fill="#ef9d93"/>
+      <circle cx="48" cy="52" r="34" fill="#f6b3ab"/>
+      <path d="M30 26 q8 -8 18 -6 q10 -2 18 6 q-4 6 -2 12 q-3 -5 -8 -3 q-2 6 -8 6 q-5 0 -6 -6 q-6 -2 -9 4 q1 -7 -3 -13 z" fill="#ffc94a"/>
+      <circle cx="35" cy="48" r="4" fill="#3f2a20"/><circle cx="61" cy="48" r="4" fill="#3f2a20"/>
+      <circle cx="36.4" cy="46.6" r="1.2" fill="#fff"/><circle cx="62.4" cy="46.6" r="1.2" fill="#fff"/>
+      <ellipse cx="48" cy="62" rx="14" ry="10" fill="#ef8f86"/>
+      <ellipse cx="43" cy="62" rx="2.8" ry="3.6" fill="#b85f57"/><ellipse cx="53" cy="62" rx="2.8" ry="3.6" fill="#b85f57"/>
+      <circle cx="25" cy="60" r="5" fill="#ef8f86" opacity=".45"/><circle cx="71" cy="60" r="5" fill="#ef8f86" opacity=".45"/>
+    </svg>
+    <h1>꿀꿀집<span class="dot">.</span></h1>
+    <p class="tag">꿀 같은 특가만 쏙쏙 모았어요 🍯</p>
+    <div class="socials">
+      <a class="chip" href="https://www.instagram.com/ggul.ggul.zip/" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        @ggul.ggul.zip
+      </a>
+      <a class="chip" href="https://x.com/ggulggulzip" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.8 8 10.2h-6.3l-4.9-6.4L5.3 21H2.2l7.3-8.3L1.9 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>
+        @ggulggulzip
+      </a>
+      <button class="chip" type="button" id="share">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+        공유
+      </button>
+    </div>
+  </header>
+
+  <div id="notice" class="notice" hidden></div>
+  <section id="list" aria-live="polite">
+    <div class="set"><div class="deals"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div></div>
+  </section>
+
+  <footer class="foot">
+    가격 · 재고는 수시로 바뀌어요. 누르면 판매처로 이동해요.<br>
+    <b>꿀꿀집</b> · 인스타그램 @ggul.ggul.zip
+  </footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  var FN = 'https://ckyjkxbqsyjoqpuqwoce.supabase.co/functions/v1/ggul-links';
+  var SHORT = 'https://brightbeed.kr/ggulggulzip/';
+  var COPY_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+  var params = new URLSearchParams(location.search);
+  var focusQ = Number(params.get('s')) || 0;
+  var $list = document.getElementById('list');
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function won(n) { return Number(n).toLocaleString('ko-KR') + '원'; }
+  function when(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    var f = new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', month: 'long', day: 'numeric', weekday: 'short', hour: 'numeric', hour12: true });
+    var p = {}; f.formatToParts(d).forEach(function (x) { p[x.type] = x.value; });
+    return p.month + ' ' + p.day + '일 (' + p.weekday + ') ' + (p.dayPeriod || '') + ' ' + p.hour + '시 기준';
+  }
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('on');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { t.classList.remove('on'); }, 1800);
+  }
+  function legacyCopy(s) { // 인스타 · 카톡 안 브라우저처럼 clipboard API 가 막힌 곳
+    return new Promise(function (ok, no) {
+      var a = document.createElement('textarea'); a.value = s; a.setAttribute('readonly', ''); a.style.position = 'fixed'; a.style.top = '0'; a.style.opacity = '0';
+      document.body.appendChild(a); a.focus(); a.select(); a.setSelectionRange(0, s.length);
+      try { document.execCommand('copy') ? ok() : no(); } catch (e) { no(e); } finally { a.remove(); }
+    });
+  }
+  function copyText(s) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(s).catch(function () { return legacyCopy(s); });
+    return legacyCopy(s);
+  }
+  function stickerClass(label) {
+    var l = String(label || '').toUpperCase();
+    if (/NEW|신상|새/.test(l)) return 'new';
+    if (/긴급|URGENT|마감|품절/.test(l)) return 'urgent';
+    return '';
+  }
+
+  function dealHtml(l, go) {
+    var off = (l.original_price > 0 && l.price >= 0 && l.original_price > l.price) ? Math.floor((l.original_price - l.price) / l.original_price * 100) : 0;
+    var price = '';
+    if (l.price != null) {
+      price = '<div class="price">' + (off > 0 ? '<span class="off">' + off + '%</span>' : '') + '<span class="now">' + won(l.price) + '</span>'
+        + (off > 0 ? '<span class="was">' + won(l.original_price) + '</span>' : '') + '</div>';
+    }
+    var thumb = l.image_url
+      ? '<img src="' + esc(l.image_url) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">'
+      : '';
+    return '<div class="deal"><a class="deal-link" href="' + esc(go + l.slug) + '" rel="nofollow noopener">'
+      + '<div class="thumb">🍯' + thumb + (l.label ? '<span class="sticker ' + stickerClass(l.label) + '">' + esc(l.label) + '</span>' : '') + '</div>'
+      + '<div class="info"><div class="title">' + esc(l.title) + '</div>'
+      + (l.host ? '<div class="host">' + esc(l.host) + '</div>' : '')
+      + price + (l.note ? '<div class="note">' + esc(l.note) + '</div>' : '')
+      + '<span class="go">보러 가기 →</span></div></a>'
+      + '<button class="copy" type="button" data-slug="' + esc(l.slug) + '" aria-label="짧은 링크 복사">' + COPY_SVG + '</button>'
+      + '</div>';
+  }
+
+  function render(data) {
+    var go = data.go || (FN + '/go/');
+    var sets = (data.sets || []).slice();
+    var focusIdx = focusQ ? sets.findIndex(function (s) { return s.queue_id === focusQ; }) : -1;
+    if (focusIdx > 0) sets.unshift(sets.splice(focusIdx, 1)[0]);
+    var notice = document.getElementById('notice');
+    if (focusQ && focusIdx === -1 && sets.length) { notice.textContent = '찾으신 게시물 링크는 곧 올라와요. 지금 모아 둔 꿀딜부터 보세요!'; notice.hidden = false; }
+
+    var html = sets.map(function (s, i) {
+      var isFocus = focusQ && s.queue_id === focusQ;
+      return '<section class="set' + (isFocus ? ' focus' : '') + '" id="set-' + s.id + '">'
+        + '<div class="set-head"><span class="ic">' + (i === 0 ? '🍯' : '🐷') + '</span><div><h2>' + esc(s.title || '오늘의 꿀딜') + '</h2>'
+        + '<span class="when">' + esc(when(s.as_of)) + '</span></div></div>'
+        + (s.subtitle ? '<p class="set-sub">' + esc(s.subtitle) + '</p>' : '')
+        + '<div class="deals">' + s.links.map(function (l) { return dealHtml(l, go); }).join('') + '</div></section>';
+    }).join('');
+    if ((data.loose || []).length) {
+      html += '<section class="set"><div class="set-head"><span class="ic">🔗</span><div><h2>꿀꿀집 추천 링크</h2></div></div>'
+        + '<div class="deals">' + data.loose.map(function (l) { return dealHtml(l, go); }).join('') + '</div></section>';
+    }
+    if (!html) {
+      html = '<div class="empty"><b>꿀딜을 모으는 중이에요 🐷</b><p>새 꿀딜이 올라오면 여기에 가장 먼저 모아 둘게요.</p>'
+        + '<a class="btn" href="https://www.instagram.com/ggul.ggul.zip/" rel="noopener">인스타에서 먼저 보기</a></div>';
+    }
+    $list.innerHTML = html;
+  }
+
+  function load() {
+    fetch(FN, { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(render)
+      .catch(function () {
+        $list.innerHTML = '<div class="empty"><b>잠깐 연결이 안 돼요</b><p>잠시 뒤 다시 눌러 주세요.</p><button class="btn" type="button" id="retry">다시 불러오기</button></div>';
+        document.getElementById('retry').onclick = function () { $list.innerHTML = '<div class="set"><div class="deals"><div class="skel"></div><div class="skel"></div></div></div>'; load(); };
+      });
+  }
+
+  $list.addEventListener('click', function (e) {
+    var b = e.target.closest('.copy');
+    if (!b) return;
+    e.preventDefault();
+    var link = SHORT + b.getAttribute('data-slug');
+    copyText(link).then(function () { toast('짧은 링크를 복사했어요'); }, function () { toast(link.replace('https://', '')); });
+  });
+  document.getElementById('share').addEventListener('click', function () {
+    var url = 'https://brightbeed.kr/ggulggulzip/';
+    if (navigator.share) { navigator.share({ title: '꿀꿀집 · 오늘의 꿀딜 모음', text: '꿀 같은 특가만 쏙쏙 모았어요 🍯', url: url }).catch(function () {}); return; }
+    copyText(url).then(function () { toast('주소를 복사했어요'); }, function () { toast(url); });
+  });
+  load();
+})();
+</script>
+</body>
+</html>

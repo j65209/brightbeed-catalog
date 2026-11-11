@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>페이지를 찾을 수 없어요</title>
+<script>
+  // 꿀꿀집 짧은 링크 — brightbeed.kr/ggulggulzip/<코드> → 판매처 (클릭 수는 서버가 셈)
+  (function () {
+    var m = location.pathname.match(/^\/ggulggulzip\/([a-z0-9][a-z0-9-]{1,30})\/?$/i);
+    if (!m) return;
+    document.documentElement.className = 'ggul';
+    location.replace('https://ckyjkxbqsyjoqpuqwoce.supabase.co/functions/v1/ggul-links/go/' + m[1].toLowerCase());
+  })();
+</script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { display: grid; place-items: center; font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fafafa; color: #222; text-align: center; padding: 24px; box-sizing: border-box; }
+  .ggul body, html.ggul body { background: #f8f1e7; color: #3f2a20; }
+  .nf b { display: block; font-size: 20px; margin-bottom: 8px; }
+  .nf p { margin: 0 0 18px; color: #666; }
+  .nf a { display: inline-block; padding: 12px 18px; border-radius: 999px; background: #111; color: #fff; text-decoration: none; font-weight: 600; }
+  .go { display: none; font-size: 17px; font-weight: 700; }
+  .go a { color: #e5776d; }
+  html.ggul .nf { display: none; }
+  html.ggul .go { display: block; }
+</style>
+</head>
+<body>
+  <main>
+    <div class="go">🐷 꿀꿀집 링크로 이동하고 있어요…<br><small><a href="/ggulggulzip/">안 넘어가면 여기를 눌러 주세요</a></small></div>
+    <div class="nf">
+      <b>페이지를 찾을 수 없어요</b>
+      <p>주소가 바뀌었거나 없어진 페이지예요.</p>
+      <a href="/">홈으로 가기</a>
+    </div>
+  </main>
+</body>
+</html>
